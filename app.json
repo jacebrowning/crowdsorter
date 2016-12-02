@@ -1,0 +1,21 @@
+{
+  "name":"crowdsorter",
+  "scripts":{
+    "postdeploy": "make data"
+  },
+  "env":{
+    "VIRTUAL_ENV": {
+      "value": "heroku"
+    },
+    "FLASK_ENV": {
+      "required": true
+    },
+    "SECRET_KEY": {
+      "generator": "secret"
+    }
+  },
+  "addons":[
+    "mongolab",
+    "papertrail"
+  ]
+}

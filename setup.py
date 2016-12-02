@@ -54,12 +54,10 @@ setuptools.setup(
     packages=setuptools.find_packages(),
 
     entry_points={'console_scripts': [
-        'crowdsorter-cli = crowdsorter.cli:main',
-        'crowdsorter-gui = crowdsorter.gui:main',
     ]},
 
     long_description=read_descriptions(),
-    license='MIT',
+    license='All rights reserved.',
     classifiers=[
         # TODO: update this list to match your application: https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 1 - Planning',

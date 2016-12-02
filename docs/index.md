@@ -1,3 +1,1 @@
-# crowdsorter
-
-Crowdsourced list sorting.
+../README.md

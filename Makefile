@@ -56,7 +56,6 @@ PYTHON := $(BIN_)python
 PIP := $(BIN_)pip
 EASY_INSTALL := $(BIN_)easy_install
 SNIFFER := $(BIN_)sniffer
-HONCHO := $(ACTIVATE) && $(BIN_)honcho
 
 # MAIN TASKS ###################################################################
 
@@ -70,9 +69,25 @@ ci: check test ## Run all tasks that determine CI status
 watch: install .clean-test ## Continuously run all CI tasks when files chanage
 	$(SNIFFER)
 
-.PHONY: run ## Start the program
-run: install
-	$(PYTHON) $(PACKAGE)/__main__.py
+# SERVER TARGETS ###############################################################
+
+HONCHO := $(ACTIVATE) && $(BIN_)honcho
+
+IP ?= $(shell ipconfig getifaddr en0 || ipconfig getifaddr en1)
+
+.PHONY: run
+run: install data
+	status=1; while [ $$status -eq 1 ]; do FLASK_ENV=dev $(PYTHON) manage.py run; status=$$?; sleep 1; done
+
+.PHONY: run-prod
+run-prod: install
+	FLASK_ENV-prod make data
+	FLASK_ENV=prod $(HONCHO) start
+
+.PHONY: launch
+launch: install
+	eval "sleep 3; open http://$(IP):5000" &
+	$(MAKE) run
 
 # SYSTEM DEPENDENCIES ##########################################################
 
@@ -115,6 +130,17 @@ $(PIP): $(PYTHON)
 $(PYTHON):
 	$(SYS_PYTHON) -m venv --clear $(ENV)
 
+# DATA GENERATION ##############################################################
+
+.PHONY: data
+ifdef VIRTUAL_ENV
+data:
+	scripts/generate_sample_data.py
+else
+data: install
+	source env/bin/activate && scripts/generate_sample_data.py
+endif
+
 # CHECKS #######################################################################
 
 PEP8 := $(BIN_)pep8
@@ -143,13 +169,13 @@ fix: install
 
 # TESTS ########################################################################
 
-PYTEST := $(BIN_)py.test
+PYTEST := FLASK_ENV=test $(BIN_)py.test
 COVERAGE := $(BIN_)coverage
 COVERAGE_SPACE := $(BIN_)coverage.space
 
 RANDOM_SEED ?= $(shell date +%s)
 
-PYTEST_CORE_OPTS := --doctest-modules -r xXw -vv
+PYTEST_CORE_OPTS := -r xXw -vv
 PYTEST_COV_OPTS := --cov=$(PACKAGE) --no-cov-on-fail --cov-report=term-missing --cov-report=html
 PYTEST_RANDOM_OPTS := --random --random-seed=$(RANDOM_SEED)
 
@@ -195,7 +221,7 @@ PDOC_INDEX := docs/apidocs/$(PACKAGE)/index.html
 MKDOCS_INDEX := site/index.html
 
 .PHONY: doc
-doc: uml pdoc mkdocs ## Run documentation generators
+doc: uml mkdocs ## Run documentation generators
 
 .PHONY: uml
 uml: install docs/*.png ## Generate UML diagrams for classes and packages
