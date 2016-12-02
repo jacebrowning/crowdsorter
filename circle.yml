@@ -1,0 +1,19 @@
+machine:
+  python:
+    version: 3.5.2
+  environment:
+    RANDOM_SEED: 0
+
+dependencies:
+  pre:
+    - make doctor
+  override:
+    - make install
+  cache_directories:
+    - env
+
+test:
+  override:
+    - make check
+    - make test-unit REPORTS=${CIRCLE_TEST_REPORTS}
+    - make test-int REPORTS=${CIRCLE_TEST_REPORTS}
