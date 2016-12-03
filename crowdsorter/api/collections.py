@@ -27,7 +27,12 @@ def index():
 def create():
     log.debug("Parsing request data: %s", request.data)
     name = request.data.get('name')
-    items = request.data.getlist('items')
+    try:
+        items = request.data.getlist('items')
+    except AttributeError:
+        # TODO: figure out how to test this automatically
+        # it only seems to get triggered from the Flask-API browser
+        items = request.data.get('items', [])
     if not name:
         raise exceptions.UnprocessableEntity("Name is required.")
 
