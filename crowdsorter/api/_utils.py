@@ -10,5 +10,6 @@ def get_content(collection):
     content['uri'] = url_for('collections_api.detail',
                              key=collection.key, _external=True)
     content['name'] = collection.name
+    content['items'] = collection.items
 
     return content

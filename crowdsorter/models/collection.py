@@ -18,3 +18,4 @@ class Collection(db.Document):
 
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
+    items = db.ListField(db.StringField())

@@ -33,3 +33,20 @@ def describe_collections():
                 expect(content) == [
                     "http://localhost/api/collections/abc123"
                 ]
+
+        def describe_POST():
+
+            def it_creates_a_new_collection(client):
+                data = {'name': "Foobar", 'items': ["a", "b"]}
+                status, content = load(client.post("/api/collections/",
+                                                   data=data))
+
+                expect(status) == 201
+                expect(content['name']) == "Foobar"
+                expect(len(content['items'])) == 2
+
+            def it_requires_a_name(client):
+                status, content = load(client.post("/api/collections/"))
+
+                expect(status) == 422
+                expect(content['message']) == "Name is required."
