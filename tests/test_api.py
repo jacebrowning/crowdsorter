@@ -37,13 +37,13 @@ def describe_collections():
         def describe_POST():
 
             def it_creates_a_new_collection(client):
-                data = {'name': "Foobar", 'items': ["a", "b"]}
+                data = {'name': "Foobar", 'items': ["a", "c", "b"]}
                 status, content = load(client.post("/api/collections/",
                                                    data=data))
 
                 expect(status) == 201
                 expect(content['name']) == "Foobar"
-                expect(len(content['items'])) == 2
+                expect(content['items']) == ["a", "b", "c"]
 
             def it_creates_an_empty_list_of_items_when_not_provided(client):
                 data = {'name': "Foobar"}
