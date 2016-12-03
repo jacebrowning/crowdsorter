@@ -1,8 +1,14 @@
-# from flask import url_for
+from collections import OrderedDict
+
+from flask import url_for
 
 
 def get_content(collection):
     """Serialize a collection for API responses."""
-    content = collection.data
-    # content['uri'] = url_for('api_collection.detail', _external=True)
+    content = OrderedDict()
+
+    content['uri'] = url_for('collections_api.detail',
+                             key=collection.key, _external=True)
+    content['name'] = collection.name
+
     return content

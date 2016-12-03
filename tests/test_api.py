@@ -26,8 +26,10 @@ def describe_collections():
 
         def describe_GET():
 
-            def it_returns_a_list_of_rooms(client, collection):
+            def it_returns_a_list_of_collections(client, collection):
                 status, content = load(client.get("/api/collections/"))
 
                 expect(status) == 200
-                expect(content) == []
+                expect(content) == [
+                    "http://localhost/api/collections/abc123"
+                ]

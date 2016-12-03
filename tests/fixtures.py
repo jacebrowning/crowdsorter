@@ -20,6 +20,6 @@ def client(app):
 
 @pytest.fixture
 def collection():
-    collection = Collection(name="Sample List")
+    collection = Collection(name="Sample List", key='abc123')
     collection.save()
     return collection
