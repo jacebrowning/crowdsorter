@@ -5,3 +5,11 @@
 .navbar {
     margin-bottom: 0px;
 }
+
+.center {
+    text-align:center;
+}
+
+.center form {
+    display:inline-block;
+}

@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ super() }} | Items{% endblock %}
+
+{% block content %}
+{{ super() }}
+    <div class="jumbotron text-center">
+        <h1>{{ collection['name'] }}</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <ol class="list-group">
+                    {% for item in collection['items'] %}
+                    <li class="list-group-item">
+                        <p>{{ item }}</p>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </div>
+{% endblock %}

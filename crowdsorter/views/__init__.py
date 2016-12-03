@@ -1,3 +1,5 @@
+import logging
+
 from flask import request
 from flask_nav.elements import Navbar, View, Text
 
@@ -8,19 +10,19 @@ from . import index
 from . import collections
 
 
+log = logging.getLogger(__name__)
+
+
 @nav.navigation()
 def top():
-    code = request.view_args.get('code')
-    name = request.args.get('name')
+    key = request.view_args.get('key')
 
-    home = View("home", 'index.get')
-    collection = View(code, 'collections.detail', code=code, name=name)
-    _page_name = request.path.split('/')[-1]
-    _page_endpoint = request.url_rule.endpoint
-    page = View(_page_name, _page_endpoint, code=code)
+    home = View("Home", 'index.get')
+    collection = View("Collection", 'collections.detail', key=key)
+    page = _get_page(request.path, request.url_rule.endpoint, key)
 
-    if code:
-        if page.text in ['join', 'options']:
+    if key:
+        if page:
             items = [home, collection, page]
         else:
             items = [home, collection]
@@ -28,3 +30,14 @@ def top():
         items = [home]
 
     return Navbar(__project__, *items)
+
+
+def _get_page(path, endpoint, key):
+    paths = path.split('/')
+    log.debug("Request path: %s", paths)
+
+    if len(paths) > 3:
+        text = paths[-1].capitalize()
+        return View(text, endpoint, key=key)
+    else:
+        return None

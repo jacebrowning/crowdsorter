@@ -70,6 +70,7 @@ def describe_collections():
                 expect(status) == 200
                 expect(content) == {
                     'uri': "http://localhost/api/collections/abc123",
+                    'key': "abc123",
                     'name': "Sample List",
                     'items': [],
                 }

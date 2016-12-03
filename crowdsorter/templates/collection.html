@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ super() }} | Items{% endblock %}
+
+{% block content %}
+{{ super() }}
+    <div class="jumbotron text-center">
+        <h1>{{ collection['name'] }}</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4 center">
+                <a class="btn btn-default" href="/collections/{{ collection['key'] }}/items" role="button">View List</a>
+                <a class="btn btn-default" href="/collections/{{ collection['key'] }}/sort" role="button">Sort Items</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
