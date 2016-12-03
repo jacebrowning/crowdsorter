@@ -6,8 +6,6 @@ from ..extensions import nav
 
 from . import index
 from . import collections
-from . import api_root
-from . import api_collections
 
 
 @nav.navigation()

@@ -2,6 +2,7 @@ import logging
 
 from flask_api import FlaskAPI
 
+from . import api
 from . import views
 from . import extensions
 
@@ -35,8 +36,8 @@ def register_blueprints(app):
 
 
 def register_backend(app):
-    app.register_blueprint(views.api_root.blueprint)
-    app.register_blueprint(views.api_collections.blueprint)
+    app.register_blueprint(api.root.blueprint)
+    app.register_blueprint(api.collections.blueprint)
 
 
 def register_frontend(app):

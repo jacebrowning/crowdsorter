@@ -1,9 +1,9 @@
 from flask import Blueprint, Response
 
 
-blueprint = Blueprint('rooms', __name__, url_prefix="/rooms")
+blueprint = Blueprint('collections', __name__)
 
 
-@blueprint.route("/")
+@blueprint.route("/collections/")
 def index():
     return Response("This is the collections index.")

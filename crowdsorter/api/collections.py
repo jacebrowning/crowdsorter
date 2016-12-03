@@ -9,11 +9,10 @@ from flask_api import status
 # from ._utils import get_content
 
 
-blueprint = Blueprint('api_collections', __name__,
-                      url_prefix="/api/collections")
+blueprint = Blueprint('collections_api', __name__)
 log = logging.getLogger(__name__)
 
 
-@blueprint.route("/")
+@blueprint.route("/api/collections/")
 def index():
     return [], status.HTTP_200_OK
