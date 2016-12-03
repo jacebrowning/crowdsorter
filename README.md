@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/jacebrowning/crowdsorter.svg?style=svg&circle-token=62cdd21c977c8fcf0eeeec3f4c414640a184da27)]
+[![CircleCI](https://circleci.com/gh/jacebrowning/crowdsorter.svg?style=svg&circle-token=62cdd21c977c8fcf0eeeec3f4c414640a184da27)](https://circleci.com/gh/jacebrowning/crowdsorter)
 
 # Overview
 
@@ -12,26 +12,23 @@ Crowdsourced list sorting.
 
 ## Installation
 
-Install CrowdSorter with pip:
-
-```sh
-$ pip install CrowdSorter
-```
-
-or directly from the source code:
+Clone the source code:
 
 ```sh
 $ git clone https://github.com/jacebrowning/crowdsorter.git
 $ cd crowdsorter
-$ python setup.py install
+```
+
+Install project dependencies:
+
+```sh
+$ make install
 ```
 
 # Usage
 
-After installation, the package can imported:
+Run the application:
 
 ```sh
-$ python
->>> import crowdsorter
->>> crowdsorter.__version__
+$ make run
 ```
