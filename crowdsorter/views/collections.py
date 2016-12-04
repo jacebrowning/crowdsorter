@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, render_template
+from flask import Blueprint, Response, render_template, redirect, url_for
 
 from .. import api
 
@@ -10,7 +10,7 @@ blueprint = Blueprint('collections', __name__)
 
 @blueprint.route("/collections/")
 def index():
-    return Response("This is the collections index.")
+    return redirect(url_for('index.get'))
 
 
 @blueprint.route("/collections/<key>")
