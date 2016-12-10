@@ -1,4 +1,5 @@
 import logging
+from collections import OrderedDict
 
 from flask import Blueprint, request, url_for
 from flask_api import status
@@ -50,3 +51,26 @@ def detail(key):
         raise exceptions.NotFound
 
     return get_content(collection), status.HTTP_200_OK
+
+
+@blueprint.route("/api/collections/<key>/compare", methods=['GET', 'POST'])
+def compare(key, winner=None, loser=None):
+    collection = Collection.objects(key=key).first()
+
+    if not collection:
+        raise exceptions.NotFound
+
+    if request.method == 'POST' or any((winner, loser)):
+
+        winner = winner or request.data.get('winner')
+        loser = loser or request.data.get('loser')
+
+        log.debug("Comparison result: %s > %s", winner, loser)
+        collection.sort(winner, loser)
+        collection.save()
+
+    content = OrderedDict()
+    content['name'] = collection.name
+    content['items'] = collection.items_shuffled
+
+    return content, status.HTTP_200_OK
