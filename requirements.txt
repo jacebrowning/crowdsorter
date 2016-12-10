@@ -3,7 +3,6 @@ Flask==0.11.1
 
 # Models
 Flask-MongoEngine==0.7.5
-RandomWords==0.2.0
 
 # Views
 Flask-API==0.6.9

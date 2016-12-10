@@ -24,6 +24,7 @@ def main():
     collection.items.append("Red")
     collection.items.append("Green")
     collection.items.append("Blue")
+    collection.items.append("Yellow")
     collection.save()
 
 
