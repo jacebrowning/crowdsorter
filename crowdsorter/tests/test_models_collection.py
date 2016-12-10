@@ -19,3 +19,14 @@ def describe_collection():
             collection2 = Collection()
 
             expect(collection1) != collection2
+
+    def describe_sort():
+
+        def it_sorts_by_key():
+            objs = [
+                Collection(key='1'),
+                Collection(key='_'),
+                Collection(key='a'),
+            ]
+
+            expect(sorted(objs)) == objs

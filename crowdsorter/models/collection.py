@@ -36,6 +36,12 @@ class Collection(db.Document):
     items = db.ListField(db.StringField())
     votes = db.EmbeddedDocumentListField(Wins)
 
+    def __repr__(self):
+        return "<collection: {self.key}".format(self=self)
+
+    def __lt__(self, other):
+        return self.key < other.key
+
     @property
     def items_shuffled(self):
         items = self.items.copy()
