@@ -11,6 +11,6 @@ def get_content(collection):
                              key=collection.key, _external=True)
     content['key'] = collection.key
     content['name'] = collection.name
-    content['items'] = sorted(collection.items)
+    content['items'] = collection.items
 
     return content

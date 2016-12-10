@@ -5,6 +5,8 @@ from bson.objectid import ObjectId
 
 from ..extensions import db
 
+from . import Item
+
 
 log = logging.getLogger(__name__)
 
@@ -48,14 +50,14 @@ class Collection(db.Document):
         random.shuffle(items)
         return items
 
-    def sort(self, winner, loser):
-        """Cleanup votes and update the items order."""
+    def vote(self, winner, loser):
+        """Apply a new vote and update the items order."""
         self._init()
         self._clean()
         wins = self._find_wins(self.votes, winner)
         loss = self._find_loss(wins, loser)
         loss.count += 1
-        self._update()
+        self._sort()
 
     def _init(self):
         """Add default comparison data for new items."""
@@ -68,8 +70,19 @@ class Collection(db.Document):
     def _clean(self):
         """Remove stale comparison for deleted items."""
 
-    def _update(self):
+    def _sort(self):
         """Sort the items list based on comparison data."""
+        items = [Item(name) for name in self.items]
+
+        for item in items:
+            wins = self._find_wins(self.votes, item.name)
+            for loss in wins.against:
+                item.score += loss.count
+
+        items.sort(reverse=True)
+        log.debug("Updated scores: %s", items)
+
+        self.items = [str(item) for item in items]
 
     @staticmethod
     def _find_wins(votes, name):

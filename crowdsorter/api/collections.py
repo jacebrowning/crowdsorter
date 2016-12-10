@@ -66,7 +66,7 @@ def compare(key, winner=None, loser=None):
         loser = loser or request.data.get('loser')
 
         log.debug("Comparison result: %s > %s", winner, loser)
-        collection.sort(winner, loser)
+        collection.vote(winner, loser)
         collection.save()
 
     content = OrderedDict()

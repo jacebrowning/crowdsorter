@@ -43,7 +43,7 @@ def describe_collections():
 
                 expect(status) == 201
                 expect(content['name']) == "Foobar"
-                expect(content['items']) == ["a", "b", "c"]
+                expect(content['items']) == ["a", "c", "b"]
 
             def it_creates_an_empty_list_of_items_when_not_provided(client):
                 data = {'name': "Foobar"}
