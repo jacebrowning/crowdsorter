@@ -25,16 +25,8 @@ def detail(key):
     return Response(render_template("collection.html", collection=content))
 
 
-@blueprint.route("/collections/<key>/items")
-def items(key):
-    content, status = call(api.collections.detail, key=key)
-    assert status == 200
-
-    return Response(render_template("items.html", collection=content))
-
-
-@blueprint.route("/collections/<key>/sort", methods=['GET', 'POST'])
-def sort(key):
+@blueprint.route("/collections/<key>/vote", methods=['GET', 'POST'])
+def vote(key):
     if request.method == 'POST':
 
         log.debug("Request args: %s", request.args)
@@ -45,9 +37,9 @@ def sort(key):
                                winner=winner, loser=loser)
         assert status == 200
 
-        return redirect(url_for('collections.sort', key=key))
+        return redirect(url_for('collections.vote', key=key))
 
     content, status = call(api.collections.compare, key=key)
     assert status == 200
 
-    return Response(render_template("sort.html", content=content))
+    return Response(render_template("vote.html", content=content))

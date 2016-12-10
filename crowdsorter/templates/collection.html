@@ -10,9 +10,19 @@
 
     <div class="container">
         <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <ol class="list-group">
+                    {% for item in collection['items'] %}
+                    <li class="list-group-item">
+                        <p>{{ item }}</p>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-4 col-sm-offset-4 center">
-                <a class="btn btn-default" href="/collections/{{ collection['key'] }}/items" role="button">View List</a>
-                <a class="btn btn-default" href="/collections/{{ collection['key'] }}/sort" role="button">Sort Items</a>
+                <a class="btn btn-default" href="/collections/{{ collection['key'] }}/vote" role="button">Sort Items</a>
             </div>
         </div>
     </div>
