@@ -65,10 +65,8 @@ def compare(key, winner=None, loser=None):
         winner = winner or request.data.get('winner')
         loser = loser or request.data.get('loser')
 
-        # TODO: record result
         log.debug("Comparison result: %s > %s", winner, loser)
-
-        collection.sort()
+        collection.sort(winner, loser)
         collection.save()
 
     content = OrderedDict()

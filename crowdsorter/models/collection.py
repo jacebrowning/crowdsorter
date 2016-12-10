@@ -42,10 +42,13 @@ class Collection(db.Document):
         random.shuffle(items)
         return items
 
-    def sort(self):
+    def sort(self, winner, loser):
         """Cleanup votes and update the items order."""
         self._init()
         self._clean()
+        wins = self._find_wins(self.votes, winner)
+        loss = self._find_loss(wins, loser)
+        loss.count += 1
         self._update()
 
     def _init(self):
