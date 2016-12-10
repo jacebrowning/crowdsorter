@@ -13,3 +13,7 @@
 .center form {
     display:inline-block;
 }
+
+.btn{
+    min-width: 100px;
+}
