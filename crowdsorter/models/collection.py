@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 
 from ..extensions import db
 
-from . import Item
+from . import Item, Items
 
 
 log = logging.getLogger(__name__)
@@ -72,12 +72,15 @@ class Collection(db.Document):
 
     def _sort(self):
         """Sort the items list based on comparison data."""
-        items = [Item(name) for name in self.items]
+        items = Items(Item(name) for name in self.items)
 
-        for item in items:
-            wins = self._find_wins(self.votes, item.name)
+        for wins in self.votes:
+            winning_item = items.find(wins.winner)
             for loss in wins.against:
-                item.score += loss.count
+                losing_item = items.find(loss.loser)
+                for _ in range(loss.count):
+                    winning_item.wins.append(losing_item)
+                    losing_item.losses.append(winning_item)
 
         items.sort(reverse=True)
         log.debug("Updated scores: %s", items)

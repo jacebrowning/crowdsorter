@@ -15,7 +15,7 @@ def describe_item():
     def describe_repr():
 
         def it_includes_the_score(item):
-            expect(repr(item)) == "Item('Sample Item', score=0.0)"
+            expect(repr(item)) == "Item('Sample Item', score=0.00)"
 
     def describe_str():
 
