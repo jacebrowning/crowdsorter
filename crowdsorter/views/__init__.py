@@ -34,7 +34,6 @@ def top():
 
 def _get_page(path, endpoint, key):
     paths = path.split('/')
-    log.debug("Request path: %s", paths)
 
     if len(paths) > 3:
         text = paths[-1].capitalize()
