@@ -12,9 +12,9 @@
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
                 <ul class="item-score-list">
-                    {% for item in collection['items'] %}
+                    {% for item in collection['scores'] %}
                     <li class="list-group-item">
-                        <div class="item">{{ item }}</div><div class="score">0.0%</div>
+                        <div class="item">{{ item['name'] }}</div><div class="score">{{ item['total'] }} @ {{ item['confidence'] * 100 }}%</div>
                     </li>
                     {% endfor %}
                 </ul>
