@@ -11,13 +11,13 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
-                <ol class="list-group">
+                <ul class="item-score-list">
                     {% for item in collection['items'] %}
                     <li class="list-group-item">
-                        <p>{{ item }}</p>
+                        <div class="item">{{ item }}</div><div class="score">0.0%</div>
                     </li>
                     {% endfor %}
-                </ol>
+                </ul>
             </div>
         </div>
     </div>

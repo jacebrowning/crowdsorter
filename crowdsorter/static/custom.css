@@ -43,3 +43,7 @@
 .center form {
     display:inline-block;
 }
+
+ul.item-score-list > li { display: block; height: 3em; }
+ul.item-score-list > li > div.item { float: left }
+ul.item-score-list > li > div.score { float: right }
