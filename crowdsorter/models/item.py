@@ -1,5 +1,5 @@
 import logging
-from pprint import pformat
+from collections import defaultdict
 
 
 log = logging.getLogger(__name__)
@@ -7,14 +7,16 @@ log = logging.getLogger(__name__)
 
 class Item(object):
 
-    def __init__(self, name, *, score=0.0, _items=None):
+    def __init__(self, name):
         self.name = name
-        self.wins = []
-        self.score = score
-        self._items = [] if _items is None else _items
+        self.win_count = defaultdict(int)
+        self.loss_count = defaultdict(int)
 
     def __repr__(self):
-        return "Item({self.name!r}, score={self.score:.2f})".format(self=self)
+        # pylint: disable=unused-variable
+        total, confidence = self.score
+        pattern = "<item: {self.name!r} = {total:.1f} @ {confidence:.1f}>"
+        return pattern.format(**locals())
 
     def __str__(self):
         return self.name
@@ -25,26 +27,50 @@ class Item(object):
     def __lt__(self, other):
         return self.score < other.score
 
+    def __hash__(self):
+        return hash(self.name)
+
     @property
     def losses(self):
         for item in self._items:
             if self in item.wins:
                 yield item
 
-    def calculate_score(self):
-        for losing_item in self.wins:
-            self.score += 1.0
+    @property
+    def score(self):
+        total = 0.0
+        confidences = defaultdict(float)
 
-            for inferred_losing_item in losing_item.wins:
-                if inferred_losing_item not in self.wins:
-                    self.score += 0.99
+        for item in self.win_count:
+            wins = self.win_count[item]
+            losses = self.loss_count[item]
 
-        for winning_item in self.losses:
-            self.score -= 1.0
+            try:
+                ratio = wins / (wins + losses)
+            except ZeroDivisionError:
+                ratio = 0.0
 
-            for inferred_winning_item in winning_item.losses:
-                if inferred_winning_item not in self.losses:
-                    self.score -= 0.99
+            total += 1.0 * ratio
+            confidences[item] = max(confidences[item], ratio)
+
+        for item in self.loss_count:
+            losses = self.loss_count[item]
+            wins = self.win_count[item]
+
+            try:
+                ratio = losses / (losses + wins)
+            except ZeroDivisionError:
+                ratio = 0.0
+
+            total -= 1.0 * ratio
+            confidences[item] = max(confidences[item], ratio)
+
+        if confidences:
+            confidence = sum(confidences.values()) / len(confidences)
+        else:
+            confidence = 0.0
+
+        return total, confidence
 
 
 class Items(list):
@@ -52,40 +78,32 @@ class Items(list):
     @classmethod
     def build(cls, names):
         items = cls()
+
         for name in names:
-            item = Item(name, _items=items)
-            items.append(item)
+            items.get_item(name)
+
+        for item in items:
+            for item2 in items:
+                if item != item2:
+                    item.win_count[item2] = 0
+                    item.loss_count[item2] = 0
+
         return items
 
-    @property
-    def tree(self):
-        data = {}
-        for item in self:
-            data[str(item)] = [str(i) for i in item.wins]
-        return data
+    def add_pair(self, winner, loser, count=1):
+        winning_item = self.get_item(winner)
+        losing_item = self.get_item(loser)
+        winning_item.win_count[losing_item] += count
+        losing_item.loss_count[winning_item] += count
 
-    def find(self, name):
-        """Locate and return an Item by name."""
+    def get_item(self, name):
         for item in self:
             if item.name == name:
                 return item
-        raise IndexError("Could not find item {!r}".format(name))
 
-    def normalize(self):
-        """Remove extra win-loss pairs."""
-        for item in self:
-            for beat_item in item.wins:
-                if item in beat_item.wins:
-                    item.wins.remove(beat_item)
-                    beat_item.wins.remove(item)
-                    log.debug("Removed cancellation: %s = %s", item, beat_item)
-                while item.wins.count(beat_item) > 1:
-                    item.wins.remove(beat_item)
-                    log.debug("Removed duplicate: %s > %s", item, beat_item)
+        item = Item(name)
+        self.append(item)
+        return item
 
-        log.debug("Normalized tree:\n%s", pformat(self.tree))
-
-    def calculate_scores(self):
-        """Update item scores."""
-        for item in self:
-            item.calculate_score()
+    def get_names(self):
+        return [item.name for item in self]

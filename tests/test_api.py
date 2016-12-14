@@ -84,6 +84,7 @@ def describe_collections():
                     'key': "abc123",
                     'name': "Sample List",
                     'items': [],
+                    'scores': [],
                 }
 
 

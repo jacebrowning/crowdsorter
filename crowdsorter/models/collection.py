@@ -30,6 +30,14 @@ class Wins(db.EmbeddedDocument):
     against = db.EmbeddedDocumentListField(Loss)
 
 
+class Score(db.EmbeddedDocument):
+    """Stores the computed score for an item."""
+
+    name = db.StringField()
+    total = db.FloatField()
+    confidence = db.FloatField()
+
+
 class Collection(db.Document):
     """Represents a named collection of items."""
 
@@ -37,6 +45,7 @@ class Collection(db.Document):
     name = db.StringField()
     items = db.ListField(db.StringField())
     votes = db.EmbeddedDocumentListField(Wins)
+    scores = db.EmbeddedDocumentListField(Score)
 
     def __repr__(self):
         return "<collection: {self.key}>".format(self=self)
@@ -75,20 +84,20 @@ class Collection(db.Document):
         items = Items.build(self.items)
 
         for wins in self.votes:
-            winning_item = items.find(wins.winner)
             for loss in wins.against:
-                losing_item = items.find(loss.loser)
-                for _ in range(loss.count):
-                    winning_item.wins.append(losing_item)
-
-        items.normalize()
-
-        items.calculate_scores()
+                items.add_pair(wins.winner, loss.loser, loss.count)
 
         items.sort(reverse=True)
-        log.debug("Updated scores: %s", items)
+        for index, item in enumerate(items):
+            log.debug("Updated scores %s: %r", index, item)
 
         self.items = [str(item) for item in items]
+        self.scores = []
+        for item in items:
+            score = Score(name=item.name,
+                          total=item.score[0],
+                          confidence=item.score[1])
+            self.scores.append(score)
 
     @staticmethod
     def _find_wins(votes, name):
