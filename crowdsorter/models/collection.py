@@ -39,7 +39,7 @@ class Collection(db.Document):
     votes = db.EmbeddedDocumentListField(Wins)
 
     def __repr__(self):
-        return "<collection: {self.key}".format(self=self)
+        return "<collection: {self.key}>".format(self=self)
 
     def __lt__(self, other):
         return self.key < other.key
