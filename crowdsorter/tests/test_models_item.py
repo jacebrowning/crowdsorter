@@ -15,64 +15,79 @@ def describe_item():
     def describe_repr():
 
         def it_includes_the_score(item):
-            expect(repr(item)) == "Item('Sample Item', score=0.00)"
+            expect(repr(item)) == "<item: 'Sample Item' = 0.0 @ 0.0>"
 
     def describe_str():
 
         def it_uses_the_name(item):
             expect(str(item)) == "Sample Item"
 
-    def describe_sort():
+    def describe_score():
 
-        def it_uses_the_score():
-            objs = [
-                Item("a", score=42),
-                Item("a", score=1),
-                Item("a", score=0),
-            ]
+        @pytest.fixture
+        def better():
+            return Item("Better Item")
+
+        @pytest.fixture
+        def worse():
+            return Item("Worse Item")
+
+        def with_no_data(item):
+            expect(item.score) == (0.0, 0.0)
+
+        def with_1_win(item, worse):
+            item.win_count[worse] = 1
+
+            expect(item.score) == (1.0, 1.0)
+
+        def with_1_loss(item, better):
+            item.loss_count[better] = 1
+
+            expect(item.score) == (-1.0, 1.0)
+
+        def with_1_win_and_1_loss(item, better, worse):
+            item.loss_count[better] = 1
+            item.win_count[worse] = 1
+
+            item.loss_count[better] = 1
+
+            expect(item.score) == (0.0, 1.0)
+
+        def with_low_confidence_win(item, worse):
+            item.win_count[worse] = 3
+            item.loss_count[worse] = 1
+
+            expect(item.score) == (0.5, 0.75)
+
+        def with_high_confidence_win(item, worse):
+            item.win_count[worse] = 99
+            item.loss_count[worse] = 1
+
+            expect(item.score) == (0.98, 0.99)
 
 
 def describe_items():
 
-    @pytest.fixture
-    def items():
-        green = Item("green")
-        yellow = Item("yellow")
-        blue = Item("blue")
-        red = Item("red")
-        green.wins = [yellow, blue, blue, blue]
-        yellow.wins = [blue, red]
-        blue.wins = [green, red]
-        red.wins = []
-        return Items([green, yellow, blue, red])
+    def describe_get_item():
 
-    def describe_tree():
-
-        def it_lists_all_wins(items):
-            expect(items.tree) == {
-                "green": ["yellow", "blue", "blue", "blue"],
-                "yellow": ["blue", "red"],
-                "blue": ["green", "red"],
-                "red": [],
-            }
-
-    def describe_find():
+        @pytest.fixture
+        def items():
+            return Items([Item("found")])
 
         def when_found(items):
-            expect(items.find("blue")) == items[2]
+            expect(items.get_item("found")) == Item("found")
 
         def when_missing(items):
-            with expect.raises(IndexError):
-                items.find("foobar")
+            expect(items.get_item("missing")) == Item("missing")
 
-    def describe_normalize():
+    def describe_add_pair():
 
-        def it_removes_extra_win_loss_pairs(items):
-            items.normalize()
+        @pytest.fixture
+        def items():
+            return Items()
 
-            expect(items.tree) == {
-                "green": ["yellow", "blue"],
-                "yellow": ["blue", "red"],
-                "blue": ["red"],
-                "red": [],
-            }
+        def when_transitive(items):
+            items.add_pair("a", "b")
+            items.add_pair("b", "c")
+
+            expect(items.get_names()) == ["a", "b", "c"]

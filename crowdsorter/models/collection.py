@@ -75,18 +75,12 @@ class Collection(db.Document):
         items = Items.build(self.items)
 
         for wins in self.votes:
-            winning_item = items.find(wins.winner)
             for loss in wins.against:
-                losing_item = items.find(loss.loser)
-                for _ in range(loss.count):
-                    winning_item.wins.append(losing_item)
-
-        items.normalize()
-
-        items.calculate_scores()
+                items.add_pair(wins.winner, loss.loser, loss.count)
 
         items.sort(reverse=True)
-        log.debug("Updated scores: %s", items)
+        for index, item in enumerate(items):
+            log.debug("Updated scores %s: %r", index, item)
 
         self.items = [str(item) for item in items]
 
