@@ -19,14 +19,14 @@ def index():
 
 
 @blueprint.route("/collections/<key>")
-@register_menu(blueprint, '.detail', "Collection", order=1,
+@register_menu(blueprint, '.detail', "Items", order=1,
                visible_when=lambda: 'collections' in request.path.split('/'),
                active_when=lambda: 'vote' not in request.path.split('/'))
 def detail(key):
     content, status = call(api.collections.detail, key=key)
     assert status == 200
 
-    return Response(render_template("collection.html", collection=content))
+    return Response(render_template("items.html", collection=content))
 
 
 @blueprint.route("/collections/<key>/vote", methods=['GET', 'POST'])
