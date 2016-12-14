@@ -7,7 +7,7 @@ Flask-MongoEngine==0.8.1
 # Views
 Flask-API==0.6.9
 Flask-Bootstrap==3.3.7.0
-Flask-Nav==0.6
+Flask-Menu==0.5.1
 
 # Deployment
 Flask-Script==2.0.5

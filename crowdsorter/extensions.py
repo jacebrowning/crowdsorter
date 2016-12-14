@@ -1,8 +1,8 @@
 from flask_mongoengine import MongoEngine
 from flask_bootstrap import Bootstrap
-from flask_nav import Nav
+from flask_menu import Menu
 
 db = MongoEngine()
 
 bootstrap = Bootstrap()
-nav = Nav()
+menu = Menu()

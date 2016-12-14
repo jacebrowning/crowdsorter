@@ -42,8 +42,20 @@
     {% endif %}
     </div>
 {% endwith %}
-    <!-- Added by Flask-Nav -->
-    {{nav.top.render()}}
+    <!-- Added by Flask-Menu -->
+    <nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+        {%- for item in current_menu.children if item.visible -%}
+            {%- if item.active %}
+            <li class="active">
+            {%- else %}
+            <li>
+            {%- endif %}
+                <a href="{{ item.url}}">{{ item.text }}</a>
+            </li>
+        {%- endfor %}
+        </ul>
+    </nav>
 {%- endblock %}
 
 {% block scripts %}
