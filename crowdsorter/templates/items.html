@@ -14,7 +14,7 @@
                 <ul class="item-score-list">
                     {% for item in collection['scores'] %}
                     <li class="list-group-item">
-                        <div class="item">{{ item['name'] }}</div><div class="score">{{ "{0:.1f}".format(item['total']) }} @ {{ "{0:.1%}".format(item['confidence']) }}</div>
+                        <div class="item">{{ item['name'] }}</div><div class="score">{{ "{0:.1f}".format(item['points']) }} @ {{ "{0:.1%}".format(item['confidence']) }}</div>
                     </li>
                     {% endfor %}
                 </ul>

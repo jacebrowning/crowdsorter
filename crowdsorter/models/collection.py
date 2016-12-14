@@ -34,7 +34,7 @@ class Score(db.EmbeddedDocument):
     """Stores the computed score for an item."""
 
     name = db.StringField()
-    total = db.FloatField()
+    points = db.FloatField()
     confidence = db.FloatField()
 
 
@@ -95,7 +95,7 @@ class Collection(db.Document):
         self.scores = []
         for item in items:
             score = Score(name=item.name,
-                          total=item.score[0],
+                          points=item.score[0],
                           confidence=item.score[1])
             self.scores.append(score)
 

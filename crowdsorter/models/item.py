@@ -14,8 +14,8 @@ class Item(object):
 
     def __repr__(self):
         # pylint: disable=unused-variable
-        total, confidence = self.score
-        pattern = "<item: {self.name!r} = {total:.1f} @ {confidence:.1f}>"
+        points, confidence = self.score
+        pattern = "<item: {self.name!r} = {points:.1f} @ {confidence:.1f}>"
         return pattern.format(**locals())
 
     def __str__(self):
@@ -38,7 +38,7 @@ class Item(object):
 
     @property
     def score(self):
-        total = 0.0
+        points = 0.0
         confidences = defaultdict(float)
 
         for item in self.win_count:
@@ -50,7 +50,7 @@ class Item(object):
             except ZeroDivisionError:
                 ratio = 0.0
 
-            total += 1.0 * ratio
+            points += 1.0 * ratio
             confidences[item] = max(confidences[item], ratio)
 
         for item in self.loss_count:
@@ -62,7 +62,7 @@ class Item(object):
             except ZeroDivisionError:
                 ratio = 0.0
 
-            total -= 1.0 * ratio
+            points -= 1.0 * ratio
             confidences[item] = max(confidences[item], ratio)
 
         if confidences:
@@ -70,7 +70,7 @@ class Item(object):
         else:
             confidence = 0.0
 
-        return total, confidence
+        return points, confidence
 
 
 class Items(list):
