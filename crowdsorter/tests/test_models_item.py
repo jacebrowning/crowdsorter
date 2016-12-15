@@ -22,6 +22,26 @@ def describe_item():
         def it_uses_the_name(item):
             expect(str(item)) == "Sample Item"
 
+    def describe_sort():
+
+        def by_points():
+            items = [
+                Item("a", _points=1.1),
+                Item("b", _points=1.0),
+                Item("c", _points=-10),
+            ]
+
+            expect(sorted(items)) == items
+
+        def by_confidence():
+            items = [
+                Item("a", _points=1, _confidence=0.9),
+                Item("b", _points=1, _confidence=0.8),
+                Item("c", _points=0.9),
+            ]
+
+            expect(sorted(items)) == items
+
     def describe_score():
 
         @pytest.fixture

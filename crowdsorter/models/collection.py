@@ -102,7 +102,7 @@ class Collection(db.Document):
             for loss in wins.against:
                 items.add_pair(wins.winner, loss.loser, loss.count)
 
-        items.sort(reverse=True)
+        items.sort()
         for index, item in enumerate(items):
             log.debug("Updated scores %s: %r", index, item)
 

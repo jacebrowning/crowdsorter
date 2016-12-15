@@ -7,10 +7,12 @@ log = logging.getLogger(__name__)
 
 class Item(object):
 
-    def __init__(self, name):
+    def __init__(self, name, *, _points=None, _confidence=None):
         self.name = name
         self.win_count = defaultdict(int)
         self.loss_count = defaultdict(int)
+        self._points = _points
+        self._confidence = _confidence
 
     def __repr__(self):
         # pylint: disable=unused-variable
@@ -25,7 +27,7 @@ class Item(object):
         return self.name == other.name
 
     def __lt__(self, other):
-        return self.score < other.score
+        return self.score > other.score
 
     def __hash__(self):
         return hash(self.name)
@@ -38,7 +40,7 @@ class Item(object):
 
     @property
     def score(self):
-        points = 0.0
+        points = self._points or 0.0
         confidences = defaultdict(float)
 
         for item in self.win_count:
@@ -68,7 +70,7 @@ class Item(object):
         if confidences:
             confidence = sum(confidences.values()) / len(confidences)
         else:
-            confidence = 0.0
+            confidence = self._confidence or 0.0
 
         return points, confidence
 
