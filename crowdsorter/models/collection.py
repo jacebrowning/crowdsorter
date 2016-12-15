@@ -76,25 +76,26 @@ class Collection(db.Document):
 
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""
-        self._init()
-        self._clean()
         wins = self._find_wins(self.votes, winner)
         loss = self._find_loss(wins, loser)
         loss.count += 1
-        self._sort()
 
-    def _init(self):
-        """Add default comparison data for new items."""
+    def clean(self):
+        """Called automatically prior to saving."""
+        self._clean_votes()
+        self._clean_scores()
+
+    def _clean_votes(self):
+        """Add default comparison data for new items and remove stale votes."""
         for winner in self.items:
             wins = self._find_wins(self.votes, winner)
             for loser in self.items:
                 if loser != winner:
                     self._find_loss(wins, loser)
 
-    def _clean(self):
-        """Remove stale comparison for deleted items."""
+        # TODO: remove stale votes on deleted items
 
-    def _sort(self):
+    def _clean_scores(self):
         """Sort the items list based on comparison data."""
         items = Items.build(self.items)
 

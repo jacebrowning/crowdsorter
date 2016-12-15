@@ -23,7 +23,7 @@ def index():
                visible_when=lambda: 'collections' in request.path.split('/'),
                active_when=lambda: 'vote' not in request.path.split('/'))
 def detail(key):
-    content, status = call(api.collections.detail, key=key)
+    content, status = call(api.scores.detail, key=key)
     assert status == 200
 
     return Response(render_template("items.html", collection=content))
@@ -39,13 +39,13 @@ def vote(key):
         winner = request.args['winner']
         loser = request.args['loser']
 
-        content, status = call(api.collections.compare, key=key,
+        content, status = call(api.votes.compare, key=key,
                                winner=winner, loser=loser)
         assert status == 200
 
         return redirect(url_for('collections.vote', key=key))
 
-    content, status = call(api.collections.compare, key=key)
+    content, status = call(api.votes.compare, key=key)
     assert status == 200
 
     return Response(render_template("vote.html", content=content))
