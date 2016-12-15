@@ -176,7 +176,7 @@ COVERAGE_SPACE := $(BIN_)coverage.space
 RANDOM_SEED ?= $(shell date +%s)
 
 PYTEST_CORE_OPTS := -r xXw -vv
-PYTEST_COV_OPTS := --cov=$(PACKAGE) --no-cov-on-fail --cov-report=term-missing --cov-report=html
+PYTEST_COV_OPTS := --cov=$(PACKAGE) --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html
 PYTEST_RANDOM_OPTS := --random --random-seed=$(RANDOM_SEED)
 
 PYTEST_OPTS := $(PYTEST_CORE_OPTS) $(PYTEST_COV_OPTS) $(PYTEST_RANDOM_OPTS)
