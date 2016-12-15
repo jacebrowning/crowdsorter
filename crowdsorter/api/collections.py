@@ -71,6 +71,6 @@ def compare(key, winner=None, loser=None):
 
     content = OrderedDict()
     content['name'] = collection.name
-    content['items'] = collection.items_shuffled
+    content['items'] = collection.items_prioritized
 
     return content, status.HTTP_200_OK

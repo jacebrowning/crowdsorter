@@ -59,6 +59,13 @@ class Collection(db.Document):
         random.shuffle(items)
         return items
 
+    @property
+    def items_prioritized(self):
+        scores = self.scores.copy()
+        random.shuffle(scores)
+        scores.sort(key=lambda x: x['confidence'])
+        return [item['name'] for item in scores]
+
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""
         self._init()
