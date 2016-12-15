@@ -1,5 +1,4 @@
 import logging
-from collections import OrderedDict
 
 from flask import Blueprint, request, url_for
 from flask_api import status
@@ -26,7 +25,6 @@ def index():
 
 @blueprint.route("/api/collections/", methods=['POST'])
 def create():
-    log.debug("Parsing request data: %s", request.data)
     name = request.data.get('name')
     try:
         items = request.data.getlist('items')
@@ -46,31 +44,24 @@ def create():
 @blueprint.route("/api/collections/<key>")
 def detail(key):
     collection = Collection.objects(key=key).first()
-
     if not collection:
         raise exceptions.NotFound
 
     return get_content(collection), status.HTTP_200_OK
 
 
-@blueprint.route("/api/collections/<key>/compare", methods=['GET', 'POST'])
-def compare(key, winner=None, loser=None):
+@blueprint.route("/api/collections/<key>", methods=['POST'])
+def append(key, name=None):
     collection = Collection.objects(key=key).first()
-
     if not collection:
         raise exceptions.NotFound
 
-    if request.method == 'POST' or any((winner, loser)):
+    name = name or request.data.get('name')
+    if not name:
+        raise exceptions.UnprocessableEntity("Name is required.")
 
-        winner = winner or request.data.get('winner')
-        loser = loser or request.data.get('loser')
+    log.debug("Adding to %r: %r", collection, name)
+    collection.items.append(name)
+    collection.save()
 
-        log.debug("Comparison result: %s > %s", winner, loser)
-        collection.vote(winner, loser)
-        collection.save()
-
-    content = OrderedDict()
-    content['name'] = collection.name
-    content['items'] = collection.items_prioritized
-
-    return content, status.HTTP_200_OK
+    return get_content(collection), status.HTTP_200_OK

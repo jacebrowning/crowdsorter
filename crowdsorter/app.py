@@ -38,7 +38,8 @@ def register_blueprints(app):
 def register_backend(app):
     app.register_blueprint(api.root.blueprint)
     app.register_blueprint(api.collections.blueprint)
-    app.register_blueprint(api.items.blueprint)
+    app.register_blueprint(api.votes.blueprint)
+    app.register_blueprint(api.scores.blueprint)
 
 
 def register_frontend(app):

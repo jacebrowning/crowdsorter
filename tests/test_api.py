@@ -51,7 +51,7 @@ def describe_collections():
 
                 expect(status) == 201
                 expect(content['name']) == "Foobar"
-                expect(content['items']) == ["a", "c", "b"]
+                expect(content['items']) == ["a", "b", "c"]
 
             def it_creates_an_empty_list_when_not_provided(client, url):
                 data = {'name': "Foobar"}
@@ -83,52 +83,91 @@ def describe_collections():
                     'uri': "http://localhost/api/collections/abc123",
                     'key': "abc123",
                     'name': "Sample List",
-                    'items': ["foo", "bar"],
-                    'scores': [
-                        {'confidence': 1.0, 'name': 'foo', 'points': 1.0},
-                        {'confidence': 1.0, 'name': 'bar', 'points': -1.0},
+                    'items': [
+                        "bar",
+                        "foo",
                     ],
                 }
 
+        def describe_POST():
 
-def describe_items():
+            def it_appends_to_the_list(client, url, collection):
+                data = {'name': "new"}
+                status, content = load(client.post(url, data=data))
+
+                expect(status) == 200
+                expect(content) == {
+                    'uri': "http://localhost/api/collections/abc123",
+                    'key': "abc123",
+                    'name': "Sample List",
+                    'items': [
+                        "bar",
+                        "foo",
+                        "new",
+                    ],
+                }
+
+            def the_collection_must_exist(client, url):
+                data = {'name': "Foobar"}
+                status, content = load(client.post(url, data=data))
+
+                expect(status) == 404
+
+            def it_requires_a_name(client, url, collection):
+                status, content = load(client.post(url))
+
+                expect(status) == 422
+                expect(content['message']) == "Name is required."
+
+
+def describe_votes():
 
     @pytest.fixture
     def url():
-        return "/api/collections/abc123/items"
+        return "/api/collections/abc123/compare"
 
     def describe_GET():
 
-        def it_returns_a_list(client, url, collection):
+        def it_returns_a_prioritized_list(client, url, collection):
             status, content = load(client.get(url))
 
             expect(status) == 200
-            expect(content) == [
-                "foo",
-                "bar",
-            ]
+            expect(content['name']) == "Sample List"
+            expect(len(content['items'])) == 2
 
     def describe_POST():
+        pass
 
-        def it_appends_to_the_list(client, url, collection):
-            data = {'name': "new"}
-            status, content = load(client.post(url, data=data))
+
+def describe_scores():
+
+    @pytest.fixture
+    def url():
+        return "/api/collections/abc123/scores"
+
+    def describe_GET():
+
+        def it_returns_info_on_the_collection(client, url, collection):
+            status, content = load(client.get(url))
 
             expect(status) == 200
-            expect(content) == [
-                "foo",
-                "bar",
-                "new",
-            ]
+            expect(content) == {
+                'name': "Sample List",
+                'scores': [
+                    {
+                        'name': "foo",
+                        'points': 1.0,
+                        'confidence': 1.0,
+                    },
+                    {
+                        'name': "bar",
+                        'points': -1.0,
+                        'confidence': 1.0,
+                    },
+                ],
+            }
 
         def the_collection_must_exist(client, url):
-            data = {'name': "Foobar"}
-            status, content = load(client.post(url, data=data))
+            status, content = load(client.get(url))
 
             expect(status) == 404
-
-        def it_requires_a_name(client, url, collection):
-            status, content = load(client.post(url))
-
-            expect(status) == 422
-            expect(content['message']) == "Name is required."

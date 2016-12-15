@@ -2,6 +2,7 @@
 Flask==0.11.1
 
 # Models
+MongoEngine==0.10.7
 Flask-MongoEngine==0.8.1
 
 # Views
