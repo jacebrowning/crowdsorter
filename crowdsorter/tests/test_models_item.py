@@ -52,38 +52,54 @@ def describe_item():
         def worse():
             return Item("Worse Item")
 
+        @pytest.fixture
+        def equal():
+            return Item("Equal Item")
+
         def with_no_data(item):
             expect(item.score) == (0.0, 0.0)
 
         def with_1_win(item, worse):
-            item.win_count[worse] = 1
+            item.opponents = [worse]
+            item.wins[worse] = 1
 
             expect(item.score) == (1.0, 1.0)
 
         def with_1_loss(item, better):
-            item.loss_count[better] = 1
+            item.opponents = [better]
+            item.losses[better] = 1
 
             expect(item.score) == (-1.0, 1.0)
 
         def with_1_win_and_1_loss(item, better, worse):
-            item.loss_count[better] = 1
-            item.win_count[worse] = 1
+            item.opponents = [better, worse]
+            item.losses[better] = 1
+            item.wins[worse] = 1
 
-            item.loss_count[better] = 1
+            item.losses[better] = 1
 
             expect(item.score) == (0.0, 1.0)
 
         def with_low_confidence_win(item, worse):
-            item.win_count[worse] = 3
-            item.loss_count[worse] = 1
+            item.opponents = [worse]
+            item.wins[worse] = 3
+            item.losses[worse] = 1
 
-            expect(item.score) == (0.5, 0.75)
+            expect(item.score) == (0.75, 0.75)
 
         def with_high_confidence_win(item, worse):
-            item.win_count[worse] = 99
-            item.loss_count[worse] = 1
+            item.opponents = [worse]
+            item.wins[worse] = 99
+            item.losses[worse] = 1
 
-            expect(item.score) == (0.98, 0.99)
+            expect(item.score) == (0.99, 0.99)
+
+        def with_balanced_opponent(item, equal):
+            item.opponents = [equal]
+            item.wins[equal] = 42
+            item.losses[equal] = 42
+
+            expect(item.score) == (0.0, 0.5)
 
 
 def describe_items():
