@@ -9,6 +9,8 @@ from .. import api
 from ._utils import call
 
 
+UNKNOWN_COLLECTION_NAME = "No Such Collection"
+
 blueprint = Blueprint('collections', __name__)
 log = logging.getLogger(__name__)
 
@@ -24,7 +26,8 @@ def index():
                active_when=lambda: 'vote' not in request.path.split('/'))
 def detail(key):
     content, status = call(api.scores.detail, key=key)
-    assert status == 200
+    if status == 404:
+        content['name'] = UNKNOWN_COLLECTION_NAME
 
     return Response(render_template("items.html", collection=content))
 
@@ -41,11 +44,12 @@ def vote(key):
 
         content, status = call(api.votes.compare, key=key,
                                winner=winner, loser=loser)
-        assert status == 200
 
         return redirect(url_for('collections.vote', key=key))
 
     content, status = call(api.votes.compare, key=key)
-    assert status == 200
+    if status == 404:
+        content['name'] = UNKNOWN_COLLECTION_NAME
+        content['items'] = ["---"] * 10
 
     return Response(render_template("vote.html", content=content))
