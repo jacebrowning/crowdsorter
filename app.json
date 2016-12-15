@@ -12,6 +12,9 @@
     },
     "SECRET_KEY": {
       "generator": "secret"
+    },
+    "SAMPLE_COLLECTION_KEY": {
+      "value": "_sample"
     }
   },
   "addons":[
