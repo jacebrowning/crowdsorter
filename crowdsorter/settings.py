@@ -34,6 +34,8 @@ class TestConfig(Config):
     SECRET_KEY = 'test'
     MONGODB_DB = 'crowdsorter_test'
 
+    SAMPLE_COLLECTION_KEY = 'test'
+
 
 class DevConfig(Config):
     """Development configuration."""

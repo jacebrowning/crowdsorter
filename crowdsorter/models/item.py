@@ -33,12 +33,6 @@ class Item(object):
         return hash(self.name)
 
     @property
-    def losses(self):
-        for item in self._items:
-            if self in item.wins:
-                yield item
-
-    @property
     def score(self):
         points = self._points or 0.0
         confidences = defaultdict(float)
