@@ -12,6 +12,6 @@ def get_content(collection):
     content['key'] = collection.key
     content['name'] = collection.name
     content['items'] = collection.items
-    content['scores'] = collection.scores
+    content['scores'] = [s.data for s in collection.scores]
 
     return content

@@ -83,8 +83,11 @@ def describe_collections():
                     'uri': "http://localhost/api/collections/abc123",
                     'key': "abc123",
                     'name': "Sample List",
-                    'items': [],
-                    'scores': [],
+                    'items': ["foo", "bar"],
+                    'scores': [
+                        {'confidence': 1.0, 'name': 'foo', 'points': 1.0},
+                        {'confidence': 1.0, 'name': 'bar', 'points': -1.0},
+                    ],
                 }
 
 
@@ -100,17 +103,22 @@ def describe_items():
             status, content = load(client.get(url))
 
             expect(status) == 200
-            expect(content) == []
+            expect(content) == [
+                "foo",
+                "bar",
+            ]
 
     def describe_POST():
 
         def it_appends_to_the_list(client, url, collection):
-            data = {'name': "Foobar"}
+            data = {'name': "new"}
             status, content = load(client.post(url, data=data))
 
             expect(status) == 200
             expect(content) == [
-                "Foobar",
+                "foo",
+                "bar",
+                "new",
             ]
 
         def the_collection_must_exist(client, url):
