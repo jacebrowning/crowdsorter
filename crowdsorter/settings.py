@@ -11,6 +11,8 @@ class Config:
     DEBUG = False
     THREADED = False
 
+    SAMPLE_COLLECTION_KEY = os.getenv('SAMPLE_COLLECTION_KEY')
+
 
 class ProdConfig(Config):
     """Production configuration."""
@@ -42,6 +44,8 @@ class DevConfig(Config):
 
     SECRET_KEY = 'dev'
     MONGODB_DB = 'crowdsorter_dev'
+
+    SAMPLE_COLLECTION_KEY = '_sample'
 
 
 def get_config(name):

@@ -20,7 +20,7 @@ def main():
     collection.items.append("Bar")
     collection.save()
 
-    collection = Collection(name="Colors", key='sample')
+    collection = Collection(name="Colors", key='_sample')
     collection.items.append("Red")
     collection.items.append("Green")
     collection.items.append("Blue")
