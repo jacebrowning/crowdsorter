@@ -10,19 +10,32 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-4 center">
+            <div class="col-xs-6">
                 <form method="post" action="{{ request.path }}?winner={{ content['items'][0] }}&loser={{ content['items'][1] }}">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default">{{ content['items'][0] }}</button>
+                        <button type="submit" class="btn btn-default btn-block vote">
+                            {{ content['items'][0] }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-6">
+                <form method="post" action="{{ request.path }}?winner={{ content['items'][1] }}&loser={{ content['items'][0] }}">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default btn-block vote">
+                            {{ content['items'][1] }}
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-4 center">
-                <form method="post" action="{{ request.path }}?winner={{ content['items'][1] }}&loser={{ content['items'][0] }}">
+            <div class="col-xs-12">
+                <form method="post" action="{{ request.path }}">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default">{{ content['items'][1] }}</button>
+                        <button type="submit" class="btn btn-default btn-block reload">
+                            Get New Comparison Pair
+                        </button>
                     </div>
                 </form>
             </div>

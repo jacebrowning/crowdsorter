@@ -47,8 +47,8 @@ def vote(code=None, key=None):
         log.debug("Key specified: %s", key)
 
     if request.method == 'POST':
-        winner = request.args['winner']
-        loser = request.args['loser']
+        winner = request.args.get('winner')
+        loser = request.args.get('loser')
 
         content, status = call(api.votes.compare, key=key,
                                winner=winner, loser=loser)

@@ -16,14 +16,14 @@
     display:inline-block;
 }
 .navbar-nav > li > a {
-  padding-top: 15px;
-  padding-bottom: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 .navbar-nav > li.open > ul.dropdown-menu {
-  position: absolute;
-  border: 1px;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    position: absolute;
+    border: 1px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 
 .container {
@@ -45,15 +45,23 @@
 }
 
 ul.item-score-list {
-  padding: 0px;
+    padding: 0px;
 }
 ul.item-score-list > li {
-  display: block;
-  height: 3em;
+    display: block;
+    height: 3em;
 }
 ul.item-score-list > li > div.item {
-  float: left;
-  }
+    float: left;
+}
 ul.item-score-list > li > div.score {
-  float: right;
+    float: right;
+}
+
+.vote {
+    padding: 16em 0;
+}
+
+.reload {
+    padding: 2em 0;
 }
