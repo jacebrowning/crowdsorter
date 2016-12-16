@@ -81,7 +81,7 @@ run: install data
 
 .PHONY: run-prod
 run-prod: install
-	FLASK_ENV-prod make data
+	FLASK_ENV=prod make data
 	FLASK_ENV=prod $(HONCHO) start
 
 .PHONY: launch

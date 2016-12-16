@@ -1,5 +1,7 @@
+import os
 import logging
 
+from flask import url_for
 from flask_api import FlaskAPI
 
 from . import api
@@ -18,6 +20,8 @@ def create_app(config):
 
     register_blueprints(app)
     register_extensions(app)
+
+    enable_cache_busting(app)
 
     return app
 
@@ -53,3 +57,17 @@ def register_extensions(app):
     extensions.db.init_app(app)
     extensions.bootstrap.init_app(app)
     extensions.menu.init_app(app)
+
+
+def enable_cache_busting(app):
+
+    def dated_url_for(endpoint, **values):
+        if endpoint == 'static':
+            filename = values.get('filename', None)
+            if filename:
+                file_path = os.path.join(app.root_path,
+                                         endpoint, filename)
+                values['q'] = int(os.stat(file_path).st_mtime)
+        return url_for(endpoint, **values)
+
+    app.context_processor(lambda: dict(url_for=dated_url_for))
