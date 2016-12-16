@@ -61,11 +61,12 @@ ul.item-score-list > li > div.score {
 
 .vote {
     font-size: 20px;
-    padding: 10em 0;
+    padding: 4em 0;
     white-space: normal;
 }
 
 .reload {
     font-size: 20px;
     padding: 2em 0;
+    white-space: normal;
 }
