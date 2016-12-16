@@ -99,7 +99,23 @@ def describe_item():
             item.wins[equal] = 42
             item.losses[equal] = 42
 
-            expect(item.score) == (0.0, 0.5)
+            expect(item.score) == (0.0, 0.0)
+
+        def with_inferred_win(item, better, worse):
+            better.opponents = [item, worse]
+            item.opponents = [better, worse]
+            better.wins[item] = 1
+            item.wins[worse] = 1
+
+            expect(better.score) == (1.99, 0.5)
+
+        def with_inferred_loss(item, better, worse):
+            worse.opponents = [item, better]
+            item.opponents = [better, worse]
+            worse.losses[item] = 1
+            item.losses[better] = 1
+
+            expect(worse.score) == (-1.99, 0.5)
 
 
 def describe_items():

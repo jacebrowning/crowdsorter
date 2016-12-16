@@ -37,36 +37,51 @@ class Item(object):
 
     @property
     def score(self):
-        points = 0.0
-        confidences = []
+        total_points = 0.0
+        ratios = []
 
-        for item in self.opponents:
-            wins = self.wins[item]
-            losses = self.losses[item]
-            total = wins + losses
+        for opponent in self.opponents:
 
-            if wins > losses:
-                ratio = wins / total
-                points += ratio
+            points, ratio = self._get_score(self, opponent)
+            if not points and not ratio:
+                for item in self.wins:
+                    i_points, i_ratio = self._get_score(item, opponent)
+                    if i_points > 0 and i_ratio > ratio:
+                        points = i_points * 0.99
+                for item in self.losses:
+                    i_points, i_ratio = self._get_score(item, opponent)
+                    if i_points < 0 and i_ratio > ratio:
+                        points = i_points * 0.99
 
-            elif losses > wins:
-                ratio = losses / total
-                points -= ratio
+            total_points += points
+            ratios.append(ratio)
 
-            elif wins or losses:
-                ratio = 0.5
-
-            else:
-                ratio = 0.0
-
-            confidences.append(ratio)
-
-        if confidences:
-            confidence = sum(confidences) / len(confidences)
+        if ratios:
+            confidence = sum(ratios) / len(ratios)
         else:
             confidence = self._confidence or 0.0
 
-        return self._points or points, self._confidence or confidence
+        return self._points or total_points, self._confidence or confidence
+
+    @staticmethod
+    def _get_score(item, opponent):
+        wins = item.wins[opponent]
+        losses = item.losses[opponent]
+        total = wins + losses
+
+        if wins > losses:
+            ratio = wins / total
+            points = ratio
+
+        elif losses > wins:
+            ratio = losses / total
+            points = -ratio
+
+        else:
+            ratio = 0.0
+            points = 0.0
+
+        return points, ratio
 
 
 class Items(list):

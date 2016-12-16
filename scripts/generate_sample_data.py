@@ -11,8 +11,6 @@ def main():
     create_app(get_config(os.getenv('FLASK_ENV') or 'dev'))
 
     collection = Collection(name="Empty List", key='_empty')
-    collection.items.append("Foo")
-    collection.items.append("Bar")
     collection.save()
 
     collection = Collection(name="New List", key='_new')
