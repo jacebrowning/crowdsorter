@@ -46,10 +46,11 @@
 
 ul.item-score-list {
     padding: 0px;
+    font-size: 20px;
 }
 ul.item-score-list > li {
     display: block;
-    height: 3em;
+    height: 2.5em;
 }
 ul.item-score-list > li > div.item {
     float: left;
@@ -59,9 +60,11 @@ ul.item-score-list > li > div.score {
 }
 
 .vote {
-    padding: 16em 0;
+    font-size: 20px;
+    padding: 10em 0;
 }
 
 .reload {
+    font-size: 20px;
     padding: 2em 0;
 }
