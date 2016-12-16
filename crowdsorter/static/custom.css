@@ -49,14 +49,14 @@ ul.item-score-list {
     font-size: 20px;
 }
 ul.item-score-list > li {
-    display: block;
-    height: 2.5em;
+    display: flex;
 }
 ul.item-score-list > li > div.item {
-    float: left;
+    width: 50%;
 }
 ul.item-score-list > li > div.score {
-    float: right;
+    width: 50%;
+    text-align: right;
 }
 
 .vote {
