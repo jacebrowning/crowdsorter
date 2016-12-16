@@ -16,6 +16,7 @@ def main():
     collection = Collection(name="New List", key='_new')
     collection.items.append("Foo")
     collection.items.append("Bar")
+    collection.items.append("A really long name with lots of words.")
     collection.save()
 
     collection = Collection(name="Colors", key='_sample', code='sample')
