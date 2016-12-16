@@ -17,14 +17,34 @@ def describe_collections():
 
     def describe_items():
 
-        def with_unknown_code(client):
+        def with_known_key(client, collection):
+            html = get(client, "/collections/abc123")
+
+            expect(html).contains("Sample List")
+
+        def with_unknown_key(client):
             html = get(client, "/collections/unknown")
+
+            expect(html).contains("No Such Collection")
+
+        def with_known_code(client, collection):
+            html = get(client, "/sample")
+
+            expect(html).contains("Sample List")
+
+        def with_unknown_code(client, collection):
+            html = get(client, "/unknown")
 
             expect(html).contains("No Such Collection")
 
     def describe_votes():
 
-        def with_unknown_code(client):
+        def with_unknown_key(client):
             html = get(client, "/collections/unknown/vote")
+
+            expect(html).contains("No Such Collection")
+
+        def with_unknown_code(client):
+            html = get(client, "/unknown/vote")
 
             expect(html).contains("No Such Collection")

@@ -52,6 +52,7 @@ class Collection(db.Document):
 
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
+    code = db.StringField()
     items = db.ListField(db.StringField())
     votes = db.EmbeddedDocumentListField(Wins)
     scores = db.EmbeddedDocumentListField(Score)
