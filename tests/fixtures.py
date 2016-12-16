@@ -21,6 +21,7 @@ def client(app):
 @pytest.fixture
 def collection():
     collection = Collection(name="Sample List", key='abc123')
+    collection.items = ["bar", "foo"]
     collection.vote("foo", "bar")
     collection.save()
     return collection

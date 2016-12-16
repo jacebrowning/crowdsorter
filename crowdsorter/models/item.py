@@ -9,8 +9,11 @@ class Item(object):
 
     def __init__(self, name, *, _points=None, _confidence=None):
         self.name = name
-        self.win_count = defaultdict(int)
-        self.loss_count = defaultdict(int)
+        # Attributes set via the factory:
+        self.opponents = []
+        self.wins = defaultdict(int)
+        self.losses = defaultdict(int)
+        # Internal attributes used for testing:
         self._points = _points
         self._confidence = _confidence
 
@@ -34,39 +37,51 @@ class Item(object):
 
     @property
     def score(self):
-        points = self._points or 0.0
-        confidences = defaultdict(float)
+        total_points = 0.0
+        ratios = []
 
-        for item in self.win_count:
-            wins = self.win_count[item]
-            losses = self.loss_count[item]
+        for opponent in self.opponents:
 
-            try:
-                ratio = wins / (wins + losses)
-            except ZeroDivisionError:
-                ratio = 0.0
+            points, ratio = self._get_score(self, opponent)
+            if not points and not ratio:
+                for item in self.wins:
+                    i_points, i_ratio = self._get_score(item, opponent)
+                    if i_points > 0 and i_ratio > ratio:
+                        points = i_points * 0.99
+                for item in self.losses:
+                    i_points, i_ratio = self._get_score(item, opponent)
+                    if i_points < 0 and i_ratio > ratio:
+                        points = i_points * 0.99
 
-            points += 1.0 * ratio
-            confidences[item] = max(confidences[item], ratio)
+            total_points += points
+            ratios.append(ratio)
 
-        for item in self.loss_count:
-            losses = self.loss_count[item]
-            wins = self.win_count[item]
-
-            try:
-                ratio = losses / (losses + wins)
-            except ZeroDivisionError:
-                ratio = 0.0
-
-            points -= 1.0 * ratio
-            confidences[item] = max(confidences[item], ratio)
-
-        if confidences:
-            confidence = sum(confidences.values()) / len(confidences)
+        if ratios:
+            confidence = sum(ratios) / len(ratios)
         else:
             confidence = self._confidence or 0.0
 
-        return points, confidence
+        return self._points or total_points, self._confidence or confidence
+
+    @staticmethod
+    def _get_score(item, opponent):
+        wins = item.wins[opponent]
+        losses = item.losses[opponent]
+        total = wins + losses
+
+        if wins > losses:
+            ratio = wins / total
+            points = ratio
+
+        elif losses > wins:
+            ratio = losses / total
+            points = -ratio
+
+        else:
+            ratio = 0.0
+            points = 0.0
+
+        return points, ratio
 
 
 class Items(list):
@@ -78,19 +93,18 @@ class Items(list):
         for name in names:
             items.get_item(name)
 
-        for item in items:
-            for item2 in items:
-                if item != item2:
-                    item.win_count[item2] = 0
-                    item.loss_count[item2] = 0
+        for this in items:
+            for that in items:
+                if this != that:
+                    this.opponents.append(that)
 
         return items
 
     def add_pair(self, winner, loser, count=1):
         winning_item = self.get_item(winner)
         losing_item = self.get_item(loser)
-        winning_item.win_count[losing_item] += count
-        losing_item.loss_count[winning_item] += count
+        winning_item.wins[losing_item] += count
+        losing_item.losses[winning_item] += count
 
     def get_item(self, name):
         for item in self:
