@@ -26,6 +26,7 @@ def index():
 @blueprint.route("/api/collections/", methods=['POST'])
 def create():
     name = request.data.get('name')
+    code = request.data.get('code')
     try:
         items = request.data.getlist('items')
     except AttributeError:
@@ -35,15 +36,23 @@ def create():
     if not name:
         raise exceptions.UnprocessableEntity("Name is required.")
 
-    collection = Collection(name=name, items=items)
+    collection = Collection(name=name, code=code, items=items)
     collection.save()
 
     return get_content(collection), status.HTTP_201_CREATED
 
 
 @blueprint.route("/api/collections/<key>")
-def detail(key):
-    collection = Collection.objects(key=key).first()
+def detail(key, code=None):
+    collection = None
+
+    code = code or request.args.get('code')
+    if code:
+        collection = Collection.objects(code=code).first()
+
+    if not collection:
+        collection = Collection.objects(key=key).first()
+
     if not collection:
         raise exceptions.NotFound
 

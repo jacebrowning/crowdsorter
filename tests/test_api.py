@@ -1,4 +1,4 @@
-# pylint: disable=unused-variable,unused-argument,expression-not-assigned
+# pylint: disable=unused-variable,unused-argument,expression-not-assigned,singleton-comparison
 
 import pytest
 from expecter import expect
@@ -51,6 +51,7 @@ def describe_collections():
 
                 expect(status) == 201
                 expect(content['name']) == "Foobar"
+                expect(content['code']) == None
                 expect(content['items']) == ["a", "b", "c"]
 
             def it_creates_an_empty_list_when_not_provided(client, url):
@@ -66,6 +67,14 @@ def describe_collections():
 
                 expect(status) == 422
                 expect(content['message']) == "Name is required."
+
+            def a_code_can_be_provided(client, url):
+                data = {'name': "Foobar", 'code': "my-code"}
+                status, content = load(client.post(url, data=data))
+
+                expect(status) == 201
+                expect(content['name']) == "Foobar"
+                expect(content['code']) == "my-code"
 
     def describe_detail():
 
@@ -83,6 +92,7 @@ def describe_collections():
                     'uri': "http://localhost/api/collections/abc123",
                     'key': "abc123",
                     'name': "Sample List",
+                    'code': "sample",
                     'items': [
                         "bar",
                         "foo",
@@ -93,6 +103,13 @@ def describe_collections():
                 status, content = load(client.get("/api/collections/unknown"))
 
                 expect(status) == 404
+
+            def with_code(client, collection):
+                url = "/api/collections/unknown?code=sample"
+                status, content = load(client.get(url))
+
+                expect(status) == 200
+                expect(content['key']) == "abc123"
 
         def describe_POST():
 
@@ -105,6 +122,7 @@ def describe_collections():
                     'uri': "http://localhost/api/collections/abc123",
                     'key': "abc123",
                     'name': "Sample List",
+                    'code': "sample",
                     'items': [
                         "bar",
                         "foo",

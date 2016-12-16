@@ -20,11 +20,15 @@ def index():
     return redirect(url_for('index.get'))
 
 
+@blueprint.route("/<code>")
 @blueprint.route("/collections/<key>")
 @register_menu(blueprint, '.detail', "Items", order=1,
-               visible_when=lambda: 'collections' in request.path.split('/'),
+               visible_when=lambda: request.path != "/",
                active_when=lambda: 'vote' not in request.path.split('/'))
-def detail(key):
+def detail(code=None, key=None):
+    if code:
+        key = _get_key(code)
+
     content, status = call(api.scores.detail, key=key)
     if status == 404:
         content['name'] = UNKNOWN_COLLECTION_NAME
@@ -32,20 +36,25 @@ def detail(key):
     return Response(render_template("items.html", collection=content))
 
 
+@blueprint.route("/<code>/vote", methods=['GET', 'POST'])
 @blueprint.route("/collections/<key>/vote", methods=['GET', 'POST'])
 @register_menu(blueprint, '.vote', "Vote", order=2,
-               visible_when=lambda: 'collections' in request.path.split('/'))
-def vote(key):
-    if request.method == 'POST':
+               visible_when=lambda: request.path != "/")
+def vote(code=None, key=None):
+    if code:
+        key = _get_key(code)
+    else:
+        log.debug("Key specified: %s", key)
 
-        log.debug("Request args: %s", request.args)
+    if request.method == 'POST':
         winner = request.args['winner']
         loser = request.args['loser']
 
         content, status = call(api.votes.compare, key=key,
                                winner=winner, loser=loser)
 
-        return redirect(url_for('collections.vote', key=key))
+        kwargs = dict(code=code) if code else dict(key=key)
+        return redirect(url_for('collections.vote', **kwargs))
 
     content, status = call(api.votes.compare, key=key)
     if status == 404:
@@ -53,3 +62,17 @@ def vote(key):
         content['items'] = ["---"] * 10
 
     return Response(render_template("vote.html", content=content))
+
+
+def _get_key(code):
+    log.debug("Looking up key from code: %s", code)
+    content, status = call(api.collections.detail, key=None, code=code)
+
+    if status == 200:
+        key = content['key']
+        log.debug("Found key: %s", key)
+    else:
+        log.warning("Unknown code: %s", code)
+        key = None
+
+    return key
