@@ -22,6 +22,8 @@ def detail(key):
 
     content = OrderedDict()
     content['name'] = collection.name
+    content['item_count'] = collection.item_count
+    content['vote_count'] = collection.vote_count
     content['scores'] = [s.data for s in collection.scores]
 
     return content, status.HTTP_200_OK

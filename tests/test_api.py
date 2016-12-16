@@ -190,6 +190,8 @@ def describe_scores():
             expect(status) == 200
             expect(content) == {
                 'name': "Sample List",
+                'item_count': 2,
+                'vote_count': 1,
                 'scores': [
                     {
                         'name': "foo",

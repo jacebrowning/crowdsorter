@@ -64,6 +64,14 @@ class Collection(db.Document):
         return self.key < other.key
 
     @property
+    def item_count(self):
+        return len(self.items)
+
+    @property
+    def vote_count(self):
+        return self._clean_votes()
+
+    @property
     def items_shuffled(self):
         items = self.items.copy()
         random.shuffle(items)
@@ -88,13 +96,18 @@ class Collection(db.Document):
 
     def _clean_votes(self):
         """Add default comparison data for new items and remove stale votes."""
+        count = 0
+
         for winner in self.items:
             wins = self._find_wins(self.votes, winner)
             for loser in self.items:
                 if loser != winner:
-                    self._find_loss(wins, loser)
+                    loss = self._find_loss(wins, loser)
+                    count += loss.count
 
         # TODO: remove stale votes on deleted items
+
+        return count
 
     def _clean_scores(self):
         """Sort the items list based on comparison data."""

@@ -12,9 +12,28 @@
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 <ul class="item-score-list">
+                    <li class="list-group-item">
+                        <div class="item">
+                            Items: {{ collection['item_count'] }}
+                        </div>
+                        <div class="score">
+                            Votes: {{ collection['vote_count'] }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <ul class="item-score-list">
                     {% for item in collection['scores'] %}
                     <li class="list-group-item">
-                        <div class="item">{{ item['name'] }}</div><div class="score">{{ "{0:.1f}".format(item['points']) }} @ {{ "{0:.1%}".format(item['confidence']) }}</div>
+                        <div class="item">
+                            {{ item['name'] }}
+                        </div>
+                        <div class="score">
+                            {{ "{0:.1f}".format(item['points']) }} @ {{ "{0:.1%}".format(item['confidence']) }}
+                        </div>
                     </li>
                     {% endfor %}
                 </ul>
