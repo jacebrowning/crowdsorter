@@ -89,6 +89,11 @@ def describe_collections():
                     ],
                 }
 
+            def when_missing(client):
+                status, content = load(client.get("/api/collections/unknown"))
+
+                expect(status) == 404
+
         def describe_POST():
 
             def it_appends_to_the_list(client, url, collection):
@@ -136,7 +141,21 @@ def describe_votes():
             expect(len(content['items'])) == 2
 
     def describe_POST():
-        pass
+
+        def it_records_a_new_vote(client, url, collection):
+            data = {'winner': "foo", 'loser': "bar"}
+            status, content = load(client.post(url, data=data))
+
+            expect(status) == 200
+            # TODO: check for vote
+
+        def it_requires_winner_and_loser(client, url, collection):
+            status, content = load(client.post(url))
+
+            expect(status) == 422
+            expect(content) == {
+                'message': "Winner and loser are required.",
+            }
 
 
 def describe_scores():

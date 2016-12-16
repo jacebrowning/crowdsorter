@@ -19,10 +19,13 @@ def compare(key, winner=None, loser=None):
     if not collection:
         raise exceptions.NotFound
 
-    if request.method == 'POST' or any((winner, loser)):
+    if request.method == 'POST' or winner or loser:
 
         winner = winner or request.data.get('winner')
         loser = loser or request.data.get('loser')
+        if not (winner and loser):
+            msg = "Winner and loser are required."
+            raise exceptions.UnprocessableEntity(msg)
 
         log.debug("Comparison result: %s > %s", winner, loser)
         collection.vote(winner, loser)

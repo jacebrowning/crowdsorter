@@ -23,10 +23,7 @@ def create_app(config):
 
 
 def configure_logging(app):
-    if app.config['DEBUG']:
-        level = logging.DEBUG
-    else:
-        level = logging.INFO
+    level = logging.DEBUG if app.config['DEBUG'] else logging.INFO
     logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
 
 
