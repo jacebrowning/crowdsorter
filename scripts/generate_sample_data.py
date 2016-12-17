@@ -17,6 +17,9 @@ def main():
     collection.items.append("Foo")
     collection.items.append("Bar")
     collection.items.append("A really long name with lots of words.")
+    collection.items.append("special_character:#")
+    collection.items.append("special_character:&")
+    collection.items.append("special_character:'")
     collection.save()
 
     collection = Collection(name="Colors", key='_sample', code='sample')
