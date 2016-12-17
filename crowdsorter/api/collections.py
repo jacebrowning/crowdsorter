@@ -6,7 +6,6 @@ from flask_api import status
 from ..models import Collection
 
 from . import _exceptions as exceptions
-from ._utils import get_content
 
 
 blueprint = Blueprint('collections_api', __name__)
@@ -39,7 +38,7 @@ def create():
     collection = Collection(name=name, code=code, items=items)
     collection.save()
 
-    return get_content(collection), status.HTTP_201_CREATED
+    return serialize(collection), status.HTTP_201_CREATED
 
 
 @blueprint.route("/api/collections/<key>")
@@ -56,7 +55,7 @@ def detail(key, code=None):
     if not collection:
         raise exceptions.NotFound
 
-    return get_content(collection), status.HTTP_200_OK
+    return serialize(collection), status.HTTP_200_OK
 
 
 @blueprint.route("/api/collections/<key>", methods=['POST'])
@@ -73,4 +72,15 @@ def append(key, name=None):
     collection.items.append(name)
     collection.save()
 
-    return get_content(collection), status.HTTP_200_OK
+    return serialize(collection), status.HTTP_200_OK
+
+
+def serialize(collection):
+    return dict(
+        uri=url_for('collections_api.detail',
+                    key=collection.key, _external=True),
+        key=collection.key,
+        name=collection.name,
+        code=collection.code,
+        items=collection.items
+    )

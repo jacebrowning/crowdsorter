@@ -1,5 +1,4 @@
 import logging
-from collections import OrderedDict
 
 from flask import Blueprint
 from flask_api import status
@@ -20,10 +19,11 @@ def detail(key):
     if not collection:
         raise exceptions.NotFound
 
-    content = OrderedDict()
-    content['name'] = collection.name
-    content['item_count'] = collection.item_count
-    content['vote_count'] = collection.vote_count
-    content['scores'] = [s.data for s in collection.scores]
+    content = dict(
+        name=collection.name,
+        item_count=collection.item_count,
+        vote_count=collection.vote_count,
+        scores=[s.data for s in collection.scores]
+    )
 
     return content, status.HTTP_200_OK

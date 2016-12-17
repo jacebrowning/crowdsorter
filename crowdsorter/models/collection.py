@@ -1,6 +1,5 @@
 import random
 import logging
-from collections import OrderedDict
 
 from bson.objectid import ObjectId
 
@@ -55,11 +54,11 @@ class Score(db.EmbeddedDocument):
 
     @property
     def data(self):
-        return OrderedDict([
-            ('name', self.name),
-            ('points', self.points),
-            ('confidence', self.confidence),
-        ])
+        return dict(
+            name=self.name,
+            points=self.points,
+            confidence=self.confidence,
+        )
 
 
 class Collection(db.Document):

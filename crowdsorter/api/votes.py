@@ -1,5 +1,4 @@
 import logging
-from collections import OrderedDict
 
 from flask import Blueprint, request
 from flask_api import status
@@ -31,8 +30,9 @@ def compare(key, winner=None, loser=None):
         collection.vote(winner, loser)
         collection.save()
 
-    content = OrderedDict()
-    content['name'] = collection.name
-    content['items'] = collection.items_prioritized
+    content = dict(
+        name=collection.name,
+        items=collection.items_prioritized,
+    )
 
     return content, status.HTTP_200_OK
