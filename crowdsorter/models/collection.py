@@ -23,12 +23,24 @@ class Loss(db.EmbeddedDocument):
     loser = db.StringField()
     count = db.IntField()
 
+    def __repr__(self):
+        return repr(dict([
+            ('loser', self.loser),
+            ('count', self.count)
+        ]))
+
 
 class Wins(db.EmbeddedDocument):
     """Stores the result of comparisons to other items."""
 
     winner = db.StringField()
     against = db.EmbeddedDocumentListField(Loss)
+
+    def __repr__(self):
+        return repr(dict([
+            ('winner', self.winner),
+            ('against', repr(self.against))
+        ]))
 
 
 class Score(db.EmbeddedDocument):
@@ -37,6 +49,9 @@ class Score(db.EmbeddedDocument):
     name = db.StringField()
     points = db.FloatField()
     confidence = db.FloatField()
+
+    def __repr__(self):
+        return repr(self.data)
 
     @property
     def data(self):
@@ -85,8 +100,13 @@ class Collection(db.Document):
 
     def clean(self):
         """Called automatically prior to saving."""
+        self._clean_items()
         self._clean_votes()
         self._clean_scores()
+
+    def _clean_items(self):
+        """Sort the items and remove duplicates."""
+        self.items = sorted(set(self.items))
 
     def _clean_votes(self):
         """Add default comparison data for new items and remove stale votes."""
@@ -99,7 +119,15 @@ class Collection(db.Document):
                     loss = self._find_loss(wins, loser)
                     count += loss.count
 
-        # TODO: remove stale votes on deleted items
+        for wins in list(self.votes):
+            if wins.winner in self.items:
+                for loss in list(wins.against):
+                    if loss.loser not in self.items:
+                        log.warning("Removing stale loss: %s", loss.loser)
+                        wins.against.remove(loss)
+            else:
+                log.warning("Removing stale win: %s", wins.winner)
+                self.votes.remove(wins)
 
         return count
 
@@ -115,7 +143,6 @@ class Collection(db.Document):
         for index, item in enumerate(items):
             log.debug("Updated scores %s: %r", index, item)
 
-        self.items = [str(item) for item in items]
         self.scores = []
         for item in items:
             score = Score(name=item.name,
