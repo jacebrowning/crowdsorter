@@ -29,6 +29,9 @@ class Item(object):
     def __eq__(self, other):
         return self.name == other.name
 
+    def __ne__(self, other):
+        return self.name != other.name
+
     def __lt__(self, other):
         return self.score > other.score
 
@@ -67,6 +70,9 @@ class Item(object):
 
     @staticmethod
     def _get_score(item, opponent):
+        if item == opponent:
+            return 0, 0
+        assert item != opponent, (item, opponent)
         wins = item.wins[opponent]
         losses = item.losses[opponent]
         total = wins + losses
@@ -93,7 +99,7 @@ class Items(list):
         items = cls()
 
         for name in names:
-            items.get_item(name)
+            items.find(name, create=True)
 
         for this in items:
             for that in items:
@@ -102,20 +108,22 @@ class Items(list):
 
         return items
 
-    def add_pair(self, winner, loser, count=1):
-        winning_item = self.get_item(winner)
-        losing_item = self.get_item(loser)
-        winning_item.wins[losing_item] += count
-        losing_item.losses[winning_item] += count
-
-    def get_item(self, name):
+    def find(self, name, create=False):
         for item in self:
             if item.name == name:
                 return item
 
-        item = Item(name)
-        self.append(item)
-        return item
+        if create:
+            item = Item(name)
+            self.append(item)
+            return item
+        else:
+            log.warning("Unknown item: %s", name)
+            return None
 
-    def get_names(self):
-        return [item.name for item in self]
+    def add_pair(self, winner, loser, count=1):
+        winning_item = self.find(winner)
+        losing_item = self.find(loser)
+        if winning_item and losing_item:
+            winning_item.wins[losing_item] += count
+            losing_item.losses[winning_item] += count

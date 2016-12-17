@@ -120,26 +120,34 @@ def describe_item():
 
 def describe_items():
 
-    def describe_get_item():
+    def describe_find():
 
         @pytest.fixture
         def items():
             return Items([Item("found")])
 
         def when_found(items):
-            expect(items.get_item("found")) == Item("found")
+            expect(items.find("found")) == Item("found")
 
         def when_missing(items):
-            expect(items.get_item("missing")) == Item("missing")
+            expect(items.find("missing")) == None
+
+        def when_missing_with_creation(items):
+            expect(items.find("missing", create=True)) == Item("missing")
 
     def describe_add_pair():
 
         @pytest.fixture
         def items():
-            return Items()
+            return Items.build(["b", "a", "c"])
 
         def when_transitive(items):
             items.add_pair("a", "b")
             items.add_pair("b", "c")
 
-            expect(items.get_names()) == ["a", "b", "c"]
+            items.sort()
+            expect(items) == [
+                Item("a"),
+                Item("b"),
+                Item("c"),
+            ]

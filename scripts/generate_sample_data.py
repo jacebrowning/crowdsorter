@@ -26,6 +26,10 @@ def main():
     collection.items.append("Yellow")
     collection.save()
 
+    collection = Collection(name="Numbers", key='_numbers', code='numbers')
+    collection.items = [str(n) for n in range(1, 21)]
+    collection.save()
+
 
 if __name__ == '__main__':
     main()
