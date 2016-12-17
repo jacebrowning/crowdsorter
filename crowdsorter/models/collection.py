@@ -72,12 +72,6 @@ class Collection(db.Document):
         return self._clean_votes()
 
     @property
-    def items_shuffled(self):
-        items = self.items.copy()
-        random.shuffle(items)
-        return items
-
-    @property
     def items_prioritized(self):
         scores = self.scores.copy()
         scores.sort(key=lambda x: x['confidence'] * random.random())
