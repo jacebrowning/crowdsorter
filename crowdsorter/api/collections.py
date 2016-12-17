@@ -57,20 +57,3 @@ def detail(key, code=None):
         raise exceptions.NotFound
 
     return get_content(collection), status.HTTP_200_OK
-
-
-@blueprint.route("/api/collections/<key>", methods=['POST'])
-def append(key, name=None):
-    collection = Collection.objects(key=key).first()
-    if not collection:
-        raise exceptions.NotFound
-
-    name = name or request.data.get('name')
-    if not name:
-        raise exceptions.UnprocessableEntity("Name is required.")
-
-    log.debug("Adding to %r: %r", collection, name)
-    collection.items.append(name)
-    collection.save()
-
-    return get_content(collection), status.HTTP_200_OK
