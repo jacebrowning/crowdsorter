@@ -47,14 +47,18 @@ class Item(object):
 
             points, ratio = self._get_score(self, opponent)
             if (points, ratio) == (0.0, 0.0):
-                for item in self.wins:
+                for item, count in self.wins.items():
+                    if not count:
+                        continue
                     i_points, i_ratio = self._get_score(item, opponent)
                     if i_points > 0 and i_ratio > ratio:
-                        points, ratio = i_points * 0.99, i_ratio
-                for item in self.losses:
+                        points, ratio = i_points * 0.9, i_ratio
+                for item, count in self.losses.items():
+                    if not count:
+                        continue
                     i_points, i_ratio = self._get_score(item, opponent)
                     if i_points < 0 and i_ratio > ratio:
-                        points, ratio = i_points * 0.99, i_ratio
+                        points, ratio = i_points * 0.9, i_ratio
 
                 ratio *= 0.5  # inferred wins have half the confidence
 

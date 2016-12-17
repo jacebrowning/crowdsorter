@@ -96,6 +96,7 @@ def describe_collections():
                     'items': [
                         "bar",
                         "foo",
+                        "qux",
                     ],
                 }
 
@@ -127,6 +128,7 @@ def describe_collections():
                         "bar",
                         "foo",
                         "new",
+                        "qux",
                     ],
                 }
 
@@ -156,7 +158,7 @@ def describe_votes():
 
             expect(status) == 200
             expect(content['name']) == "Sample List"
-            expect(len(content['items'])) == 2
+            expect(len(content['items'])) == 3
 
     def describe_POST():
 
@@ -184,24 +186,56 @@ def describe_scores():
 
     def describe_GET():
 
-        def it_returns_info_on_the_collection(client, url, collection):
+        def it_returns_scores(client, url, collection):
             status, content = load(client.get(url))
 
             expect(status) == 200
             expect(content) == {
                 'name': "Sample List",
-                'item_count': 2,
+                'item_count': 3,
                 'vote_count': 1,
                 'scores': [
                     {
                         'name': "foo",
                         'points': 1.0,
-                        'confidence': 1.0,
+                        'confidence': 0.5,
+                    },
+                    {
+                        'name': "qux",
+                        'points': 0.0,
+                        'confidence': 0.0,
                     },
                     {
                         'name': "bar",
                         'points': -1.0,
+                        'confidence': 0.5,
+                    },
+                ],
+            }
+
+        def with_inferred_votes(client, url, collection_inferred):
+            status, content = load(client.get(url))
+
+            expect(status) == 200
+            expect(content) == {
+                'name': "Sample List",
+                'item_count': 3,
+                'vote_count': 2,
+                'scores': [
+                    {
+                        'name': "foo",
+                        'points': 1.9,
+                        'confidence': 0.75,
+                    },
+                    {
+                        'name': "bar",
+                        'points': 0.0,
                         'confidence': 1.0,
+                    },
+                    {
+                        'name': "qux",
+                        'points': -1.9,
+                        'confidence': 0.75,
                     },
                 ],
             }
