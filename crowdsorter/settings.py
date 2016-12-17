@@ -13,6 +13,8 @@ class Config:
 
     SAMPLE_COLLECTION_KEY = os.getenv('SAMPLE_COLLECTION_KEY')
 
+    GOOGLE_ANALYTICS_ID = os.getenv('GOOGLE_ANALYTICS_ID')
+
 
 class ProdConfig(Config):
     """Production configuration."""
