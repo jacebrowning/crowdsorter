@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 @blueprint.route("/api/collections/<key>/scores")
-def detail(key):
+def index(key):
     collection = Collection.objects(key=key).first()
 
     if not collection:

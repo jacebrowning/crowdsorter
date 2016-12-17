@@ -89,7 +89,12 @@ def describe_collections():
 
                 expect(status) == 200
                 expect(content) == {
-                    'uri': "http://localhost/api/collections/abc123",
+                    '_links': {
+                        'self': "http://localhost/api/collections/abc123",
+                        'items': "http://localhost/api/collections/abc123/items",
+                        'votes': "http://localhost/api/collections/abc123/votes",
+                        'scores': "http://localhost/api/collections/abc123/scores",
+                    },
                     'key': "abc123",
                     'name': "Sample List",
                     'code': "sample",
@@ -179,7 +184,7 @@ def describe_votes():
 
     @pytest.fixture
     def url():
-        return "/api/collections/abc123/compare"
+        return "/api/collections/abc123/votes"
 
     def describe_GET():
 

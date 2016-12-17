@@ -29,7 +29,7 @@ def detail(code=None, key=None):
     if code:
         key = _get_key(code)
 
-    content, status = call(api.scores.detail, key=key)
+    content, status = call(api.scores.index, key=key)
     if status == 404:
         content['name'] = UNKNOWN_COLLECTION_NAME
 
@@ -50,13 +50,13 @@ def vote(code=None, key=None):
         winner = request.args.get('winner')
         loser = request.args.get('loser')
 
-        content, status = call(api.votes.compare, key=key,
+        content, status = call(api.votes.append, key=key,
                                winner=winner, loser=loser)
 
         kwargs = dict(code=code) if code else dict(key=key)
         return redirect(url_for('collections.vote', **kwargs))
 
-    content, status = call(api.votes.compare, key=key)
+    content, status = call(api.votes.index, key=key)
     if status == 404:
         content['name'] = UNKNOWN_COLLECTION_NAME
         content['items'] = ["---"] * 10
