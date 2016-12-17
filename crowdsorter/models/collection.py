@@ -89,6 +89,7 @@ class Collection(db.Document):
     @property
     def items_prioritized(self):
         scores = self.scores.copy()
+        random.shuffle(scores)
         scores.sort(key=lambda x: x['confidence'] * random.random())
         return [item['name'] for item in scores]
 
