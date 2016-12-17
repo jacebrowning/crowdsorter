@@ -1,5 +1,5 @@
-import os
 import logging
+from pathlib import Path
 
 from flask import url_for
 from flask_api import FlaskAPI
@@ -65,9 +65,8 @@ def enable_cache_busting(app):
         if endpoint == 'static':
             filename = values.get('filename', None)
             if filename:
-                file_path = os.path.join(app.root_path,
-                                         endpoint, filename)
-                values['q'] = int(os.stat(file_path).st_mtime)
+                path = Path(app.root_path, endpoint, filename)
+                values['q'] = int(path.stat().st_mtime)
         return url_for(endpoint, **values)
 
     app.context_processor(lambda: dict(url_for=dated_url_for))
