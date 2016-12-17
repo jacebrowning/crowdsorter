@@ -7,6 +7,9 @@ log = logging.getLogger(__name__)
 
 class Item(object):
 
+    INFERRED_POINTS_IMPACT = 0.9
+    INFERRED_RATIO_IMPACT = 0.5
+
     def __init__(self, name, *, _points=None, _confidence=None):
         self.name = name
         # Attributes set via the factory:
@@ -52,15 +55,17 @@ class Item(object):
                         continue
                     i_points, i_ratio = self._get_score(item, opponent)
                     if i_points > 0 and i_ratio > ratio:
-                        points, ratio = i_points * 0.9, i_ratio
+                        points, ratio = i_points, i_ratio
+                        points, ratio = i_points, i_ratio
                 for item, count in self.losses.items():
                     if not count:
                         continue
                     i_points, i_ratio = self._get_score(item, opponent)
                     if i_points < 0 and i_ratio > ratio:
-                        points, ratio = i_points * 0.9, i_ratio
+                        points, ratio = i_points, i_ratio
 
-                ratio *= 0.5  # inferred wins have half the confidence
+                points *= self.INFERRED_POINTS_IMPACT
+                ratio *= self.INFERRED_RATIO_IMPACT
 
             total_points += points
             ratios.append(ratio)
