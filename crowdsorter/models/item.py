@@ -21,10 +21,8 @@ class Item(object):
         self._confidence = _confidence
 
     def __repr__(self):
-        # pylint: disable=unused-variable
         points, confidence = self.score
-        pattern = "<item: {self.name!r} = {points:.1f} @ {confidence:.1f}>"
-        return pattern.format(**locals())
+        return f"<item: {self.name!r} = {points:.1f} @ {confidence:.1f}>"
 
     def __str__(self):
         return self.name

@@ -72,7 +72,7 @@ class Collection(db.Document):
     scores = db.EmbeddedDocumentListField(Score)
 
     def __repr__(self):
-        return "<collection: {self.key}>".format(self=self)
+        return f"<collection: {self.key}>"
 
     def __lt__(self, other):
         return self.key < other.key
