@@ -9,11 +9,11 @@ from ..models import Collection
 from . import _exceptions as exceptions
 
 
-blueprint = Blueprint('votes_api', __name__)
+blueprint = Blueprint('items_api', __name__)
 log = logging.getLogger(__name__)
 
 
-@blueprint.route("/api/collections/<key>/votes")
+@blueprint.route("/api/collections/<key>/items")
 def index(key):
     collection = Collection.objects(key=key).first()
     if not collection:
@@ -22,20 +22,18 @@ def index(key):
     return serialize(collection), status.HTTP_200_OK
 
 
-@blueprint.route("/api/collections/<key>/votes", methods=['POST'])
-def append(key, winner=None, loser=None):
+@blueprint.route("/api/collections/<key>/items", methods=['POST'])
+def append(key, name=None):
     collection = Collection.objects(key=key).first()
     if not collection:
         raise exceptions.NotFound
 
-    winner = winner or request.data.get('winner')
-    loser = loser or request.data.get('loser')
-    if not (winner and loser):
-        msg = "Winner and loser are required."
-        raise exceptions.UnprocessableEntity(msg)
+    name = name or request.data.get('name')
+    if not name:
+        raise exceptions.UnprocessableEntity("Name is required.")
 
-    log.debug("Comparison result: %s > %s", winner, loser)
-    collection.vote(winner, loser)
+    log.debug("Adding to %r: %r", collection, name)
+    collection.items.append(name)
     collection.save()
 
     return serialize(collection), status.HTTP_200_OK
@@ -49,7 +47,6 @@ def serialize(collection):
         '.index', key=collection.key, _external=True)
     content['_links']['collection'] = url_for(
         'collections_api.detail', key=collection.key, _external=True)
-    content['name'] = collection.name
-    content['items'] = collection.items_prioritized
+    content['items'] = collection.items
 
     return content

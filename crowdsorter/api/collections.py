@@ -1,4 +1,5 @@
 import logging
+from collections import OrderedDict
 
 from flask import Blueprint, request, url_for
 from flask_api import status
@@ -6,7 +7,6 @@ from flask_api import status
 from ..models import Collection
 
 from . import _exceptions as exceptions
-from ._utils import get_content
 
 
 blueprint = Blueprint('collections_api', __name__)
@@ -39,7 +39,7 @@ def create():
     collection = Collection(name=name, code=code, items=items)
     collection.save()
 
-    return get_content(collection), status.HTTP_201_CREATED
+    return serialize(collection), status.HTTP_201_CREATED
 
 
 @blueprint.route("/api/collections/<key>")
@@ -56,21 +56,24 @@ def detail(key, code=None):
     if not collection:
         raise exceptions.NotFound
 
-    return get_content(collection), status.HTTP_200_OK
+    return serialize(collection), status.HTTP_200_OK
 
 
-@blueprint.route("/api/collections/<key>", methods=['POST'])
-def append(key, name=None):
-    collection = Collection.objects(key=key).first()
-    if not collection:
-        raise exceptions.NotFound
+def serialize(collection):
+    content = OrderedDict()
 
-    name = name or request.data.get('name')
-    if not name:
-        raise exceptions.UnprocessableEntity("Name is required.")
+    content['_links'] = OrderedDict()
+    content['_links']['self'] = url_for(
+        'collections_api.detail', key=collection.key, _external=True)
+    content['_links']['items'] = url_for(
+        'items_api.index', key=collection.key, _external=True)
+    content['_links']['votes'] = url_for(
+        'votes_api.index', key=collection.key, _external=True)
+    content['_links']['scores'] = url_for(
+        'scores_api.index', key=collection.key, _external=True)
+    content['key'] = collection.key
+    content['name'] = collection.name
+    content['code'] = collection.code
+    content['items'] = collection.items
 
-    log.debug("Adding to %r: %r", collection, name)
-    collection.items.append(name)
-    collection.save()
-
-    return get_content(collection), status.HTTP_200_OK
+    return content

@@ -89,7 +89,12 @@ def describe_collections():
 
                 expect(status) == 200
                 expect(content) == {
-                    'uri': "http://localhost/api/collections/abc123",
+                    '_links': {
+                        'self': "http://localhost/api/collections/abc123",
+                        'items': "http://localhost/api/collections/abc123/items",
+                        'votes': "http://localhost/api/collections/abc123/votes",
+                        'scores': "http://localhost/api/collections/abc123/scores",
+                    },
                     'key': "abc123",
                     'name': "Sample List",
                     'code': "sample",
@@ -112,44 +117,74 @@ def describe_collections():
                 expect(status) == 200
                 expect(content['key']) == "abc123"
 
-        def describe_POST():
 
-            def it_appends_to_the_list(client, url, collection):
-                data = {'name': "new"}
-                status, content = load(client.post(url, data=data))
+def describe_items():
 
-                expect(status) == 200
-                expect(content) == {
-                    'uri': "http://localhost/api/collections/abc123",
-                    'key': "abc123",
-                    'name': "Sample List",
-                    'code': "sample",
-                    'items': [
-                        "bar",
-                        "foo",
-                        "new",
-                        "qux",
-                    ],
-                }
+    @pytest.fixture
+    def url():
+        return "/api/collections/abc123/items"
 
-            def the_collection_must_exist(client, url):
-                data = {'name': "Foobar"}
-                status, content = load(client.post(url, data=data))
+    def describe_GET():
 
-                expect(status) == 404
+        def it_returns_the_list_of_items(client, url, collection):
+            status, content = load(client.get(url))
 
-            def it_requires_a_name(client, url, collection):
-                status, content = load(client.post(url))
+            expect(status) == 200
+            expect(content) == {
+                '_links': {
+                    'self': "http://localhost/api/collections/abc123/items",
+                    'collection': "http://localhost/api/collections/abc123",
+                },
+                'items': [
+                    "bar",
+                    "foo",
+                    "qux",
+                ],
+            }
 
-                expect(status) == 422
-                expect(content['message']) == "Name is required."
+        def when_missing(client):
+            status, content = load(client.get("/api/collections/unknown/items"))
+
+            expect(status) == 404
+
+    def describe_POST():
+
+        def it_appends_to_the_list(client, url, collection):
+            data = {'name': "new"}
+            status, content = load(client.post(url, data=data))
+
+            expect(status) == 200
+            expect(content) == {
+                '_links': {
+                    'self': "http://localhost/api/collections/abc123/items",
+                    'collection': "http://localhost/api/collections/abc123",
+                },
+                'items': [
+                    "bar",
+                    "foo",
+                    "new",
+                    "qux",
+                ],
+            }
+
+        def when_missing(client, url):
+            data = {'name': "Foobar"}
+            status, content = load(client.post(url, data=data))
+
+            expect(status) == 404
+
+        def without_name(client, url, collection):
+            status, content = load(client.post(url))
+
+            expect(status) == 422
+            expect(content['message']) == "Name is required."
 
 
 def describe_votes():
 
     @pytest.fixture
     def url():
-        return "/api/collections/abc123/compare"
+        return "/api/collections/abc123/votes"
 
     def describe_GET():
 
@@ -157,6 +192,10 @@ def describe_votes():
             status, content = load(client.get(url))
 
             expect(status) == 200
+            expect(content['_links']) == {
+                'self': "http://localhost/api/collections/abc123/votes",
+                'collection': "http://localhost/api/collections/abc123",
+            },
             expect(content['name']) == "Sample List"
             expect(len(content['items'])) == 3
 
@@ -191,6 +230,10 @@ def describe_scores():
 
             expect(status) == 200
             expect(content) == {
+                '_links': {
+                    'self': "http://localhost/api/collections/abc123/scores",
+                    'collection': "http://localhost/api/collections/abc123",
+                },
                 'name': "Sample List",
                 'item_count': 3,
                 'vote_count': 1,
@@ -217,28 +260,25 @@ def describe_scores():
             status, content = load(client.get(url))
 
             expect(status) == 200
-            expect(content) == {
-                'name': "Sample List",
-                'item_count': 3,
-                'vote_count': 2,
-                'scores': [
-                    {
-                        'name': "foo",
-                        'points': 1.9,
-                        'confidence': 0.75,
-                    },
-                    {
-                        'name': "bar",
-                        'points': 0.0,
-                        'confidence': 1.0,
-                    },
-                    {
-                        'name': "qux",
-                        'points': -1.9,
-                        'confidence': 0.75,
-                    },
-                ],
-            }
+            expect(content['item_count']) == 3
+            expect(content['vote_count']) == 2
+            expect(content['scores']) == [
+                {
+                    'name': "foo",
+                    'points': 1.9,
+                    'confidence': 0.75,
+                },
+                {
+                    'name': "bar",
+                    'points': 0.0,
+                    'confidence': 1.0,
+                },
+                {
+                    'name': "qux",
+                    'points': -1.9,
+                    'confidence': 0.75,
+                },
+            ]
 
         def the_collection_must_exist(client, url):
             status, content = load(client.get(url))
