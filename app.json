@@ -15,6 +15,9 @@
     },
     "SAMPLE_COLLECTION_KEY": {
       "value": "_sample"
+    },
+    "WEB_CONCURRENCY": {
+      "value": "4"
     }
   },
   "addons":[

@@ -21,7 +21,17 @@ def client(app):
 @pytest.fixture
 def collection():
     collection = Collection(name="Sample List", key='abc123', code='sample')
-    collection.items = ["bar", "foo"]
+    collection.items = ["bar", "foo", "qux"]
     collection.vote("foo", "bar")
+    collection.save()
+    return
+
+
+@pytest.fixture
+def collection_inferred():
+    collection = Collection(name="Sample List", key='abc123', code='sample')
+    collection.items = ["bar", "foo", "qux"]
+    collection.vote("foo", "bar")
+    collection.vote("bar", "qux")
     collection.save()
     return collection

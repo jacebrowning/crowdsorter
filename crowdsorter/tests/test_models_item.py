@@ -107,7 +107,7 @@ def describe_item():
             better.wins[item] = 1
             item.wins[worse] = 1
 
-            expect(better.score) == (1.99, 0.75)
+            expect(better.score) == (1.9, 0.75)
 
         def with_inferred_loss(item, better, worse):
             worse.opponents = [item, better]
@@ -115,31 +115,39 @@ def describe_item():
             worse.losses[item] = 1
             item.losses[better] = 1
 
-            expect(worse.score) == (-1.99, 0.75)
+            expect(worse.score) == (-1.9, 0.75)
 
 
 def describe_items():
 
-    def describe_get_item():
+    def describe_find():
 
         @pytest.fixture
         def items():
             return Items([Item("found")])
 
         def when_found(items):
-            expect(items.get_item("found")) == Item("found")
+            expect(items.find("found")) == Item("found")
 
         def when_missing(items):
-            expect(items.get_item("missing")) == Item("missing")
+            expect(items.find("missing")) == None
+
+        def when_missing_with_creation(items):
+            expect(items.find("missing", create=True)) == Item("missing")
 
     def describe_add_pair():
 
         @pytest.fixture
         def items():
-            return Items()
+            return Items.build(["b", "a", "c"])
 
         def when_transitive(items):
             items.add_pair("a", "b")
             items.add_pair("b", "c")
 
-            expect(items.get_names()) == ["a", "b", "c"]
+            items.sort()
+            expect(items) == [
+                Item("a"),
+                Item("b"),
+                Item("c"),
+            ]

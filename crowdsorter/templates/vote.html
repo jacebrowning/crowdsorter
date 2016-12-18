@@ -11,7 +11,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-6">
-                <form method="post" action="{{ request.path }}?winner={{ content['items'][0] }}&loser={{ content['items'][1] }}">
+                <form method="post" action="{{ request.path }}?winner={{ content['items'][0]|urlencode }}&loser={{ content['items'][1]|urlencode }}">
                     <div class="form-group">
                         <button type="submit" class="btn btn-default btn-block vote">
                             {{ content['items'][0] }}
@@ -20,7 +20,7 @@
                 </form>
             </div>
             <div class="col-xs-6">
-                <form method="post" action="{{ request.path }}?winner={{ content['items'][1] }}&loser={{ content['items'][0] }}">
+                <form method="post" action="{{ request.path }}?winner={{ content['items'][1]|urlencode }}&loser={{ content['items'][0]|urlencode }}">
                     <div class="form-group">
                         <button type="submit" class="btn btn-default btn-block vote">
                             {{ content['items'][1] }}

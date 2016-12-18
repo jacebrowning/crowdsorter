@@ -58,27 +58,17 @@ def detail(key, code=None):
     return serialize(collection), status.HTTP_200_OK
 
 
-@blueprint.route("/api/collections/<key>", methods=['POST'])
-def append(key, name=None):
-    collection = Collection.objects(key=key).first()
-    if not collection:
-        raise exceptions.NotFound
-
-    name = name or request.data.get('name')
-    if not name:
-        raise exceptions.UnprocessableEntity("Name is required.")
-
-    log.debug("Adding to %r: %r", collection, name)
-    collection.items.append(name)
-    collection.save()
-
-    return serialize(collection), status.HTTP_200_OK
-
-
 def serialize(collection):
     return dict(
-        uri=url_for('collections_api.detail',
-                    key=collection.key, _external=True),
+        _links=dict(
+            self=url_for('.detail', key=collection.key, _external=True),
+            items=url_for('items_api.index',
+                          key=collection.key, _external=True),
+            votes=url_for('votes_api.index',
+                          key=collection.key, _external=True),
+            scores=url_for('scores_api.index',
+                           key=collection.key, _external=True),
+        ),
         key=collection.key,
         name=collection.name,
         code=collection.code,

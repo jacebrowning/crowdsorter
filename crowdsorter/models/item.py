@@ -7,6 +7,9 @@ log = logging.getLogger(__name__)
 
 class Item(object):
 
+    INFERRED_POINTS_IMPACT = 0.9
+    INFERRED_RATIO_IMPACT = 0.5
+
     def __init__(self, name, *, _points=None, _confidence=None):
         self.name = name
         # Attributes set via the factory:
@@ -29,6 +32,9 @@ class Item(object):
     def __eq__(self, other):
         return self.name == other.name
 
+    def __ne__(self, other):
+        return self.name != other.name
+
     def __lt__(self, other):
         return self.score > other.score
 
@@ -44,16 +50,22 @@ class Item(object):
 
             points, ratio = self._get_score(self, opponent)
             if (points, ratio) == (0.0, 0.0):
-                for item in self.wins:
+                for item, count in self.wins.items():
+                    if not count:
+                        continue
                     i_points, i_ratio = self._get_score(item, opponent)
                     if i_points > 0 and i_ratio > ratio:
-                        points, ratio = i_points * 0.99, i_ratio
-                for item in self.losses:
+                        points, ratio = i_points, i_ratio
+                        points, ratio = i_points, i_ratio
+                for item, count in self.losses.items():
+                    if not count:
+                        continue
                     i_points, i_ratio = self._get_score(item, opponent)
                     if i_points < 0 and i_ratio > ratio:
-                        points, ratio = i_points * 0.99, i_ratio
+                        points, ratio = i_points, i_ratio
 
-                ratio *= 0.5  # inferred wins have half the confidence
+                points *= self.INFERRED_POINTS_IMPACT
+                ratio *= self.INFERRED_RATIO_IMPACT
 
             total_points += points
             ratios.append(ratio)
@@ -67,6 +79,9 @@ class Item(object):
 
     @staticmethod
     def _get_score(item, opponent):
+        if item == opponent:
+            return 0, 0
+        assert item != opponent, (item, opponent)
         wins = item.wins[opponent]
         losses = item.losses[opponent]
         total = wins + losses
@@ -93,7 +108,7 @@ class Items(list):
         items = cls()
 
         for name in names:
-            items.get_item(name)
+            items.find(name, create=True)
 
         for this in items:
             for that in items:
@@ -102,20 +117,22 @@ class Items(list):
 
         return items
 
-    def add_pair(self, winner, loser, count=1):
-        winning_item = self.get_item(winner)
-        losing_item = self.get_item(loser)
-        winning_item.wins[losing_item] += count
-        losing_item.losses[winning_item] += count
-
-    def get_item(self, name):
+    def find(self, name, create=False):
         for item in self:
             if item.name == name:
                 return item
 
-        item = Item(name)
-        self.append(item)
-        return item
+        if create:
+            item = Item(name)
+            self.append(item)
+            return item
+        else:
+            log.warning("Unknown item: %s", name)
+            return None
 
-    def get_names(self):
-        return [item.name for item in self]
+    def add_pair(self, winner, loser, count=1):
+        winning_item = self.find(winner)
+        losing_item = self.find(loser)
+        if winning_item and losing_item:
+            winning_item.wins[losing_item] += count
+            losing_item.losses[winning_item] += count
