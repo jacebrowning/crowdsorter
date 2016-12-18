@@ -192,6 +192,10 @@ def describe_votes():
             status, content = load(client.get(url))
 
             expect(status) == 200
+            expect(content['_links']) == {
+                'self': "http://localhost/api/collections/abc123/votes",
+                'collection': "http://localhost/api/collections/abc123",
+            },
             expect(content['name']) == "Sample List"
             expect(len(content['items'])) == 3
 
@@ -226,6 +230,10 @@ def describe_scores():
 
             expect(status) == 200
             expect(content) == {
+                '_links': {
+                    'self': "http://localhost/api/collections/abc123/scores",
+                    'collection': "http://localhost/api/collections/abc123",
+                },
                 'name': "Sample List",
                 'item_count': 3,
                 'vote_count': 1,
@@ -252,28 +260,25 @@ def describe_scores():
             status, content = load(client.get(url))
 
             expect(status) == 200
-            expect(content) == {
-                'name': "Sample List",
-                'item_count': 3,
-                'vote_count': 2,
-                'scores': [
-                    {
-                        'name': "foo",
-                        'points': 1.9,
-                        'confidence': 0.75,
-                    },
-                    {
-                        'name': "bar",
-                        'points': 0.0,
-                        'confidence': 1.0,
-                    },
-                    {
-                        'name': "qux",
-                        'points': -1.9,
-                        'confidence': 0.75,
-                    },
-                ],
-            }
+            expect(content['item_count']) == 3
+            expect(content['vote_count']) == 2
+            expect(content['scores']) == [
+                {
+                    'name': "foo",
+                    'points': 1.9,
+                    'confidence': 0.75,
+                },
+                {
+                    'name': "bar",
+                    'points': 0.0,
+                    'confidence': 1.0,
+                },
+                {
+                    'name': "qux",
+                    'points': -1.9,
+                    'confidence': 0.75,
+                },
+            ]
 
         def the_collection_must_exist(client, url):
             status, content = load(client.get(url))

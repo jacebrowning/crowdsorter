@@ -10,7 +10,7 @@ ignore-long-lines=^.*((https?:)|(pragma:)|(TODO:)).*$
 
 [SIMILARITIES]
 
-min-similarity-lines=6
+min-similarity-lines=10
 
 ignore-imports=yes
 

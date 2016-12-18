@@ -1,7 +1,7 @@
 import logging
 from collections import OrderedDict
 
-from flask import Blueprint, request
+from flask import Blueprint, request, url_for
 from flask_api import status
 
 from ..models import Collection
@@ -44,6 +44,11 @@ def append(key, winner=None, loser=None):
 def serialize(collection):
     content = OrderedDict()
 
+    content['_links'] = OrderedDict()
+    content['_links']['self'] = url_for(
+        '.index', key=collection.key, _external=True)
+    content['_links']['collection'] = url_for(
+        'collections_api.detail', key=collection.key, _external=True)
     content['name'] = collection.name
     content['items'] = collection.items_prioritized
 
