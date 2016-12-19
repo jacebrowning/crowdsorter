@@ -1,4 +1,3 @@
-import random
 import logging
 from collections import OrderedDict
 
@@ -89,7 +88,7 @@ class Collection(db.Document):
     @property
     def items_prioritized(self):
         scores = self.scores.copy()
-        scores.sort(key=lambda x: (x['confidence'] + .01) * random.random())
+        scores.sort(key=lambda x: (x['confidence']))
         return [item['name'] for item in scores]
 
     def vote(self, winner, loser):
