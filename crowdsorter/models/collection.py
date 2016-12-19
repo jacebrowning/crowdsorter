@@ -88,9 +88,11 @@ class Collection(db.Document):
 
     @property
     def items_prioritized(self):
-        scores = self.scores.copy()
-        scores.sort(key=lambda x: (x['confidence'] + .01) * random.random())
-        return [item['name'] for item in scores]
+        items = self.items.copy()
+        random.shuffle(items)
+        items.sort(key=lambda x: self._get_vote_count(self.votes, x))
+        log.debug("Items by vote code: %s", items)
+        return items
 
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""
@@ -169,3 +171,20 @@ class Collection(db.Document):
         loss = Loss(loser=name, count=0)
         wins.against.append(loss)
         return loss
+
+    @staticmethod
+    def _get_vote_count(votes, name):
+        count = 0
+
+        for wins in votes:
+            if wins.winner == name:
+                for loss in wins.against:
+                    count += loss.count
+
+        for wins in votes:
+            if wins.winner != name:
+                for loss in wins.against:
+                    if loss.loser == name:
+                        count += loss.count
+
+        return count
