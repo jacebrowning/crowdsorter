@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 class Item(object):
 
     INFERRED_POINTS_IMPACT = 0.9
-    INFERRED_RATIO_IMPACT = 0.5
+    INFERRED_RATIO_IMPACT = 0.9
 
     def __init__(self, name, *, _points=None, _confidence=None):
         self.name = name

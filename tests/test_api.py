@@ -266,7 +266,7 @@ def describe_scores():
                 {
                     'name': "foo",
                     'points': 1.9,
-                    'confidence': 0.75,
+                    'confidence': 0.95,
                 },
                 {
                     'name': "bar",
@@ -276,7 +276,7 @@ def describe_scores():
                 {
                     'name': "qux",
                     'points': -1.9,
-                    'confidence': 0.75,
+                    'confidence': 0.95,
                 },
             ]
 
