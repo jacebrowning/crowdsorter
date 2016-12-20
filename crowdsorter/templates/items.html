@@ -14,10 +14,10 @@
                 <ul class="item-score-list">
                     <li class="list-group-item">
                         <div class="item">
-                            Items: {{ collection['item_count'] }}
+                            Items: {{ collection['item_count'] or 0 }}
                         </div>
                         <div class="score">
-                            Votes: {{ collection['vote_count'] }}
+                            Votes: {{ collection['vote_count'] or 0 }}
                         </div>
                     </li>
                 </ul>

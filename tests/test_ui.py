@@ -26,6 +26,7 @@ def describe_collections():
             html = get(client, "/collections/unknown")
 
             expect(html).contains("No Such Collection")
+            expect(html).contains("Items: 0")
 
         def with_known_code(client, collection):
             html = get(client, "/sample")
@@ -36,6 +37,7 @@ def describe_collections():
             html = get(client, "/unknown")
 
             expect(html).contains("No Such Collection")
+            expect(html).contains("Items: 0")
 
     def describe_votes():
 
