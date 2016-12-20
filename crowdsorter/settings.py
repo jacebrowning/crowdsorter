@@ -11,7 +11,7 @@ class Config:
     DEBUG = False
     THREADED = False
 
-    SAMPLE_COLLECTION_KEY = os.getenv('SAMPLE_COLLECTION_KEY')
+    SAMPLE_COLLECTION_CODE = os.getenv('SAMPLE_COLLECTION_CODE')
 
     GOOGLE_ANALYTICS_ID = os.getenv('GOOGLE_ANALYTICS_ID')
 
@@ -36,7 +36,7 @@ class TestConfig(Config):
     SECRET_KEY = 'test'
     MONGODB_DB = 'crowdsorter_test'
 
-    SAMPLE_COLLECTION_KEY = 'test'
+    SAMPLE_COLLECTION_CODE = 'test'
 
 
 class DevConfig(Config):
@@ -49,7 +49,7 @@ class DevConfig(Config):
     SECRET_KEY = 'dev'
     MONGODB_DB = 'crowdsorter_dev'
 
-    SAMPLE_COLLECTION_KEY = '_sample'
+    SAMPLE_COLLECTION_CODE = 'sample'
 
 
 def get_config(name):
