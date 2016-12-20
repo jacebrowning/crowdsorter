@@ -21,7 +21,7 @@ def describe_collection():
             collection1 = Collection()
             collection2 = Collection()
 
-            expect(collection1) != collection2
+            expect(collection1.key) != collection2.key
 
     def describe_sort():
 
@@ -51,6 +51,14 @@ def describe_collection():
             expect(collection.vote_count) == 1
 
     def describe_clean():
+
+        def it_generates_a_unique_code():
+            collection1 = Collection()
+            collection2 = Collection()
+            collection1.clean()
+            collection2.clean()
+
+            expect(collection1.code) != collection2.code
 
         def it_removes_stale_votes(collection):
             collection.vote("foo", "bar")
