@@ -89,8 +89,12 @@ class Collection(db.Document):
     @property
     def items_prioritized(self):
         scores = self.scores.copy()
-        scores.sort(key=lambda x: (x['confidence'] + .01) * random.random())
+        scores.sort(key=self._fuzz_confidence)
         return [item['name'] for item in scores]
+
+    @staticmethod
+    def _fuzz_confidence(score):
+        return (score['confidence'] + .01) * random.uniform(0.75, 1.0)
 
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""
