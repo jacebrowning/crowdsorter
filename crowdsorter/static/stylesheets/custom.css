@@ -31,6 +31,7 @@
 }
 
 .btn{
+    font-size: 20px;
     min-width: 100px;
 }
 
@@ -50,7 +51,6 @@
 
 ul.item-score-list {
     padding: 0px;
-    font-size: 20px;
 }
 ul.item-score-list > li {
     display: flex;
@@ -64,13 +64,11 @@ ul.item-score-list > li > div.score {
 }
 
 .vote {
-    font-size: 20px;
     padding: 4em 0;
     white-space: normal;
 }
 
 .reload {
-    font-size: 20px;
     padding: 1em 0;
     white-space: normal;
 }
