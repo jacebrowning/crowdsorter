@@ -75,7 +75,7 @@ class Collection(db.Document):
 
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
-    code = db.StringField(unique=True, default=generate_code)
+    code = db.StringField(null=False, unique=True, default=generate_code)
     items = db.ListField(db.StringField())
     votes = db.EmbeddedDocumentListField(Wins)
     scores = db.EmbeddedDocumentListField(Score)
@@ -112,9 +112,15 @@ class Collection(db.Document):
 
     def clean(self):
         """Called automatically prior to saving."""
+        self._clean_code()
         self._clean_items()
         self._clean_votes()
         self._clean_scores()
+
+    def _clean_code(self):
+        if not self.code:
+            log.warning("Generating missing code for %s", self.name)
+            self.code = generate_code()
 
     def _clean_items(self):
         """Sort the items and remove duplicates."""
