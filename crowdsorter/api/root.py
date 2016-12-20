@@ -10,6 +10,11 @@ log = logging.getLogger(__name__)
 
 @blueprint.route("/api")
 def index():
-    content = {'collections': url_for('collections_api.index', _external=True)}
+    content = dict(
+        _links=dict(
+            self=url_for('.index', _external=True),
+            collections=url_for('collections_api.index', _external=True)
+        ),
+    )
 
     return content, status.HTTP_200_OK

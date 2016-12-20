@@ -21,7 +21,10 @@ def describe_root():
 
                 expect(status) == 200
                 expect(content) == {
-                    'collections': "http://localhost/api/collections/"
+                    '_links': {
+                        'self': "http://localhost/api",
+                        'collections': "http://localhost/api/collections/",
+                    }
                 }
 
 
@@ -39,9 +42,31 @@ def describe_collections():
                 status, content = load(client.get(url))
 
                 expect(status) == 200
-                expect(content) == [
-                    "http://localhost/api/collections/abc123"
-                ]
+                expect(content) == {
+                    '_links': {
+                        'root': "http://localhost/api",
+                        'self': "http://localhost/api/collections/",
+                    },
+                    '_items': [
+                        {
+                            '_links': {
+                                'self': "http://localhost/api/collections/abc123",
+                                'items': "http://localhost/api/collections/abc123/items",
+                                'votes': "http://localhost/api/collections/abc123/votes",
+                                'scores': "http://localhost/api/collections/abc123/scores",
+                            },
+                            'key': "abc123",
+                            'name': "Sample List",
+                            'code': "sample",
+                            'items': [
+                                "bar",
+                                "foo",
+                                "qux",
+                            ],
+                        },
+                    ],
+
+                }
 
         def describe_POST():
 

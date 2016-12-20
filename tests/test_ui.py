@@ -1,4 +1,4 @@
-# pylint: disable=unused-variable,unused-argument
+# pylint: disable=unused-variable,unused-argument,redefined-outer-name
 
 from expecter import expect
 
@@ -14,6 +14,14 @@ def describe_index():
 
 
 def describe_collections():
+
+    def describe_index():
+
+        def with_collections(client, collection):
+            html = get(client, "/collections/")
+
+            expect(html).contains("Popular Collections")
+            expect(html).contains('<a href="/sample" class="list-group-item">')
 
     def describe_items():
 

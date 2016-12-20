@@ -15,10 +15,15 @@ log = logging.getLogger(__name__)
 
 @blueprint.route("/api/collections/")
 def index():
-    collections = sorted(Collection.objects)
+    collections = Collection.objects
 
-    content = [url_for('collections_api.detail', key=c.id, _external=True)
-               for c in collections]
+    content = dict(
+        _links=dict(
+            root=url_for('root_api.index', _external=True),
+            self=url_for('.index', _external=True),
+        ),
+        _items=[serialize(c) for c in collections]
+    )
 
     return content, status.HTTP_200_OK
 
