@@ -10,7 +10,7 @@ def describe_index():
     def it_contains_link_to_sample_collection(client):
         html = get(client, "/")
 
-        expect(html).contains('href="/collections/test"')
+        expect(html).contains('href="/test"')
 
 
 def describe_collections():
