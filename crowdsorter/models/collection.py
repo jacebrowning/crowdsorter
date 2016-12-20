@@ -9,12 +9,20 @@ from ..extensions import db
 from . import Items
 
 
+ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
+
+
 log = logging.getLogger(__name__)
 
 
 def generate_key():
     """Generate a MongoDB ObjectID-compatible string."""
     return str(ObjectId())
+
+
+def generate_code():
+    """Generate a URL-compatible short code."""
+    return ''.join(random.choice(ALPHABET) for _ in range(10))
 
 
 class Loss(db.EmbeddedDocument):
@@ -67,7 +75,7 @@ class Collection(db.Document):
 
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
-    code = db.StringField()
+    code = db.StringField(null=False, unique=True, default=generate_code)
     items = db.ListField(db.StringField())
     votes = db.EmbeddedDocumentListField(Wins)
     scores = db.EmbeddedDocumentListField(Score)
@@ -104,9 +112,15 @@ class Collection(db.Document):
 
     def clean(self):
         """Called automatically prior to saving."""
+        self._clean_code()
         self._clean_items()
         self._clean_votes()
         self._clean_scores()
+
+    def _clean_code(self):
+        if not self.code:
+            log.warning("Generating missing code for %s", self.name)
+            self.code = generate_code()
 
     def _clean_items(self):
         """Sort the items and remove duplicates."""
