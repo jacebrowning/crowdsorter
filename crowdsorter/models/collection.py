@@ -7,6 +7,7 @@ from bson.objectid import ObjectId
 from ..extensions import db
 
 from . import Items
+from ._config import CONFIDENCE_FUZZ
 
 
 ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
@@ -102,7 +103,8 @@ class Collection(db.Document):
 
     @staticmethod
     def _fuzz_confidence(score):
-        return (score['confidence'] + .01) * random.uniform(0.75, 1.0)
+        ratio = 1.0 - CONFIDENCE_FUZZ
+        return (score['confidence'] + .01) * random.uniform(ratio, 1.0)
 
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""
