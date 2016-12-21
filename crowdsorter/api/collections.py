@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 
 @blueprint.route("/api/collections/")
 def index():
-    collections = Collection.objects.order_by('-vote_count')
+    collections = Collection.objects(private=False).order_by('-vote_count')
 
     content = dict(
         _links=dict(

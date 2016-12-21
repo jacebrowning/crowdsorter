@@ -77,6 +77,11 @@ class Collection(db.Document):
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
     code = db.StringField(null=False, unique=True, default=generate_code)
+
+    # Options
+    private = db.BooleanField(null=False, default=False)
+
+    # Input data
     items = db.ListField(db.StringField())
 
     # User data
