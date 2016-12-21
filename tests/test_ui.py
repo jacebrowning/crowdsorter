@@ -11,6 +11,7 @@ def describe_index():
         html = get(client, "/")
 
         expect(html).contains('href="/test"')
+        expect(html).contains('href="/collections/"')
 
 
 def describe_collections():
