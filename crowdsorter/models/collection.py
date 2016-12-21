@@ -77,9 +77,19 @@ class Collection(db.Document):
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
     code = db.StringField(null=False, unique=True, default=generate_code)
+
+    # Options
+    private = db.BooleanField(null=False, default=False)
+
+    # Input data
     items = db.ListField(db.StringField())
+
+    # User data
     votes = db.EmbeddedDocumentListField(Wins)
+
+    # Computed properties
     scores = db.EmbeddedDocumentListField(Score)
+    vote_count = db.IntField(null=False, default=0)
 
     def __repr__(self):
         return "<collection: {self.key}>".format(self=self)
@@ -90,10 +100,6 @@ class Collection(db.Document):
     @property
     def item_count(self):
         return len(self.items)
-
-    @property
-    def vote_count(self):
-        return self._clean_votes()
 
     @property
     def items_prioritized(self):
@@ -111,12 +117,14 @@ class Collection(db.Document):
         wins = self._find_wins(self.votes, winner)
         loss = self._find_loss(wins, loser)
         loss.count += 1
+        self.vote_count += 1
 
     def clean(self):
         """Called automatically prior to saving."""
         self._clean_code()
         self._clean_items()
-        self._clean_votes()
+        vote_count = self._clean_votes()
+        self.vote_count = vote_count
         self._clean_scores()
 
     def _clean_code(self):

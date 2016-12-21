@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ super() }} | Collections{% endblock %}
+
+{% block content %}
+{{ super() }}
+    <div class="jumbotron text-center">
+        <h1>Popular Collections</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="list-group">
+                    {% for c in collections %}
+                    <a href="/{{ c['code'] }}" class="list-group-item">
+                        {{ c['name'] }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

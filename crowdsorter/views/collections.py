@@ -15,16 +15,32 @@ blueprint = Blueprint('collections', __name__)
 log = logging.getLogger(__name__)
 
 
+def _show_detail():
+    return request.path not in ["/", "/collections/"]
+
+
+def _activate_detail():
+    return 'vote' not in request.path.split('/')
+
+
+def _show_vote():
+    return request.path not in ["/", "/collections/"]
+
+
 @blueprint.route("/collections/")
 def index():
-    return redirect(url_for('index.get'))
+    content, status = call(api.collections.index)
+    assert status == 200
+
+    return Response(render_template("collections.html",
+                                    collections=content['_items']))
 
 
 @blueprint.route("/<code>")
 @blueprint.route("/collections/<key>")
 @register_menu(blueprint, '.detail', "Items", order=1,
-               visible_when=lambda: request.path != "/",
-               active_when=lambda: 'vote' not in request.path.split('/'))
+               visible_when=_show_detail,
+               active_when=_activate_detail)
 def detail(code=None, key=None):
     if code:
         key = _get_key(code)
@@ -39,7 +55,7 @@ def detail(code=None, key=None):
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
 @blueprint.route("/collections/<key>/vote", methods=['GET', 'POST'])
 @register_menu(blueprint, '.vote', "Vote", order=2,
-               visible_when=lambda: request.path != "/")
+               visible_when=_show_vote)
 def vote(code=None, key=None):
     if code:
         key = _get_key(code)
