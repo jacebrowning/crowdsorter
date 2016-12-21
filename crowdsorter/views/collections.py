@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 
 def _show_detail():
-    return request.path not in ["/", "/collections"]
+    return request.path not in ["/", "/collections/"]
 
 
 def _activate_detail():
@@ -24,7 +24,7 @@ def _activate_detail():
 
 
 def _show_vote():
-    return request.path not in ["/", "/collections"]
+    return request.path not in ["/", "/collections/"]
 
 
 @blueprint.route("/collections/")
@@ -38,7 +38,7 @@ def index():
 
 @blueprint.route("/<code>")
 @blueprint.route("/collections/<key>")
-@register_menu(blueprint, 'collections.detail', "Items", order=1,
+@register_menu(blueprint, '.detail', "Items", order=1,
                visible_when=_show_detail,
                active_when=_activate_detail)
 def detail(code=None, key=None):
@@ -54,7 +54,7 @@ def detail(code=None, key=None):
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
 @blueprint.route("/collections/<key>/vote", methods=['GET', 'POST'])
-@register_menu(blueprint, 'collections.vote', "Vote", order=2,
+@register_menu(blueprint, '.vote', "Vote", order=2,
                visible_when=_show_vote)
 def vote(code=None, key=None):
     if code:
