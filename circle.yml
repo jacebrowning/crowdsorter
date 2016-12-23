@@ -1,21 +1,22 @@
-machine:
-  pre:
-    - cd /opt/circleci/.pyenv/plugins/python-build/../.. && git pull && cd -
-  python:
-    version: 3.6.0
-  environment:
-    RANDOM_SEED: 0
+version: 2
 
-dependencies:
-  pre:
-    - make doctor
-  override:
-    - make install
-  cache_directories:
-    - env
+executorType: docker
 
-test:
-  override:
-    - make check
-    - make test-unit REPORTS=${CIRCLE_TEST_REPORTS}
-    - make test-int REPORTS=${CIRCLE_TEST_REPORTS}
+containerInfo:
+  - image: python:3.6.0rc2
+  - image: mongo:3.2.11
+
+stages:
+  build:
+    workDir: /home/ubuntu/crowdsorter
+    steps:
+      - type: checkout
+      - type: shell
+        command: make doctor
+      - type: shell
+        command: make install
+      - type: shell
+        command: make check
+      - type: shell
+        command: make test
+        # TODO: get reports working with CircleCI 2.0
