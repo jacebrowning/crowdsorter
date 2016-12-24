@@ -1,7 +1,7 @@
 import logging
 
 from flask import Blueprint, Response
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, redirect, url_for, flash
 from flask_menu import register_menu
 
 from .. import api
@@ -50,6 +50,26 @@ def detail(code=None, key=None):
         content['name'] = UNKNOWN_COLLECTION_NAME
 
     return Response(render_template("items.html", collection=content))
+
+
+@blueprint.route("/<code>", methods=['POST'])
+@blueprint.route("/collections/<key>", methods=['POST'])
+def append(code=None, key=None):
+    if code:
+        key = _get_key(code)
+
+    name = request.form['name'].strip()
+
+    if name:
+        _, status = call(api.items.append, key=key, name=name)
+        assert status == 200
+
+        flash("Added item: {}".format(name), 'info')
+    else:
+        flash("A name is required.", 'danger')
+
+    kwargs = dict(code=code) if code else dict(key=key)
+    return redirect(url_for('collections.detail', **kwargs))
 
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
