@@ -21,7 +21,10 @@ def describe_root():
 
                 expect(status) == 200
                 expect(content) == {
-                    'collections': "http://localhost/api/collections/"
+                    '_links': {
+                        'self': "http://localhost/api",
+                        'collections': "http://localhost/api/collections/",
+                    }
                 }
 
 
@@ -39,9 +42,31 @@ def describe_collections():
                 status, content = load(client.get(url))
 
                 expect(status) == 200
-                expect(content) == [
-                    "http://localhost/api/collections/abc123"
-                ]
+                expect(content) == {
+                    '_links': {
+                        'root': "http://localhost/api",
+                        'self': "http://localhost/api/collections/",
+                    },
+                    '_items': [
+                        {
+                            '_links': {
+                                'self': "http://localhost/api/collections/abc123",
+                                'items': "http://localhost/api/collections/abc123/items",
+                                'votes': "http://localhost/api/collections/abc123/votes",
+                                'scores': "http://localhost/api/collections/abc123/scores",
+                            },
+                            'key': "abc123",
+                            'name': "Sample List",
+                            'code': "sample",
+                            'items': [
+                                "bar",
+                                "foo",
+                                "qux",
+                            ],
+                        },
+                    ],
+
+                }
 
         def describe_POST():
 
@@ -51,7 +76,7 @@ def describe_collections():
 
                 expect(status) == 201
                 expect(content['name']) == "Foobar"
-                expect(content['code']) == None
+                expect(content['code']) != None
                 expect(content['items']) == ["a", "b", "c"]
 
             def it_creates_an_empty_list_when_not_provided(client, url):
@@ -266,7 +291,7 @@ def describe_scores():
                 {
                     'name': "foo",
                     'points': 1.9,
-                    'confidence': 0.75,
+                    'confidence': 0.95,
                 },
                 {
                     'name': "bar",
@@ -276,7 +301,7 @@ def describe_scores():
                 {
                     'name': "qux",
                     'points': -1.9,
-                    'confidence': 0.75,
+                    'confidence': 0.95,
                 },
             ]
 

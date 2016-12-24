@@ -74,7 +74,7 @@ watch: install .clean-test ## Continuously run all CI tasks when files chanage
 HONCHO := $(ACTIVATE) && $(BIN_)honcho
 
 export MONGODB_URI ?= mongodb://localhost:27017/crowdsorter_dev
-export SAMPLE_COLLECTION_KEY ?= _sample
+export SAMPLE_COLLECTION_CODE ?= sample
 IP ?= $(shell ipconfig getifaddr en0 || ipconfig getifaddr en1)
 
 .PHONY: run

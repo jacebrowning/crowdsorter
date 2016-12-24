@@ -1,14 +1,13 @@
 import logging
 from collections import defaultdict
 
+from ._config import INFERRED_POINTS_IMPACT, INFERRED_RATIO_IMPACT
+
 
 log = logging.getLogger(__name__)
 
 
 class Item(object):
-
-    INFERRED_POINTS_IMPACT = 0.9
-    INFERRED_RATIO_IMPACT = 0.5
 
     def __init__(self, name, *, _points=None, _confidence=None):
         self.name = name
@@ -62,8 +61,8 @@ class Item(object):
                     if i_points < 0 and i_ratio > ratio:
                         points, ratio = i_points, i_ratio
 
-                points *= self.INFERRED_POINTS_IMPACT
-                ratio *= self.INFERRED_RATIO_IMPACT
+                points *= INFERRED_POINTS_IMPACT
+                ratio *= INFERRED_RATIO_IMPACT
 
             total_points += points
             ratios.append(ratio)

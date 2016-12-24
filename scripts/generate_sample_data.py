@@ -33,6 +33,10 @@ def main():
     collection.items = [str(n) for n in range(1, 21)]
     collection.save()
 
+    collection = Collection(name="Private List", private=True)
+    collection.items = ["Secret One", "Secret Two"]
+    collection.save()
+
 
 if __name__ == '__main__':
     main()

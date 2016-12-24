@@ -6,6 +6,10 @@ from bson.objectid import ObjectId
 from ..extensions import db
 
 from . import Items
+from ._config import CONFIDENCE_FUZZ
+
+
+ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
 
 
 log = logging.getLogger(__name__)
@@ -14,6 +18,11 @@ log = logging.getLogger(__name__)
 def generate_key():
     """Generate a MongoDB ObjectID-compatible string."""
     return str(ObjectId())
+
+
+def generate_code():
+    """Generate a URL-compatible short code."""
+    return ''.join(random.choice(ALPHABET) for _ in range(10))
 
 
 class Loss(db.EmbeddedDocument):
@@ -66,10 +75,20 @@ class Collection(db.Document):
 
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
-    code = db.StringField()
+    code = db.StringField(null=False, unique=True, default=generate_code)
+
+    # Options
+    private = db.BooleanField(null=False, default=False)
+
+    # Input data
     items = db.ListField(db.StringField())
+
+    # User data
     votes = db.EmbeddedDocumentListField(Wins)
+
+    # Computed properties
     scores = db.EmbeddedDocumentListField(Score)
+    vote_count = db.IntField(null=False, default=0)
 
     def __repr__(self):
         return f"<collection: {self.key}>"
@@ -82,26 +101,35 @@ class Collection(db.Document):
         return len(self.items)
 
     @property
-    def vote_count(self):
-        return self._clean_votes()
-
-    @property
     def items_prioritized(self):
         scores = self.scores.copy()
-        scores.sort(key=lambda x: (x['confidence'] + .01) * random.random())
+        scores.sort(key=self._fuzz_confidence)
         return [item['name'] for item in scores]
+
+    @staticmethod
+    def _fuzz_confidence(score):
+        ratio = 1.0 - CONFIDENCE_FUZZ
+        return (score['confidence'] + .01) * random.uniform(ratio, 1.0)
 
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""
         wins = self._find_wins(self.votes, winner)
         loss = self._find_loss(wins, loser)
         loss.count += 1
+        self.vote_count += 1
 
     def clean(self):
         """Called automatically prior to saving."""
+        self._clean_code()
         self._clean_items()
-        self._clean_votes()
+        vote_count = self._clean_votes()
+        self.vote_count = vote_count
         self._clean_scores()
+
+    def _clean_code(self):
+        if not self.code:
+            log.warning("Generating missing code for %s", self.name)
+            self.code = generate_code()
 
     def _clean_items(self):
         """Sort the items and remove duplicates."""

@@ -13,8 +13,8 @@
     "SECRET_KEY": {
       "generator": "secret"
     },
-    "SAMPLE_COLLECTION_KEY": {
-      "value": "_sample"
+    "SAMPLE_COLLECTION_CODE": {
+      "value": "sample"
     },
     "WEB_CONCURRENCY": {
       "value": "4"
