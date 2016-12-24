@@ -1,6 +1,8 @@
 machine:
+  pre:
+    - cd /opt/circleci/.pyenv/plugins/python-build/../.. && git pull && cd -
   python:
-    version: 3.5.2
+    version: 3.6.0
   environment:
     RANDOM_SEED: 0
 

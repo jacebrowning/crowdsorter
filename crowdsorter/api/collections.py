@@ -1,5 +1,4 @@
 import logging
-from collections import OrderedDict
 
 from flask import Blueprint, request, url_for
 from flask_api import status
@@ -65,20 +64,18 @@ def detail(key, code=None):
 
 
 def serialize(collection):
-    content = OrderedDict()
-
-    content['_links'] = OrderedDict()
-    content['_links']['self'] = url_for(
-        'collections_api.detail', key=collection.key, _external=True)
-    content['_links']['items'] = url_for(
-        'items_api.index', key=collection.key, _external=True)
-    content['_links']['votes'] = url_for(
-        'votes_api.index', key=collection.key, _external=True)
-    content['_links']['scores'] = url_for(
-        'scores_api.index', key=collection.key, _external=True)
-    content['key'] = collection.key
-    content['name'] = collection.name
-    content['code'] = collection.code
-    content['items'] = collection.items
-
-    return content
+    return dict(
+        _links=dict(
+            self=url_for('.detail', key=collection.key, _external=True),
+            items=url_for('items_api.index',
+                          key=collection.key, _external=True),
+            votes=url_for('votes_api.index',
+                          key=collection.key, _external=True),
+            scores=url_for('scores_api.index',
+                           key=collection.key, _external=True),
+        ),
+        key=collection.key,
+        name=collection.name,
+        code=collection.code,
+        items=collection.items
+    )

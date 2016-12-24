@@ -64,7 +64,7 @@ def append(code=None, key=None):
         _, status = call(api.items.append, key=key, name=name)
         assert status == 200
 
-        flash("Added item: {}".format(name), 'info')
+        flash(f"Added item: {name}", 'info')
     else:
         flash("A name is required.", 'danger')
 

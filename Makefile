@@ -9,7 +9,7 @@ MODULES := $(shell find $(PACKAGES) -name '*.py') $(CONFIG)
 # Python settings
 ifndef TRAVIS
 	PYTHON_MAJOR ?= 3
-	PYTHON_MINOR ?= 5
+	PYTHON_MINOR ?= 6
 endif
 
 # System paths
@@ -151,7 +151,7 @@ PEP257 := $(BIN_)pep257
 PYLINT := $(BIN_)pylint
 
 .PHONY: check
-check: pep8 pep257 pylint ## Run linters and static analysis
+check: pep8 pep257 ## Run linters and static analysis
 
 .PHONY: pep8
 pep8: install ## Check for convention issues
@@ -223,7 +223,7 @@ PDOC_INDEX := docs/apidocs/$(PACKAGE)/index.html
 MKDOCS_INDEX := site/index.html
 
 .PHONY: doc
-doc: uml mkdocs ## Run documentation generators
+doc: mkdocs ## Run documentation generators
 
 .PHONY: uml
 uml: install docs/*.png ## Generate UML diagrams for classes and packages
