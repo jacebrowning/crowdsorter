@@ -32,7 +32,7 @@
                             {{ item['name'] }}
                         </div>
                         <div class="score">
-                            {{ f"{item['points']:.1f}" }} @ {{ f"{item['confidence']:.1%}" }}
+                            {{ "{0:.1f}".format(item['points']) }} @ {{ "{0:.1%}".format(item['confidence']) }}
                         </div>
                     </li>
                     {% endfor %}
