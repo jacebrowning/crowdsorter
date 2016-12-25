@@ -78,7 +78,7 @@ def vote(code):
         winner = request.args.get('winner')
         loser = request.args.get('loser')
 
-        content, status = call(api.votes.add, key=key,
+        content, status = call(api.votes.append, key=key,
                                winner=winner, loser=loser)
 
         return redirect(url_for('collections.vote', code=code))
