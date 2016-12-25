@@ -58,7 +58,7 @@ def append(code):
     name = request.form['name'].strip()
 
     if name:
-        _, status = call(api.items.append, key=key, name=name)
+        _, status = call(api.items.add, key=key, name=name)
         assert status == 200
 
         flash(f"Added item: {name}", 'info')
@@ -78,7 +78,7 @@ def vote(code):
         winner = request.args.get('winner')
         loser = request.args.get('loser')
 
-        content, status = call(api.votes.append, key=key,
+        content, status = call(api.votes.add, key=key,
                                winner=winner, loser=loser)
 
         return redirect(url_for('collections.vote', code=code))

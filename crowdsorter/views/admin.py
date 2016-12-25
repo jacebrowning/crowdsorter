@@ -24,19 +24,26 @@ def _show_admin():
 @register_menu(blueprint, '.admin', "Admin", order=1,
                visible_when=_show_admin)
 def detail(key):
-    content, status = call(api.scores.index, key=key)
+    content, status = call(api.collections.detail, key=key)
     if status == 404:
         content['name'] = UNKNOWN_COLLECTION_NAME
+        content['items'] = []
 
     return Response(render_template("admin.html", collection=content))
 
 
 @blueprint.route("/collections/<key>", methods=['POST'])
 def update(key):
-    # TODO: process update
-    # name = request.form['name'].strip()
+    log.critical(request.form)
+    add = request.form.get('add', '').strip()
+    remove = request.form.get('remove', '').strip()
 
-    # _, status = call(api.collections.update, key=key)
-    # assert status == 200
+    if add:
+        _, status = call(api.items.add, key=key, name=add)
+        assert status == 200
+
+    if remove:
+        _, status = call(api.items.remove, key=key, name=remove)
+        assert status == 200
 
     return redirect(url_for('admin.detail', key=key))

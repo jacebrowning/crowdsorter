@@ -22,7 +22,7 @@ def index(key):
 
 
 @blueprint.route("/api/collections/<key>/items", methods=['POST'])
-def append(key, name=None):
+def add(key, name=None):
     collection = Collection.objects(key=key).first()
     if not collection:
         raise exceptions.NotFound
@@ -36,6 +36,22 @@ def append(key, name=None):
     collection.save()
 
     return serialize(collection), status.HTTP_200_OK
+
+
+@blueprint.route("/api/collections/<key>/items/<name>", methods=['DELETE'])
+def remove(key, name=None):
+    collection = Collection.objects(key=key).first()
+    if not collection:
+        raise exceptions.NotFound
+
+    log.debug("Removing from %r: %r", collection, name)
+    try:
+        collection.items.remove(name)
+    except ValueError:
+        log.warning("No such item: %s", name)
+    collection.save()
+
+    return sorted(collection.items), status.HTTP_200_OK
 
 
 def serialize(collection):
