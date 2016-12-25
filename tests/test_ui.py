@@ -26,20 +26,6 @@ def describe_collections():
 
     def describe_items():
 
-        def with_known_key(client, collection):
-            html = get(client, "/collections/abc123")
-
-            expect(html).contains('<a href="/collections/abc123">Items</a>')
-            expect(html).contains('<a href="/collections/abc123/vote">Vote</a>')
-            expect(html).contains("Sample List")
-            expect(html).contains("Items: 3")
-
-        def with_unknown_key(client):
-            html = get(client, "/collections/unknown")
-
-            expect(html).contains("No Such Collection")
-            expect(html).contains("Items: 0")
-
         def with_known_code(client, collection):
             html = get(client, "/sample")
 
@@ -56,19 +42,6 @@ def describe_collections():
 
     def describe_votes():
 
-        def with_known_key(client, collection):
-            html = get(client, "/collections/abc123/vote")
-
-            expect(html).contains('<a href="/collections/abc123">Items</a>')
-            expect(html).contains('<a href="/collections/abc123/vote">Vote</a>')
-            expect(html).contains("Sample List")
-            expect(html).contains("Get New Comparison Pair")
-
-        def with_unknown_key(client):
-            html = get(client, "/collections/unknown/vote")
-
-            expect(html).contains("No Such Collection")
-
         def with_known_code(client, collection):
             html = get(client, "/sample/vote")
 
@@ -81,3 +54,17 @@ def describe_collections():
             html = get(client, "/unknown/vote")
 
             expect(html).contains("No Such Collection")
+
+
+def describe_admin():
+
+    def with_known_key(client, collection):
+        html = get(client, "/collections/abc123")
+
+        expect(html).contains('<a href="/collections/abc123">Admin</a>')
+        expect(html).contains("Sample List")
+
+    def with_unknown_key(client):
+        html = get(client, "/collections/unknown")
+
+        expect(html).contains("No Such Collection")

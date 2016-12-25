@@ -43,7 +43,7 @@ def append(key, winner=None, loser=None):
 def serialize(collection):
     return dict(
         _links=dict(
-            self=url_for('.index', key=collection.key, _external=True),
+            self=url_for('votes_api.index', key=collection.key, _external=True),
             collection=url_for('collections_api.detail',
                                key=collection.key, _external=True),
         ),

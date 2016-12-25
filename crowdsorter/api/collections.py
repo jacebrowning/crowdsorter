@@ -19,7 +19,7 @@ def index():
     content = dict(
         _links=dict(
             root=url_for('root_api.index', _external=True),
-            self=url_for('.index', _external=True),
+            self=url_for('collections_api.index', _external=True),
         ),
         _items=[serialize(c) for c in collections]
     )
@@ -66,7 +66,8 @@ def detail(key, code=None):
 def serialize(collection):
     return dict(
         _links=dict(
-            self=url_for('.detail', key=collection.key, _external=True),
+            self=url_for('collections_api.detail', key=collection.key,
+                         _external=True),
             items=url_for('items_api.index',
                           key=collection.key, _external=True),
             votes=url_for('votes_api.index',

@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ super() }} | Items{% endblock %}
+
+{% block content %}
+{{ super() }}
+    <div class="jumbotron text-center">
+        <h1>{{ collection['name'] }}</h1>
+    </div>
+{% endblock %}
