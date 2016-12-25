@@ -24,7 +24,7 @@ def collection():
     collection.items = ["bar", "foo", "qux"]
     collection.vote("foo", "bar")
     collection.save()
-    return
+    return collection
 
 
 @pytest.fixture

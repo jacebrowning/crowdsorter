@@ -204,6 +204,28 @@ def describe_items():
             expect(status) == 422
             expect(content['message']) == "Name is required."
 
+    def describe_DELETE():
+
+        def it_removes_an_item_by_name(client, url, collection):
+            url += "/foo"
+            status, content = load(client.delete(url))
+
+            expect(status) == 200
+            expect(content) == ["bar", "qux"]
+
+        def unknown_items_are_ignored(client, url, collection):
+            url += "/unknown"
+            status, content = load(client.delete(url))
+
+            expect(status) == 200
+            expect(content) == ["bar", "foo", "qux"]
+
+        def with_unknown_collections(client):
+            url = "/api/collections/unknown/items/foo"
+            status, content = load(client.delete(url))
+
+            expect(status) == 404
+
 
 def describe_votes():
 

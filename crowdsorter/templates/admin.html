@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ super() }} | Items{% endblock %}
+
+{% block content %}
+{{ super() }}
+    <div class="jumbotron text-center">
+        <h1>{{ collection['name'] }}</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                {% for name in collection['items'] %}
+                <form method="post" class="input-group input-group-lg">
+                    <div class="form-control input-lg">{{ name }}</div>
+                    <input type=hidden value="{{ name }}" name="remove""></input>
+                    <span class="input-group-btn">
+                        <input type="submit" class="btn btn-danger" value="Remove Item"></input>
+                    </span>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <form method="post" class="input-group input-group-lg">
+                    <input type="text" class="form-control input-lg" name="add" placeholder="Item Name">
+                    <span class="input-group-btn">
+                        <input type="submit" class="btn btn-success btn-lg" value="Add Item"></input>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

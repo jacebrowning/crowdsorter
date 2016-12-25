@@ -15,16 +15,17 @@ blueprint = Blueprint('collections', __name__)
 log = logging.getLogger(__name__)
 
 
-def _show_detail():
-    return request.path not in ["/", "/collections/"]
+def _show_items():
+    parts = [p for p in request.path.split('/') if p]
+    return parts and parts[0] != 'collections'
 
 
-def _activate_detail():
-    return 'vote' not in request.path.split('/')
+def _activate_items():
+    return not request.path.endswith('vote')
 
 
 def _show_vote():
-    return request.path not in ["/", "/collections/"]
+    return _show_items()
 
 
 @blueprint.route("/collections/")
@@ -37,13 +38,11 @@ def index():
 
 
 @blueprint.route("/<code>")
-@blueprint.route("/collections/<key>")
 @register_menu(blueprint, '.detail', "Items", order=1,
-               visible_when=_show_detail,
-               active_when=_activate_detail)
-def detail(code=None, key=None):
-    if code:
-        key = _get_key(code)
+               visible_when=_show_items,
+               active_when=_activate_items)
+def detail(code):
+    key = _get_key(code)
 
     content, status = call(api.scores.index, key=key)
     if status == 404:
@@ -53,44 +52,36 @@ def detail(code=None, key=None):
 
 
 @blueprint.route("/<code>", methods=['POST'])
-@blueprint.route("/collections/<key>", methods=['POST'])
-def append(code=None, key=None):
-    if code:
-        key = _get_key(code)
+def append(code):
+    key = _get_key(code)
 
     name = request.form['name'].strip()
 
     if name:
-        _, status = call(api.items.append, key=key, name=name)
+        _, status = call(api.items.add, key=key, name=name)
         assert status == 200
 
         flash(f"Added item: {name}", 'info')
     else:
         flash("A name is required.", 'danger')
 
-    kwargs = dict(code=code) if code else dict(key=key)
-    return redirect(url_for('collections.detail', **kwargs))
+    return redirect(url_for('collections.detail', code=code))
 
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
-@blueprint.route("/collections/<key>/vote", methods=['GET', 'POST'])
 @register_menu(blueprint, '.vote', "Vote", order=2,
-               visible_when=_show_vote)
-def vote(code=None, key=None):
-    if code:
-        key = _get_key(code)
-    else:
-        log.debug("Key specified: %s", key)
+               visible_when=_show_items)
+def vote(code):
+    key = _get_key(code)
 
     if request.method == 'POST':
         winner = request.args.get('winner')
         loser = request.args.get('loser')
 
-        content, status = call(api.votes.append, key=key,
+        content, status = call(api.votes.add, key=key,
                                winner=winner, loser=loser)
 
-        kwargs = dict(code=code) if code else dict(key=key)
-        return redirect(url_for('collections.vote', **kwargs))
+        return redirect(url_for('collections.vote', code=code))
 
     content, status = call(api.votes.index, key=key)
     if status == 404:
