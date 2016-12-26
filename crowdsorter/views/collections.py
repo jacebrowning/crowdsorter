@@ -52,7 +52,7 @@ def detail(code):
 
 
 @blueprint.route("/<code>", methods=['POST'])
-def append(code):
+def add(code):
     key = _get_key(code)
 
     name = request.form['name'].strip()
@@ -78,7 +78,7 @@ def vote(code):
         winner = request.args.get('winner')
         loser = request.args.get('loser')
 
-        content, status = call(api.votes.append, key=key,
+        content, status = call(api.votes.add, key=key,
                                winner=winner, loser=loser)
 
         return redirect(url_for('collections.vote', code=code))

@@ -22,7 +22,7 @@ def index(key):
 
 
 @blueprint.route("/api/collections/<key>/votes", methods=['POST'])
-def append(key, winner=None, loser=None):
+def add(key, winner=None, loser=None):
     collection = Collection.objects(key=key).first()
     if not collection:
         raise exceptions.NotFound
