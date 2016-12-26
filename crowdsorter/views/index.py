@@ -1,5 +1,4 @@
 from flask import Blueprint, Response, render_template, url_for, current_app
-from flask_menu import register_menu
 
 from .. import api
 

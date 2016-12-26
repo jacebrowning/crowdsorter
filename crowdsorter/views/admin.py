@@ -1,8 +1,7 @@
 import logging
 
 from flask import Blueprint, Response
-from flask import (request, render_template, redirect, url_for, flash,
-                   current_app)
+from flask import request, render_template, redirect, url_for, flash
 from flask_menu import register_menu
 
 from .. import api

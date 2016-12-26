@@ -1,4 +1,3 @@
-import time
 import logging
 
 from flask import Blueprint, Response
@@ -81,7 +80,7 @@ def add(code):
     name = request.form['name'].strip()
 
     if name:
-        content, status = call(api.items.add, key=key, name=name)
+        _, status = call(api.items.add, key=key, name=name)
         if status == 200:
             flash(f"Added item: {name}", 'info')
         else:
@@ -102,8 +101,8 @@ def vote(code):
         winner = request.args.get('winner')
         loser = request.args.get('loser')
 
-        content, status = call(api.votes.add, key=key,
-                               winner=winner, loser=loser)
+        _, status = call(api.votes.add, key=key, winner=winner, loser=loser)
+        assert status == 200
 
         return redirect(url_for('collections.vote', code=code))
 
