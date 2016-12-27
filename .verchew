@@ -17,18 +17,3 @@ version = Python 3.6.
 cli = mongo
 
 version = 3.2.
-
-
-[pandoc]
-
-cli = pandoc
-
-version = 1.
-
-
-[Graphviz]
-
-cli = dot
-cli_version_arg = -V
-
-version = 2.

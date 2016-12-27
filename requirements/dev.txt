@@ -1,10 +1,5 @@
 # Documentation
 pylint
-docutils
-readme
-pdoc
-mkdocs
-pygments
 
 # Tooling
 pep8radius
@@ -12,10 +7,3 @@ sniffer >= 0.3.6
 
 # Runner
 honcho
-
-# Build
-wheel
-pyinstaller
-
-# Release
-twine

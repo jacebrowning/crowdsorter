@@ -8,8 +8,6 @@
     * Windows: https://cygwin.com/install.html
     * Mac: https://developer.apple.com/xcode
     * Linux: https://www.gnu.org/software/make (likely already installed)
-* Pandoc: http://johnmacfarlane.net/pandoc/installing.html
-* Graphviz: http://www.graphviz.org/Download.php
 
 To confirm these system dependencies are configured correctly:
 
@@ -69,13 +67,4 @@ The CI server will report overall build status:
 
 ```sh
 $ make ci
-```
-
-## Release Tasks
-
-Release to PyPI:
-
-```sh
-$ make upload-test  # dry run upload to a test server
-$ make upload
 ```
