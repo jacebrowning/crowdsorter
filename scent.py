@@ -17,19 +17,20 @@ else:
 watch_paths = ["crowdsorter", "tests"]
 
 
-@select_runnable('python')
+@select_runnable('targets')
 @file_validator
 def python_files(filename):
-    """Match Python source files."""
+    return filename.endswith('.py')
 
-    return all((
-        filename.endswith('.py'),
-        not os.path.basename(filename).startswith('.'),
-    ))
+
+@select_runnable('targets')
+@file_validator
+def html_files(filename):
+    return filename.split('.')[-1] in ['html', 'css', 'js']
 
 
 @runnable
-def python(*_):
+def targets(*_):
     """Run targets for Python."""
 
     for count, (command, title, retry) in enumerate((
