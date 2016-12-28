@@ -43,6 +43,20 @@ def index():
                                     collections=content['_items']))
 
 
+@blueprint.route("/collections/", methods=['POST'])
+def new():
+    name = request.form.get('name', "").strip()
+
+    if not name:
+        flash("A name is required.", 'danger')
+        return redirect(url_for('collections.index'))
+
+    content, status = call(api.collections.create, name=name)
+    assert status == 201
+
+    return redirect(url_for('admin.detail', key=content['key']))
+
+
 @blueprint.route("/<code>")
 @register_menu(blueprint, '.detail', "Items", order=1,
                visible_when=_show_items,
@@ -76,7 +90,7 @@ def add(code):
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
 @register_menu(blueprint, '.vote', "Vote", order=2,
-               visible_when=_show_items)
+               visible_when=_show_vote)
 def vote(code):
     key = _get_key(code)
 
