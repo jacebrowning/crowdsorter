@@ -24,6 +24,18 @@
                 </ul>
             </div>
 
+            <div class="row center">
+                <a class="btn btn-primary" href="/{{ collection['code'] }}/vote" role="button">
+                    Vote on Items
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="col-sm-8 col-sm-offset-2">
+
             <div class="row">
                 <ul class="item-score-list">
                     {% for item in collection['scores'] %}
@@ -49,12 +61,6 @@
                 </form>
             </div>
             {% endif %}
-
-            <div class="row top-buffer center">
-                <a class="btn btn-primary" href="/{{ collection['code'] }}/vote" role="button">
-                    Vote on Items
-                </a>
-            </div>
 
         </div>
     </div>
