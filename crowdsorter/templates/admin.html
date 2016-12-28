@@ -10,6 +10,18 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
+                <p>
+                    This is the admin page for the
+                    <code>{{ collection['name'] }}</code>
+                    collection.
+                    Bookmark this URL to make future changes to this collection.
+                    Keep this URL private and do not share it with others.
+                </p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
                 {% for name in collection['items'] %}
                 <form method="post" class="input-group input-group-lg bottom-buffer">
                     <div class="form-control input-lg">{{ name }}</div>
