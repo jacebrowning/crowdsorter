@@ -30,12 +30,16 @@
     margin-bottom: 15px;
 }
 
-.btn{
+p {
+    font-size: 18px;
+}
+
+.btn {
     font-size: 20px;
     min-width: 100px;
 }
 
-.list-group-item{
+.list-group-item {
     font-size: 20px;
 }
 

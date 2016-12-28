@@ -2,7 +2,7 @@
 
 from expecter import expect
 
-from .utils import get
+from .utils import get, post
 
 
 def describe_index():
@@ -23,6 +23,21 @@ def describe_collections():
             expect(html).contains("Popular Collections")
             expect(html).contains('<a href="/test" class="list-group-item">')
             expect(html).contains('<a href="/sample" class="list-group-item">')
+
+        def describe_new():
+
+            def with_name(client):
+                data = {'name': "My List"}
+                html = post(client, "/collections/", data)
+
+                expect(html).contains("Created collection: My List")
+                expect(html).contains("My List")
+
+            def without_name(client):
+                data = {}
+                html = post(client, "/collections/", data)
+
+                expect(html).contains("A name is required.")
 
     def describe_items():
 

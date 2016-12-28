@@ -28,8 +28,8 @@ def index():
 
 
 @blueprint.route("/api/collections/", methods=['POST'])
-def create():
-    name = request.data.get('name')
+def create(name=None):
+    name = name or request.data.get('name')
     code = request.data.get('code')
     try:
         items = request.data.getlist('items')

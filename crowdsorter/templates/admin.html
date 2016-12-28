@@ -7,7 +7,27 @@
     <div class="jumbotron text-center">
         <h1>{{ collection['name'] }}</h1>
     </div>
+
     <div class="container">
+
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <p>
+                    This is the admin page for the
+                    <code>{{ collection['name'] }}</code>
+                    collection.
+                    Bookmark this URL to make future changes to this collection.
+                    Keep this URL private and do not share it with others.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="container">
+
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 {% for name in collection['items'] %}
@@ -21,6 +41,7 @@
                 {% endfor %}
             </div>
         </div>
+
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 <form method="post" class="input-group input-group-lg">
@@ -31,5 +52,6 @@
                 </form>
             </div>
         </div>
+
     </div>
 {% endblock %}
