@@ -24,6 +24,13 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 bottom-buffer">
+                <a class="btn btn-primary btn-block" href="/{{ collection['code'] }}/vote" role="button">
+                    Vote on Items
+                </a>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 <ul class="item-score-list">
                     {% for item in collection['scores'] %}
@@ -47,13 +54,6 @@
                         <input type="submit" class="btn btn-success btn-lg" value="Add Item"></input>
                     </span>
                 </form>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2 top-buffer center">
-                <a class="btn btn-primary" href="/{{ collection['code'] }}/vote" role="button">
-                    Vote on Items
-                </a>
             </div>
         </div>
     </div>
