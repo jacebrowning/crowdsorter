@@ -79,6 +79,7 @@ class Collection(db.Document):
 
     # Options
     private = db.BooleanField(null=False, default=False)
+    locked = db.BooleanField(null=False, default=False)
 
     # Input data
     items = db.ListField(db.StringField())
