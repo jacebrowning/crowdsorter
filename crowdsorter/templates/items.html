@@ -9,8 +9,9 @@
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-sm-8 col-sm-offset-2">
+
+            <div class="row">
                 <ul class="item-score-list">
                     <li class="list-group-item">
                         <div class="item">
@@ -22,9 +23,8 @@
                     </li>
                 </ul>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+
+            <div class="row">
                 <ul class="item-score-list">
                     {% for item in collection['scores'] %}
                     <li class="list-group-item">
@@ -38,9 +38,9 @@
                     {% endfor %}
                 </ul>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+
+            {% if not collection['locked'] %}
+            <div class="row">
                 <form method="post" class="input-group input-group-lg">
                     <input type="text" class="form-control input-lg" name="name" placeholder="Item Name">
                     <span class="input-group-btn">
@@ -48,13 +48,14 @@
                     </span>
                 </form>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2 top-buffer center">
+            {% endif %}
+
+            <div class="row top-buffer center">
                 <a class="btn btn-primary" href="/{{ collection['code'] }}/vote" role="button">
                     Vote on Items
                 </a>
             </div>
+
         </div>
     </div>
 {% endblock %}

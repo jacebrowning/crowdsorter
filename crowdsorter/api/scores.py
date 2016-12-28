@@ -31,6 +31,7 @@ def serialize(collection):
         ),
         name=collection.name,
         code=collection.code,
+        locked=collection.locked,
         item_count=collection.item_count,
         vote_count=collection.vote_count,
         scores=[s.data for s in collection.scores]

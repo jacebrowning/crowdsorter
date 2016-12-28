@@ -55,6 +55,20 @@ def describe_collections():
             expect(html).contains("No Such Collection")
             expect(html).contains("Items: 0")
 
+        def describe_add():
+
+            def with_name(client, collection):
+                data = dict(name="New Item")
+                html = post(client, "/sample", data)
+
+                expect(html).contains("Added item: New Item")
+
+            def on_locked_collection(client, collection_locked):
+                data = dict(name="New Item")
+                html = post(client, "/sample", data)
+
+                expect(html).contains("Unable to add items.")
+
     def describe_votes():
 
         def with_known_code(client, collection):

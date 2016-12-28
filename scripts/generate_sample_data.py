@@ -33,8 +33,14 @@ def main():
     collection.items = [str(n) for n in range(1, 21)]
     collection.save()
 
-    collection = Collection(name="Private Collection", private=True)
+    collection = Collection(name="Private Collection",
+                            key='_private', private=True)
     collection.items = ["Secret One", "Secret Two"]
+    collection.save()
+
+    collection = Collection(name="Locked Collection",
+                            key='_locked', locked=True)
+    collection.items = ["Item One", "Item Two"]
     collection.save()
 
 

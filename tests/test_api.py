@@ -301,6 +301,7 @@ def describe_scores():
                 },
                 'name': "Sample List",
                 'code': "sample",
+                'locked': False,
                 'item_count': 3,
                 'vote_count': 1,
                 'scores': [
