@@ -28,10 +28,14 @@ def collection():
 
 
 @pytest.fixture
-def collection_inferred():
-    collection = Collection(name="Sample List", key='abc123', code='sample')
-    collection.items = ["bar", "foo", "qux"]
-    collection.vote("foo", "bar")
+def collection_inferred(collection):
     collection.vote("bar", "qux")
+    collection.save()
+    return collection
+
+
+@pytest.fixture
+def collection_locked(collection):
+    collection.locked = True
     collection.save()
     return collection

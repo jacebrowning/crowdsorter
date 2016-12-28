@@ -58,6 +58,7 @@ def describe_collections():
                             'key': "abc123",
                             'name': "Sample List",
                             'code': "sample",
+                            'locked': False,
                             'items': [
                                 "bar",
                                 "foo",
@@ -123,6 +124,7 @@ def describe_collections():
                     'key': "abc123",
                     'name': "Sample List",
                     'code': "sample",
+                    'locked': False,
                     'items': [
                         "bar",
                         "foo",
@@ -141,6 +143,22 @@ def describe_collections():
 
                 expect(status) == 200
                 expect(content['key']) == "abc123"
+
+        def describe_PUT():
+
+            def it_can_set_the_locked_flag(client, url, collection):
+                data = {'locked': True}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['locked']) == True
+
+            def it_can_clear_the_locked_flag(client, url, collection):
+                data = {'locked': False}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['locked']) == False
 
 
 def describe_items():
@@ -283,6 +301,7 @@ def describe_scores():
                 },
                 'name': "Sample List",
                 'code': "sample",
+                'locked': False,
                 'item_count': 3,
                 'vote_count': 1,
                 'scores': [

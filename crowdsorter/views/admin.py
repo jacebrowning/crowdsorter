@@ -34,16 +34,26 @@ def detail(key):
 
 @blueprint.route("/collections/<key>", methods=['POST'])
 def update(key):
-    log.critical(request.form)
+    save = request.form.get('save')
+    locked = not request.form.getlist('unlocked')
     add = request.form.get('add', '').strip()
     remove = request.form.get('remove', '').strip()
+    log.debug(f"Form data: "
+              f"locked={locked} save={save} add={add} remove={remove}")
+
+    if save:
+        _, status = call(api.collections.update, key=key, locked=locked)
+        assert status == 200
+        flash("Options updated.", 'info')
 
     if add:
         _, status = call(api.items.add, key=key, name=add)
         assert status == 200
+        flash(f"Added item: {add}", 'info')
 
     if remove:
         _, status = call(api.items.remove, key=key, name=remove)
         assert status == 200
+        flash(f"Removed item: {remove}", 'info')
 
     return redirect(url_for('admin.detail', key=key))
