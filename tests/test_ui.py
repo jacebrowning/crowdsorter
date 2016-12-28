@@ -48,12 +48,14 @@ def describe_collections():
             expect(html).contains('<a href="/sample/vote">Vote</a>')
             expect(html).contains("Sample List")
             expect(html).contains("Items: 3")
+            expect(html).contains('value="Add Item">')
 
         def with_unknown_code(client, collection):
             html = get(client, "/unknown")
 
             expect(html).contains("No Such Collection")
             expect(html).contains("Items: 0")
+            expect(html).does_not_contain('value="Add Item">')
 
         def describe_add():
 

@@ -69,6 +69,8 @@ def detail(code):
     content, status = call(api.scores.index, key=key)
     if status == 404:
         content['name'] = UNKNOWN_COLLECTION_NAME
+        content['code'] = code
+        content['locked'] = True
 
     return Response(render_template("items.html", collection=content))
 
