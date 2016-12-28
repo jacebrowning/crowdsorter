@@ -30,6 +30,7 @@ def describe_collections():
                 data = {'name': "My List"}
                 html = post(client, "/collections/", data)
 
+                expect(html).contains("Created collection: My List")
                 expect(html).contains("My List")
 
             def without_name(client):
