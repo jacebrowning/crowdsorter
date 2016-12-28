@@ -1,7 +1,8 @@
 import logging
 
 from flask import Blueprint, Response
-from flask import request, render_template, redirect, url_for, flash
+from flask import (request, render_template, redirect, url_for, flash,
+                   current_app)
 from flask_menu import register_menu
 
 from .. import api
@@ -9,6 +10,7 @@ from .. import api
 from ._utils import call
 
 
+SAMPLE_COLLECTION_NAME = "Sample Collection"
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
 
 blueprint = Blueprint('collections', __name__)
@@ -30,10 +32,14 @@ def _show_vote():
 
 @blueprint.route("/collections/")
 def index():
+    sample_code = current_app.config['SAMPLE_COLLECTION_CODE']
+
     content, status = call(api.collections.index)
     assert status == 200
 
     return Response(render_template("collections.html",
+                                    sample_name=SAMPLE_COLLECTION_NAME,
+                                    sample_code=sample_code,
                                     collections=content['_items']))
 
 

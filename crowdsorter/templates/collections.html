@@ -12,9 +12,18 @@
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
                 <div class="list-group">
-                    {% for c in collections %}
-                    <a href="/{{ c['code'] }}" class="list-group-item">
-                        {{ c['name'] }}
+                    <a href="/{{ sample_code }}" class="list-group-item">
+                        {{ sample_name }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="list-group">
+                    {% for collection in collections %}
+                    <a href="/{{ collection['code'] }}" class="list-group-item">
+                        {{ collection['name'] }}
                     </a>
                     {% endfor %}
                 </div>

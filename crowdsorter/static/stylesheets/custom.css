@@ -72,3 +72,7 @@ ul.item-score-list > li > div.score {
     padding: 1em 0;
     white-space: normal;
 }
+
+.bottom-buffer {
+    margin-bottom: 1em;
+}
