@@ -10,10 +10,10 @@ from crowdsorter.models import Collection
 def main():
     create_app(get_config(os.getenv('FLASK_ENV') or 'dev'))
 
-    collection = Collection(name="Empty List", key='_empty')
+    collection = Collection(name="Empty Collection", key='_empty')
     collection.save()
 
-    collection = Collection(name="New List", key='_new')
+    collection = Collection(name="New Collection", key='_new')
     collection.items.append("Foo")
     collection.items.append("Bar")
     collection.items.append("A really long name with lots of words.")
@@ -33,7 +33,7 @@ def main():
     collection.items = [str(n) for n in range(1, 21)]
     collection.save()
 
-    collection = Collection(name="Private List", private=True)
+    collection = Collection(name="Private Collection", private=True)
     collection.items = ["Secret One", "Secret Two"]
     collection.save()
 
