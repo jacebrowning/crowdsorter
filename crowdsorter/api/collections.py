@@ -28,8 +28,8 @@ def index():
 
 
 @blueprint.route("/api/collections/", methods=['POST'])
-def create():
-    name = request.data.get('name')
+def create(name=None):
+    name = name or request.data.get('name')
     code = request.data.get('code')
     try:
         items = request.data.getlist('items')
@@ -63,6 +63,20 @@ def detail(key, code=None):
     return serialize(collection), status.HTTP_200_OK
 
 
+@blueprint.route("/api/collections/<key>", methods=['PUT'])
+def update(key, locked=None):
+    collection = Collection.objects(key=key).first()
+
+    if locked is None:
+        value = request.data.get('locked', collection.locked)
+        locked = value not in [False, 'False']
+
+    collection.locked = locked
+    collection.save()
+
+    return serialize(collection), status.HTTP_200_OK
+
+
 def serialize(collection):
     return dict(
         _links=dict(
@@ -78,5 +92,6 @@ def serialize(collection):
         key=collection.key,
         name=collection.name,
         code=collection.code,
+        locked=collection.locked,
         items=collection.items
     )

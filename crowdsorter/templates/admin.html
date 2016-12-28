@@ -7,22 +7,62 @@
     <div class="jumbotron text-center">
         <h1>{{ collection['name'] }}</h1>
     </div>
+
     <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-sm-8 col-sm-offset-2">
+
+            <div class="row">
+                <p>
+                    This is the admin page for the
+                    <code>{{ collection['name'] }}</code>
+                    collection.
+                    Bookmark this URL to make future changes to this collection.
+                    Keep this URL private and do not share it with others.
+                </p>
+            </div>
+
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="col-sm-8 col-sm-offset-2">
+
+            <form method="post">
+                <input type="hidden" name="save" value="yes">
+                <div class="row">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="unlocked" {{ "" if collection['locked'] else "checked=true" }}>
+                            Allow anyone to add items
+                        </label>
+                    </div>
+                </div>
+                <div class="row center top-buffer">
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="col-sm-8 col-sm-offset-2">
+
+            <div class="row">
                 {% for name in collection['items'] %}
                 <form method="post" class="input-group input-group-lg bottom-buffer">
                     <div class="form-control input-lg">{{ name }}</div>
-                    <input type=hidden value="{{ name }}" name="remove""></input>
+                    <input type=hidden value="{{ name }}" name="remove"></input>
                     <span class="input-group-btn">
                         <input type="submit" class="btn btn-danger" value="Remove Item"></input>
                     </span>
                 </form>
                 {% endfor %}
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+
+            <div class="row">
                 <form method="post" class="input-group input-group-lg">
                     <input type="text" class="form-control input-lg" name="add" placeholder="Item Name">
                     <span class="input-group-btn">
@@ -30,6 +70,7 @@
                     </span>
                 </form>
             </div>
+
         </div>
     </div>
 {% endblock %}

@@ -43,6 +43,22 @@ def index():
                                     collections=content['_items']))
 
 
+@blueprint.route("/collections/", methods=['POST'])
+def new():
+    name = request.form.get('name', "").strip()
+
+    if not name:
+        flash("A name is required.", 'danger')
+        return redirect(url_for('collections.index'))
+
+    content, status = call(api.collections.create, name=name)
+    assert status == 201
+
+    flash(f"Created collection: {content['name']}.", 'info')
+
+    return redirect(url_for('admin.detail', key=content['key']))
+
+
 @blueprint.route("/<code>")
 @register_menu(blueprint, '.detail', "Items", order=1,
                visible_when=_show_items,
@@ -53,21 +69,24 @@ def detail(code):
     content, status = call(api.scores.index, key=key)
     if status == 404:
         content['name'] = UNKNOWN_COLLECTION_NAME
+        content['code'] = code
+        content['locked'] = True
 
     return Response(render_template("items.html", collection=content))
 
 
 @blueprint.route("/<code>", methods=['POST'])
 def add(code):
-    key = _get_key(code)
+    key = _get_key(code, require_unlocked=True)
 
     name = request.form['name'].strip()
 
     if name:
-        _, status = call(api.items.add, key=key, name=name)
-        assert status == 200
-
-        flash(f"Added item: {name}", 'info')
+        content, status = call(api.items.add, key=key, name=name)
+        if status == 200:
+            flash(f"Added item: {name}", 'info')
+        else:
+            flash("Unable to add items.", 'danger')
     else:
         flash("A name is required.", 'danger')
 
@@ -76,7 +95,7 @@ def add(code):
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
 @register_menu(blueprint, '.vote', "Vote", order=2,
-               visible_when=_show_items)
+               visible_when=_show_vote)
 def vote(code):
     key = _get_key(code)
 
@@ -97,15 +116,20 @@ def vote(code):
     return Response(render_template("vote.html", content=content))
 
 
-def _get_key(code):
+def _get_key(code, *, require_unlocked=False):
     log.debug("Looking up key from code: %s", code)
     content, status = call(api.collections.detail, key=None, code=code)
 
     if status == 200:
         key = content['key']
         log.debug("Found key: %s", key)
-    else:
-        log.warning("Unknown code: %s", code)
-        key = None
 
-    return key
+        if require_unlocked:
+            if content['locked']:
+                log.error("Invalid action on locked collection: %s", key)
+                return None
+
+        return key
+
+    log.warning("Unknown code: %s", code)
+    return None
