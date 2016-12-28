@@ -282,6 +282,7 @@ def describe_scores():
                     'collection': "http://localhost/api/collections/abc123",
                 },
                 'name': "Sample List",
+                'code': "sample",
                 'item_count': 3,
                 'vote_count': 1,
                 'scores': [

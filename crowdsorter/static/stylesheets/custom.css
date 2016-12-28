@@ -73,6 +73,10 @@ ul.item-score-list > li > div.score {
     white-space: normal;
 }
 
+.top-buffer {
+    margin-top: 1em;
+}
+
 .bottom-buffer {
     margin-bottom: 1em;
 }
