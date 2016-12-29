@@ -22,7 +22,8 @@ def main():
     collection.items.append("special_character:'")
     collection.save()
 
-    collection = Collection(name="Colors", key='_sample', code='sample')
+    collection = Collection(name="Colors", key='_sample', code='sample',
+                            private=True)
     collection.items.append("Red")
     collection.items.append("Green")
     collection.items.append("Blue")
