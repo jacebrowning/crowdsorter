@@ -32,8 +32,16 @@
                 <div class="row">
                     <div class="checkbox">
                         <label>
+                            <input type="checkbox" name="public" {{ "" if collection['private'] else "checked=true" }}>
+                            Show this collection in search results
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="checkbox">
+                        <label>
                             <input type="checkbox" name="unlocked" {{ "" if collection['locked'] else "checked=true" }}>
-                            Allow anyone to add items
+                            Allow anyone to add items to this collection
                         </label>
                     </div>
                 </div>

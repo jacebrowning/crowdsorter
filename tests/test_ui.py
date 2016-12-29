@@ -102,19 +102,33 @@ def describe_admin():
 
     def describe_save():
 
-        def when_locking(client, collection):
+        def with_locked_set(client, collection):
             data = dict(save=True, unlocked=[])
             html = post(client, "/collections/abc123", data)
 
             expect(html).contains("Options updated.")
             expect(html).contains('name="unlocked" >')
 
-        def when_unlocking(client, collection):
+        def with_locked_clear(client, collection):
             data = dict(save=True, unlocked=['on'])
             html = post(client, "/collections/abc123", data)
 
             expect(html).contains("Options updated.")
             expect(html).contains('name="unlocked" checked=true>')
+
+        def with_private_set(client, collection):
+            data = dict(save=True, public=[])
+            html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Options updated.")
+            expect(html).contains('name="public" >')
+
+        def with_private_clear(client, collection):
+            data = dict(save=True, public=['on'])
+            html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Options updated.")
+            expect(html).contains('name="public" checked=true>')
 
     def describe_add():
 
