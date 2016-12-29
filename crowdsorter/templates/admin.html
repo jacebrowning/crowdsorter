@@ -29,15 +29,22 @@
 
             <form method="post">
                 <input type="hidden" name="save" value="yes">
-                <div class="row">
+                <div class="form-group">
+                    <label for="collection-name">Full Name</label>
+                    <input type="text" class="form-control" id="collection-name" name="name" value="{{ collection['name'] }}">
+                </div>
+                <div class="form-group">
+                    <label for="collection-code">Short Code</label>
+                    <input type="text" class="form-control" id="collection-code" name="code" value="{{ collection['code'] }}">
+                </div>
+                <div class="form-group">
+                    <label>Options</label>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="public" {{ "" if collection['private'] else "checked=true" }}>
                             Show this collection in search results
                         </label>
                     </div>
-                </div>
-                <div class="row">
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="unlocked" {{ "" if collection['locked'] else "checked=true" }}>
