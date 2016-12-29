@@ -114,7 +114,7 @@ def vote(code):
         content['name'] = UNKNOWN_COLLECTION_NAME
         content['items'] = ["---"] * 10
 
-    return Response(render_template("vote.html", content=content))
+    return Response(render_template("vote.html", collection=content))
 
 
 def _get_key(code, *, require_unlocked=False):
