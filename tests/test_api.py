@@ -38,8 +38,13 @@ def describe_collections():
 
         def describe_GET():
 
-            def it_returns_a_list_of_collections(client, url, collection):
+            def it_requires_auth(client, url, collection):
                 status, content = load(client.get(url))
+
+                expect(status) == 403
+
+            def it_returns_a_list_of_collections(client, url, collection):
+                status, content = load(client.get(url + "?token=test"))
 
                 expect(status) == 200
                 expect(content) == {

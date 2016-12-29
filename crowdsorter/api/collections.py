@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, request, url_for
+from flask import Blueprint, request, url_for, current_app
 from flask_api import status
 
 from ..models import Collection
@@ -13,7 +13,11 @@ log = logging.getLogger(__name__)
 
 
 @blueprint.route("/api/collections/")
-def index():
+def index(token=None):
+    token = token or request.args.get('token')
+    if token != current_app.config['AUTH_TOKEN']:
+        raise exceptions.PermissionDenied("An auth token is required.")
+
     collections = Collection.objects(private=False).order_by('-vote_count')
 
     content = dict(

@@ -34,7 +34,8 @@ def _show_vote():
 def index():
     sample_code = current_app.config['SAMPLE_COLLECTION_CODE']
 
-    content, status = call(api.collections.index)
+    content, status = call(api.collections.index,
+                           token=current_app.config['AUTH_TOKEN'])
     assert status == 200
 
     return Response(render_template("collections.html",

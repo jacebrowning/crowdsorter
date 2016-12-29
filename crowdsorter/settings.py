@@ -10,9 +10,10 @@ class Config:
     ROOT = os.path.dirname(PATH)
     DEBUG = False
     THREADED = False
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
+    AUTH_TOKEN = os.getenv('AUTH_TOKEN')
     SAMPLE_COLLECTION_CODE = os.getenv('SAMPLE_COLLECTION_CODE')
-
     GOOGLE_ANALYTICS_ID = os.getenv('GOOGLE_ANALYTICS_ID')
 
 
@@ -21,7 +22,6 @@ class ProdConfig(Config):
 
     ENV = 'prod'
 
-    SECRET_KEY = os.getenv('SECRET_KEY')
     MONGODB_HOST = os.getenv('MONGODB_URI')
 
 
@@ -32,11 +32,12 @@ class TestConfig(Config):
 
     DEBUG = True
     TESTING = True
+    SECRET_KEY = ENV
 
-    SECRET_KEY = 'test'
     MONGODB_DB = 'crowdsorter_test'
 
-    SAMPLE_COLLECTION_CODE = 'test'
+    SAMPLE_COLLECTION_CODE = ENV
+    AUTH_TOKEN = ENV
 
 
 class DevConfig(Config):
@@ -45,11 +46,12 @@ class DevConfig(Config):
     ENV = 'dev'
 
     DEBUG = True
+    SECRET_KEY = ENV
 
-    SECRET_KEY = 'dev'
     MONGODB_DB = 'crowdsorter_dev'
 
     SAMPLE_COLLECTION_CODE = 'sample'
+    AUTH_TOKEN = ENV
 
 
 def get_config(name):
