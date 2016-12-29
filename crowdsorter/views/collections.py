@@ -7,7 +7,7 @@ from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call
+from ._utils import call, parts
 
 
 SAMPLE_COLLECTION_NAME = "Sample Collection"
@@ -17,20 +17,21 @@ blueprint = Blueprint('collections', __name__)
 log = logging.getLogger(__name__)
 
 
+def _activate_collections():
+    return parts() and parts()[-1] == 'collections'
+
+
 def _show_items():
-    parts = [p for p in request.path.split('/') if p]
-    return parts and parts[0] != 'collections'
+    return parts() and parts()[0] != 'collections'
 
 
 def _activate_items():
-    return not request.path.endswith('vote')
-
-
-def _show_vote():
-    return _show_items()
+    return parts()[-1] != 'vote'
 
 
 @blueprint.route("/collections/")
+@register_menu(blueprint, '.index', "Collections", order=1,
+               active_when=_activate_collections)
 def index():
     sample_code = current_app.config['SAMPLE_COLLECTION_CODE']
 
@@ -61,7 +62,7 @@ def new():
 
 
 @blueprint.route("/<code>")
-@register_menu(blueprint, '.detail', "Items", order=1,
+@register_menu(blueprint, '.detail', "Items", order=2,
                visible_when=_show_items,
                active_when=_activate_items)
 def detail(code):
@@ -95,8 +96,8 @@ def add(code):
 
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
-@register_menu(blueprint, '.vote', "Vote", order=2,
-               visible_when=_show_vote)
+@register_menu(blueprint, '.vote', "Vote", order=3,
+               visible_when=_show_items)
 def vote(code):
     key = _get_key(code)
 
