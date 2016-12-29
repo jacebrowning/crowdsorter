@@ -35,14 +35,16 @@ def detail(key):
 @blueprint.route("/collections/<key>", methods=['POST'])
 def update(key):
     save = request.form.get('save')
+    private = not request.form.getlist('public')
     locked = not request.form.getlist('unlocked')
     add = request.form.get('add', '').strip()
     remove = request.form.get('remove', '').strip()
-    log.debug(f"Form data: "
-              f"locked={locked} save={save} add={add} remove={remove}")
+    log.debug(f"Form options: private={private} locked={locked}")
+    log.debug(f"Form actions: save={save} add={add} remove={remove}")
 
     if save:
-        _, status = call(api.collections.update, key=key, locked=locked)
+        _, status = call(api.collections.update, key=key,
+                         private=private, locked=locked)
         assert status == 200
         flash("Options updated.", 'info')
 

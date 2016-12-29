@@ -63,6 +63,7 @@ def describe_collections():
                             'key': "abc123",
                             'name': "Sample List",
                             'code': "sample",
+                            'private': False,
                             'locked': False,
                             'items': [
                                 "bar",
@@ -129,6 +130,7 @@ def describe_collections():
                     'key': "abc123",
                     'name': "Sample List",
                     'code': "sample",
+                    'private': False,
                     'locked': False,
                     'items': [
                         "bar",
@@ -150,6 +152,20 @@ def describe_collections():
                 expect(content['key']) == "abc123"
 
         def describe_PUT():
+
+            def it_can_set_the_private_flag(client, url, collection):
+                data = {'private': True}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['private']) == True
+
+            def it_can_clear_the_private_flag(client, url, collection):
+                data = {'private': False}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['private']) == False
 
             def it_can_set_the_locked_flag(client, url, collection):
                 data = {'locked': True}

@@ -68,13 +68,17 @@ def detail(key, code=None):
 
 
 @blueprint.route("/api/collections/<key>", methods=['PUT'])
-def update(key, locked=None):
+def update(key, private=None, locked=None):
     collection = Collection.objects(key=key).first()
 
+    if private is None:
+        value = request.data.get('private', collection.private)
+        private = value not in [False, 'False']
     if locked is None:
         value = request.data.get('locked', collection.locked)
         locked = value not in [False, 'False']
 
+    collection.private = private
     collection.locked = locked
     collection.save()
 
@@ -96,6 +100,7 @@ def serialize(collection):
         key=collection.key,
         name=collection.name,
         code=collection.code,
+        private=collection.private,
         locked=collection.locked,
         items=collection.items
     )
