@@ -28,6 +28,13 @@ def collection():
 
 
 @pytest.fixture
+def collection2():
+    collection = Collection(name="Sample List 2", key='def456')
+    collection.save()
+    return collection
+
+
+@pytest.fixture
 def collection_inferred(collection):
     collection.vote("bar", "qux")
     collection.save()

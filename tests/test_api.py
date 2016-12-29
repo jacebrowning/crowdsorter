@@ -153,6 +153,34 @@ def describe_collections():
 
         def describe_PUT():
 
+            def it_can_update_the_name(client, url, collection):
+                data = {'name': "New Name  "}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['name']) == "New Name"
+
+            def it_ignores_empty_names(client, url, collection):
+                data = {'name': "  "}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['name']) == "Sample List"
+
+            def it_can_update_the_code(client, url, collection):
+                data = {'code': "def 456  "}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['code']) == "def-456"
+
+            def it_ignores_empty_codes(client, url, collection):
+                data = {'code': "  "}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['code']) == "sample"
+
             def it_can_set_the_private_flag(client, url, collection):
                 data = {'private': True}
                 status, content = load(client.put(url, data=data))

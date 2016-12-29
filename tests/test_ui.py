@@ -102,32 +102,52 @@ def describe_admin():
 
     def describe_save():
 
+        def with_new_name(client, collection):
+            data = dict(save=True, name="New Name")
+            html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Settings updated.")
+            expect(html).contains(' name="name" value="New Name">')
+
+        def with_new_code(client, collection):
+            data = dict(save=True, code="New Code")
+            html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Settings updated.")
+            expect(html).contains(' name="code" value="new-code">')
+
+        def with_duplicate_code(client, collection, collection2):
+            data = dict(save=True, code="sample")
+            html = post(client, "/collections/def456", data)
+
+            expect(html).contains("Short code is already taken: sample")
+
         def with_locked_set(client, collection):
             data = dict(save=True, unlocked=[])
             html = post(client, "/collections/abc123", data)
 
-            expect(html).contains("Options updated.")
+            expect(html).contains("Settings updated.")
             expect(html).contains('name="unlocked" >')
 
         def with_locked_clear(client, collection):
             data = dict(save=True, unlocked=['on'])
             html = post(client, "/collections/abc123", data)
 
-            expect(html).contains("Options updated.")
+            expect(html).contains("Settings updated.")
             expect(html).contains('name="unlocked" checked=true>')
 
         def with_private_set(client, collection):
             data = dict(save=True, public=[])
             html = post(client, "/collections/abc123", data)
 
-            expect(html).contains("Options updated.")
+            expect(html).contains("Settings updated.")
             expect(html).contains('name="public" >')
 
         def with_private_clear(client, collection):
             data = dict(save=True, public=['on'])
             html = post(client, "/collections/abc123", data)
 
-            expect(html).contains("Options updated.")
+            expect(html).contains("Settings updated.")
             expect(html).contains('name="public" checked=true>')
 
     def describe_add():
