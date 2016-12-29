@@ -45,11 +45,13 @@ def update(key):
     log.debug(f"Form actions: save={save} add={add} remove={remove}")
 
     if save:
-        _, status = call(api.collections.update, key=key,
-                         name=name, code=code,
-                         private=private, locked=locked)
-        assert status == 200
-        flash("Settings updated.", 'info')
+        content, status = call(api.collections.update, key=key,
+                               name=name, code=code,
+                               private=private, locked=locked)
+        if status == 200:
+            flash("Settings updated.", 'info')
+        else:
+            flash(content['message'], 'danger')
 
     if add:
         _, status = call(api.items.add, key=key, name=add)

@@ -116,6 +116,12 @@ def describe_admin():
             expect(html).contains("Settings updated.")
             expect(html).contains(' name="code" value="new-code">')
 
+        def with_duplicate_code(client, collection, collection2):
+            data = dict(save=True, code="sample")
+            html = post(client, "/collections/def456", data)
+
+            expect(html).contains("Short code is already taken: sample")
+
         def with_locked_set(client, collection):
             data = dict(save=True, unlocked=[])
             html = post(client, "/collections/abc123", data)

@@ -1,5 +1,6 @@
 # pylint: disable=wildcard-import,unused-wildcard-import
 
+from mongoengine.errors import *
 from flask_api.exceptions import *
 
 

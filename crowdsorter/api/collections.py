@@ -86,7 +86,11 @@ def update(key, name=None, code=None, private=None, locked=None):
     collection.code = code.strip().lower().replace(' ', '-') or collection.code
     collection.private = private
     collection.locked = locked
-    collection.save()
+    try:
+        collection.save()
+    except exceptions.NotUniqueError:
+        msg = f"Short code is already taken: {collection.code}"
+        raise exceptions.UnprocessableEntity(msg)
 
     return serialize(collection), status.HTTP_200_OK
 
