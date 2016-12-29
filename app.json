@@ -13,6 +13,9 @@
     "SECRET_KEY": {
       "generator": "secret"
     },
+    "AUTH_TOKEN": {
+      "value": "review"
+    },
     "SAMPLE_COLLECTION_CODE": {
       "value": "sample"
     },
