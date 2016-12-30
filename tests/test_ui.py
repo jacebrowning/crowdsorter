@@ -44,7 +44,7 @@ def describe_collections():
         def with_known_code(client, collection):
             html = get(client, "/sample")
 
-            expect(html).contains('<a href="/sample">Items</a>')
+            expect(html).contains('<a href="/sample">Results</a>')
             expect(html).contains('<a href="/sample/vote">Vote</a>')
             expect(html).contains("Sample List")
             expect(html).contains("Items: 3")
@@ -76,7 +76,7 @@ def describe_collections():
         def with_known_code(client, collection):
             html = get(client, "/sample/vote")
 
-            expect(html).contains('<a href="/sample">Items</a>')
+            expect(html).contains('<a href="/sample">Results</a>')
             expect(html).contains('<a href="/sample/vote">Vote</a>')
             expect(html).contains("Sample List")
             expect(html).contains("Get New Comparison Pair")

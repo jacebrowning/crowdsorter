@@ -63,7 +63,7 @@ def new():
 
 
 @blueprint.route("/<code>")
-@register_menu(blueprint, '.detail', "Items", order=2,
+@register_menu(blueprint, '.detail', "Results", order=2,
                visible_when=_show_items,
                active_when=_activate_items)
 def detail(code):
