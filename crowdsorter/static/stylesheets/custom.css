@@ -40,7 +40,6 @@ label {
 
 .btn {
     font-size: 20px;
-    min-width: 100px;
 }
 
 .list-group-item {
@@ -48,6 +47,10 @@ label {
 }
 
 /* Custom */
+
+.navbar-left-buffer {
+    margin-left: .5em;
+}
 
 .center {
     text-align:center;

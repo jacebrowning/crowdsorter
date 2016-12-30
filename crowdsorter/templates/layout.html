@@ -56,6 +56,13 @@
                 <a href="{{ item.url }}">{{ item.text }}</a>
             </li>
         {%- endfor %}
+        {% if collection is defined %}
+            <li class="navbar-left-buffer">
+                <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Copy link to collection" data-clipboard-text="https://crowdsorter.com/{{ collection['code'] }}">
+                    <span class="glyphicon glyphicon-share"></span>
+                </button>
+            </li>
+        {% endif %}
         </ul>
     </nav>
 {%- endblock %}
@@ -63,5 +70,21 @@
 {% block scripts %}
     <!-- Added by Flask-Bootstrap -->
 {{- super() }}
-{{ google.uanalytics(config['GOOGLE_ANALYTICS_ID']) }}
+
+    <!-- Clipboard.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
+    <script type="text/javascript">
+        var clipboard = new Clipboard('.btn');
+
+        clipboard.on('success', function(e) {
+            $(e.trigger).attr('title', 'Link Copied').tooltip('fixTitle').tooltip('show');
+        });
+
+        clipboard.on('error', function(e) {
+            console.log(e);
+        });
+    </script>
+
+    <!-- Google Analytics -->
+    {{  google.uanalytics(config['GOOGLE_ANALYTICS_ID']) }}
 {% endblock %}
