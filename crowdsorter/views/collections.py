@@ -12,6 +12,7 @@ from ._utils import call, parts
 
 SAMPLE_COLLECTION_NAME = "Sample Collection"
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
+UNKNOWN_COLLECTION_CODE = "unknown"
 
 blueprint = Blueprint('collections', __name__)
 log = logging.getLogger(__name__)
@@ -113,6 +114,7 @@ def vote(code):
     content, status = call(api.votes.index, key=key)
     if status == 404:
         content['name'] = UNKNOWN_COLLECTION_NAME
+        content['code'] = UNKNOWN_COLLECTION_CODE
         content['items'] = ["---"] * 10
 
     return Response(render_template("vote.html", collection=content))

@@ -57,8 +57,9 @@
             </li>
         {%- endfor %}
         {% if collection is defined %}
+        {% set url = request.url_root + collection['code'] %}
             <li class="navbar-left-buffer">
-                <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Copy link to collection" data-clipboard-text="https://crowdsorter.com/{{ collection['code'] }}">
+                <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Copy link: {{ url }}" data-clipboard-text="{{ url }}">
                     <span class="glyphicon glyphicon-share"></span>
                 </button>
             </li>

@@ -48,5 +48,6 @@ def serialize(collection):
                                key=collection.key, _external=True),
         ),
         name=collection.name,
+        code=collection.code,
         items=collection.items_prioritized,
     )
