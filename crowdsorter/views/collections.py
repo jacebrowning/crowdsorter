@@ -18,6 +18,10 @@ blueprint = Blueprint('collections', __name__)
 log = logging.getLogger(__name__)
 
 
+def _show_collections():
+    return 'collections' in parts()
+
+
 def _activate_collections():
     return parts() and parts()[-1] == 'collections'
 
@@ -32,6 +36,7 @@ def _activate_items():
 
 @blueprint.route("/collections/")
 @register_menu(blueprint, '.index', "Collections", order=1,
+               visible_when=_show_collections,
                active_when=_activate_collections)
 def index():
     sample_code = current_app.config['SAMPLE_COLLECTION_CODE']
