@@ -10,6 +10,7 @@ from ._utils import call, parts
 
 
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
+UNKNOWN_COLLECTION_CODE = "unknown"
 
 blueprint = Blueprint('admin', __name__)
 log = logging.getLogger(__name__)
@@ -26,6 +27,7 @@ def detail(key):
     content, status = call(api.collections.detail, key=key)
     if status == 404:
         content['name'] = UNKNOWN_COLLECTION_NAME
+        content['code'] = UNKNOWN_COLLECTION_CODE
         content['items'] = []
 
     return Response(render_template("admin.html", collection=content))
