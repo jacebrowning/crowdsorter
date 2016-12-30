@@ -1,7 +1,8 @@
 import logging
+from urllib.parse import urlencode, unquote
 from pathlib import Path
 
-from flask import url_for
+from flask import url_for, current_app, request
 from flask_api import FlaskAPI
 
 from . import api
@@ -34,6 +35,23 @@ def configure_logging(app):
         level = logging.INFO
         pattern = "%(levelname)s: %(message)s"
     logging.basicConfig(level=level, format=pattern)
+
+    def log_request(response=None):
+        if current_app.debug:
+            path = request.path
+            if request.args:
+                path += "?%s" % unquote(urlencode(request.args))
+            if response:
+                log.info("%s: %s - %i", request.method, path,
+                         response.status_code)
+            else:
+                log.info("%s: %s", request.method, path)
+
+        return response
+
+    logging.getLogger('werkzeug').setLevel(logging.WARNING)
+    app.before_request(log_request)
+    app.after_request(log_request)
 
 
 def register_blueprints(app):
