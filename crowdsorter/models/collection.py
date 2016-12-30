@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 from ..extensions import db
 
 from . import Items
-from ._config import CONFIDENCE_FUZZ
+from ._config import MINIMUM_ITEMS, CONFIDENCE_FUZZ
 
 
 ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
@@ -107,9 +107,9 @@ class Collection(db.Document):
         scores.sort(key=self._fuzz_confidence)
         return [item['name'] for item in scores]
 
-    @staticmethod
-    def _fuzz_confidence(score):
-        ratio = 1.0 - CONFIDENCE_FUZZ
+    def _fuzz_confidence(self, score):
+        fuzz = max(self.item_count / MINIMUM_ITEMS, 1.0) * CONFIDENCE_FUZZ
+        ratio = 1.0 - fuzz
         return (score['confidence'] + .01) * random.uniform(ratio, 1.0)
 
     def vote(self, winner, loser):
