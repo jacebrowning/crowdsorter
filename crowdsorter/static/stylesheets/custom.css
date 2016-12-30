@@ -1,10 +1,6 @@
 /* Bootstrap */
 
-p {
-    font-size: 18px;
-}
-
-label {
+* {
     font-size: 18px;
 }
 
@@ -39,10 +35,6 @@ label {
 }
 
 .btn {
-    font-size: 20px;
-}
-
-.list-group-item {
     font-size: 20px;
 }
 
