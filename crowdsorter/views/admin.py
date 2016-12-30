@@ -42,8 +42,14 @@ def update(key):
     save = request.form.get('save')
     add = request.form.get('add', '').strip()
     remove = request.form.get('remove', '').strip()
-    log.debug(f"Form options: private={private} locked={locked}")
-    log.debug(f"Form actions: save={save} add={add} remove={remove}")
+    delete = request.form.get('delete')
+    log.debug(f"Options: private={private} locked={locked}")
+    log.debug(f"Actions: save={save} add={add} remove={remove} delete={delete}")
+
+    if delete:
+        _, status = call(api.collections.delete, key=key)
+        assert 200 >= status < 300
+        return redirect(url_for('collections.index'))
 
     if save:
         content, status = call(api.collections.update, key=key,

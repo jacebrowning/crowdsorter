@@ -95,6 +95,15 @@ def update(key, name=None, code=None, private=None, locked=None):
     return serialize(collection), status.HTTP_200_OK
 
 
+@blueprint.route("/api/collections/<key>", methods=['DELETE'])
+def delete(key):
+    collection = Collection.objects(key=key).first()
+    if collection:
+        collection.delete()
+
+    return '', status.HTTP_204_NO_CONTENT
+
+
 def serialize(collection):
     return dict(
         _links=dict(

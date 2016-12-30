@@ -209,6 +209,21 @@ def describe_collections():
                 expect(status) == 200
                 expect(content['locked']) == False
 
+        def describe_DELETE():
+
+            def it_deletes_the_collection(client, url, collection):
+                status, content = load(client.delete(url))
+
+                expect(status) == 204
+
+                status, content = load(client.delete(url))
+
+                expect(status) == 204
+
+                status, content = load(client.get(url))
+
+                expect(status) == 404
+
 
 def describe_items():
 
