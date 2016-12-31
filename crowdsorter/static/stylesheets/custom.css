@@ -80,8 +80,12 @@ label {
     display: inline-block;
 }
 
+.title {
+    padding: 0 0.5em;
+}
+
 .btn-vote {
-    padding: 4em 0;
+    padding: 4em 0.25em;
     white-space: normal;
 }
 
