@@ -12,8 +12,7 @@ Flask-Menu==0.5.1
 
 # Services
 SendGrid==3.6.3
-#Flask-SendGrid==0.1.0
-git+git://github.com/jacebrowning/flask-sendgrid.git@074f33aec6c82a0810a21c8c5ffe4807a2c71897
+git+git://github.com/jacebrowning/flask-sendgrid.git@244fd9fd6fd6924eddc3427265989eb13987f272
 
 # Deployment
 Flask-Script==2.0.5
