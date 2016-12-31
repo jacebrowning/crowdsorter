@@ -10,35 +10,59 @@
 
     <div class="container">
         <div class="row">
+
             <div class="col-xs-6">
                 <form method="post" action="{{ request.path }}?winner={{ collection['items'][0]|urlencode }}&loser={{ collection['items'][1]|urlencode }}">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default btn-block vote">
+                        <button type="submit" class="btn btn-default btn-block btn-vote">
                             {{ collection['items'][0] }}
                         </button>
                     </div>
                 </form>
             </div>
+
             <div class="col-xs-6">
                 <form method="post" action="{{ request.path }}?winner={{ collection['items'][1]|urlencode }}&loser={{ collection['items'][0]|urlencode }}">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default btn-block vote">
+                        <button type="submit" class="btn btn-default btn-block btn-vote">
                             {{ collection['items'][1] }}
                         </button>
                     </div>
                 </form>
             </div>
+
         </div>
         <div class="row">
+
             <div class="col-xs-12">
                 <form method="post" action="{{ request.path }}">
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block reload">
+                        <button type="submit" class="btn btn-primary btn-block btn-reload">
                             Get New Comparison Pair
                         </button>
                     </div>
                 </form>
             </div>
+
         </div>
     </div>
+    <div class="loader" style="display: none"></div>
+{% endblock %}
+
+{% block scripts %}
+{{- super() }}
+
+    <!-- Custom -->
+    <script type="text/javascript">
+        $('.btn-vote').click( function() {
+            $('.loader').show();
+            $('.btn-vote').prop('disabled', true);
+            $('.btn-reload').prop('disabled', true);
+        });
+        $('.btn-reload').click( function() {
+            $('.loader').show();
+            $('.btn-vote').prop('disabled', true);
+            $('.btn-reload').prop('disabled', true);
+        });
+    </script>
 {% endblock %}
