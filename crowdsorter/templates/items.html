@@ -54,9 +54,11 @@
             {% if not collection['locked'] %}
             <div class="row">
                 <form method="post" class="input-group input-group-lg">
-                    <input type="text" class="form-control input-lg" name="name" placeholder="Item Name">
+                    <input type="text" class="form-control input-lg" name="name" placeholder="New Item Name">
                     <span class="input-group-btn">
-                        <input type="submit" class="btn btn-success btn-lg" value="Add Item"></input>
+                        <button type="submit" class="btn btn-success" title="Add an item">
+                            <i class="glyphicon glyphicon-plus-sign"></i>
+                        </button>
                     </span>
                 </form>
             </div>
