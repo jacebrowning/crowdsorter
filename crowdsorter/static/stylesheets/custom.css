@@ -8,6 +8,10 @@ label {
     font-size: 18px;
 }
 
+.form-control {
+    font-size: 18px;
+}
+
 .alert {
     margin-bottom: 0px;
 }
