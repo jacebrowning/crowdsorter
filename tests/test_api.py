@@ -62,6 +62,7 @@ def describe_collections():
                             },
                             'key': "abc123",
                             'name': "Sample List",
+                            'owner': "",
                             'code': "sample",
                             'private': False,
                             'locked': False,
@@ -130,6 +131,7 @@ def describe_collections():
                     },
                     'key': "abc123",
                     'name': "Sample List",
+                    'owner': "",
                     'code': "sample",
                     'private': False,
                     'locked': False,
@@ -154,6 +156,20 @@ def describe_collections():
                 expect(content['key']) == "abc123"
 
         def describe_PUT():
+
+            def it_can_update_the_owner_email(client, url, collection):
+                data = {'owner': "test@example.com"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['owner']) == "test@example.com"
+
+            def valid_email_addresses_are_required(client, url, collection):
+                data = {'owner': "@foo.com"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 422
+                expect(content['message']) == "Invalid email address: @foo.com"
 
             def it_can_update_the_name(client, url, collection):
                 data = {'name': "New Name  "}

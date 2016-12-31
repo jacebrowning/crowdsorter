@@ -150,6 +150,23 @@ def describe_admin():
 
         expect(html).contains("No Such Collection")
 
+    def describe_email():
+        """None of these tests can actually send an email."""
+
+        def with_new_address(client, collection):
+            data = dict(email="foo@bar.com")
+            html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Unable to send email: foo@bar.com")
+            expect(html).contains(' name="email" value="foo@bar.com">')
+
+        def with_invalid_address(client, collection):
+            data = dict(email="foobar")
+            html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Invalid email address: foobar")
+            expect(html).contains(' name="email" value="">')
+
     def describe_save():
 
         def with_new_name(client, collection):

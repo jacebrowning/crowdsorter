@@ -68,11 +68,13 @@ def detail(key, code=None):
 
 
 @blueprint.route("/api/collections/<key>", methods=['PUT'])
-def update(key, name=None, code=None, private=None, locked=None):
+def update(key, name=None, owner=None, code=None, private=None, locked=None):
     collection = Collection.objects(key=key).first()
 
     if name is None:
         name = request.data.get('name', "")
+    if owner is None:
+        owner = request.data.get('owner', "")
     if code is None:
         code = request.data.get('code', "")
     if private is None:
@@ -83,6 +85,7 @@ def update(key, name=None, code=None, private=None, locked=None):
         locked = value not in [False, 'False']
 
     collection.name = name.strip() or collection.name
+    collection.owner = owner.strip() or collection.owner
     collection.code = code.strip().lower().replace(' ', '-') or collection.code
     collection.private = private
     collection.locked = locked
@@ -90,6 +93,9 @@ def update(key, name=None, code=None, private=None, locked=None):
         collection.save()
     except exceptions.NotUniqueError:
         msg = f"Short code is already taken: {collection.code}"
+        raise exceptions.UnprocessableEntity(msg)
+    except exceptions.ValidationError as exc:
+        msg = list(exc.to_dict().values())[0]
         raise exceptions.UnprocessableEntity(msg)
 
     return serialize(collection), status.HTTP_200_OK
@@ -118,6 +124,7 @@ def serialize(collection):
         ),
         key=collection.key,
         name=collection.name,
+        owner=collection.owner or '',
         code=collection.code,
         private=collection.private,
         locked=collection.locked,

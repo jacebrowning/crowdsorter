@@ -36,9 +36,9 @@ def detail(key):
 
 @blueprint.route("/collections/<key>", methods=['POST'])
 def update(key):
-    email = request.form.get('email')
-    name = request.form.get('name')
-    code = request.form.get('code')
+    email = request.form.get('email', "").strip()
+    name = request.form.get('name', "").strip()
+    code = request.form.get('code', "").strip()
     private = not request.form.getlist('public')
     locked = not request.form.getlist('unlocked')
     save = request.form.get('save')
@@ -74,19 +74,23 @@ def update(key):
         flash(f"Removed item: {remove}", 'info')
 
     if email:
-        content, status = call(api.collections.update, key=key)  # , email=email)
-        assert status == 200
+        content, status = call(api.collections.update, key=key, owner=email)
+        if status == 200:
 
-        name = content['name']
-        url = url_for('admin.detail', key=content['key'], _external=True)
+            name = content['name']
+            url = url_for('admin.detail', key=content['key'], _external=True)
 
-        if send_email(
-            subject=f"Crowd Sorter: {name}",
-            to_email=email,
-            text=f"The admin page for {name} can be found at: {url}",
-        ):
-            flash(f"Email sent: {email}", 'info')
+            if send_email(
+                subject=f"Crowd Sorter: {name}",
+                to_email=content['owner'],
+                text=f"The admin page for {name} can be found at: {url}",
+            ):
+                flash(f"Email sent: {email}", 'info')
+
+            else:
+                flash(f"Unable to send email: {email}", 'danger')
+
         else:
-            flash(f"Unable to send email: {email}", 'danger')
+            flash(content['message'], 'danger')
 
     return redirect(url_for('admin.detail', key=key))
