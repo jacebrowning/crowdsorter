@@ -1,7 +1,8 @@
 import logging
 
 from flask import Blueprint, Response
-from flask import request, render_template, redirect, url_for, flash
+from flask import (request, render_template, redirect, url_for, flash,
+                   current_app)
 from flask_menu import register_menu
 
 from .. import api, extensions
@@ -75,12 +76,15 @@ def update(key):
     if email:
         content, status = call(api.collections.update, key=key)  # , email=email)
         assert status == 200
+
         name = content['name']
         url = url_for('admin.detail', key=content['key'], _external=True)
-        extensions.sendgrid.send_email(
+
+        response = extensions.sendgrid.send_email(
             subject=f"Crowd Sorter: {name}",
-            to=email,
+            to_email=email,
             text=f"The admin page for {name} can be found at: {url}",
         )
+        assert response.status_code == 200
 
     return redirect(url_for('admin.detail', key=key))
