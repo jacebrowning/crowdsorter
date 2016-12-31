@@ -13,12 +13,12 @@ log = logging.getLogger(__name__)
 
 
 @blueprint.route("/api/collections/")
-def index(token=None):
+def index(token=None, **filter):
     token = token or request.args.get('token')
     if token != current_app.config['AUTH_TOKEN']:
         raise exceptions.PermissionDenied("An auth token is required.")
 
-    collections = Collection.objects(private=False).order_by('-vote_count')
+    collections = Collection.objects(**filter).order_by('-vote_count')
 
     content = dict(
         _links=dict(

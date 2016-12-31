@@ -42,7 +42,7 @@ def _activate_items():
 def index():
     sample_code = current_app.config['SAMPLE_COLLECTION_CODE']
 
-    content, status = call(api.collections.index,
+    content, status = call(api.collections.index, private=False,
                            token=current_app.config['AUTH_TOKEN'])
     assert status == 200
 
