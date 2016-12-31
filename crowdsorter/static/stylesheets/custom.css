@@ -47,7 +47,16 @@ label {
 }
 
 .list-group-item {
+    display: flex;
     font-size: 20px;
+}
+
+.list-group-item > div.left {
+    width: 50%;
+}
+.list-group-item > div.right {
+    width: 50%;
+    text-align: right;
 }
 
 /* Custom */
@@ -69,20 +78,6 @@ label {
 
 .center form {
     display: inline-block;
-}
-
-ul.item-score-list {
-    padding: 0px;
-}
-ul.item-score-list > li {
-    display: flex;
-}
-ul.item-score-list > li > div.item {
-    width: 50%;
-}
-ul.item-score-list > li > div.score {
-    width: 50%;
-    text-align: right;
 }
 
 .vote {

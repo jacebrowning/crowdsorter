@@ -121,5 +121,6 @@ def serialize(collection):
         code=collection.code,
         private=collection.private,
         locked=collection.locked,
-        items=collection.items
+        items=collection.items,
+        vote_count=collection.vote_count,
     )
