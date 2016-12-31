@@ -5,9 +5,9 @@ from flask import (request, render_template, redirect, url_for, flash,
                    current_app)
 from flask_menu import register_menu
 
-from .. import api, extensions
+from .. import api
 
-from ._utils import call, parts
+from ._utils import call, parts, send_email
 
 
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
@@ -80,11 +80,13 @@ def update(key):
         name = content['name']
         url = url_for('admin.detail', key=content['key'], _external=True)
 
-        response = extensions.sendgrid.send_email(
+        if send_email(
             subject=f"Crowd Sorter: {name}",
             to_email=email,
             text=f"The admin page for {name} can be found at: {url}",
-        )
-        assert response.status_code == 200
+        ):
+            flash(f"Email sent: {email}", 'info')
+        else:
+            flash(f"Unable to send email: {email}", 'danger')
 
     return redirect(url_for('admin.detail', key=key))
