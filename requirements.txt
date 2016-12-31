@@ -10,6 +10,9 @@ Flask-API==0.6.9
 Flask-Bootstrap==3.3.7.0
 Flask-Menu==0.5.1
 
+# Services
+Flask-SendGrid==0.1.0
+
 # Deployment
 Flask-Script==2.0.5
 gunicorn==19.6.0
