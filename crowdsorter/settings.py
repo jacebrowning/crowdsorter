@@ -12,6 +12,9 @@ class Config:
     THREADED = False
     SECRET_KEY = os.getenv('SECRET_KEY')
 
+    SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+    SENDGRID_DEFAULT_FROM = os.getenv('SENDGRID_DEFAULT_FROM')
+
     AUTH_TOKEN = os.getenv('AUTH_TOKEN')
     SAMPLE_COLLECTION_CODE = os.getenv('SAMPLE_COLLECTION_CODE')
     GOOGLE_ANALYTICS_ID = os.getenv('GOOGLE_ANALYTICS_ID')
@@ -35,6 +38,7 @@ class TestConfig(Config):
     SECRET_KEY = ENV
 
     MONGODB_DB = 'crowdsorter_test'
+    SENDGRID_DEFAULT_FROM = 'test@example.com'
 
     SAMPLE_COLLECTION_CODE = ENV
     AUTH_TOKEN = ENV
@@ -49,6 +53,7 @@ class DevConfig(Config):
     SECRET_KEY = ENV
 
     MONGODB_DB = 'crowdsorter_dev'
+    SENDGRID_DEFAULT_FROM = 'dev@example.com'
 
     SAMPLE_COLLECTION_CODE = 'sample'
     AUTH_TOKEN = ENV

@@ -77,6 +77,7 @@ def register_extensions(app):
     extensions.db.init_app(app)
     extensions.bootstrap.init_app(app)
     extensions.menu.init_app(app)
+    extensions.sendgrid.init_app(app)
 
 
 def enable_cache_busting(app):

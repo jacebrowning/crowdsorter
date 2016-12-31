@@ -1,12 +1,13 @@
 import logging
 
 from flask import Blueprint, Response
-from flask import request, render_template, redirect, url_for, flash
+from flask import (request, render_template, redirect, url_for, flash,
+                   current_app)
 from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts
+from ._utils import call, parts, send_email
 
 
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
@@ -35,14 +36,16 @@ def detail(key):
 
 @blueprint.route("/collections/<key>", methods=['POST'])
 def update(key):
-    name = request.form.get('name')
-    code = request.form.get('code')
+    email = request.form.get('email', "").strip()
+    name = request.form.get('name', "").strip()
+    code = request.form.get('code', "").strip()
     private = not request.form.getlist('public')
     locked = not request.form.getlist('unlocked')
     save = request.form.get('save')
     add = request.form.get('add', '').strip()
     remove = request.form.get('remove', '').strip()
     delete = request.form.get('delete')
+    log.debug(f"Values: email={email} name={name} code={code}")
     log.debug(f"Options: private={private} locked={locked}")
     log.debug(f"Actions: save={save} add={add} remove={remove} delete={delete}")
 
@@ -69,5 +72,25 @@ def update(key):
         _, status = call(api.items.remove, key=key, name=remove)
         assert status == 200
         flash(f"Removed item: {remove}", 'info')
+
+    if email:
+        content, status = call(api.collections.update, key=key, owner=email)
+        if status == 200:
+
+            name = content['name']
+            url = url_for('admin.detail', key=content['key'], _external=True)
+
+            if send_email(
+                subject=f"Crowd Sorter: {name}",
+                to_email=content['owner'],
+                text=f"The admin page for {name} can be found at: {url}",
+            ):
+                flash(f"Email sent: {email}", 'info')
+
+            else:
+                flash(f"Unable to send email: {email}", 'danger')
+
+        else:
+            flash(content['message'], 'danger')
 
     return redirect(url_for('admin.detail', key=key))

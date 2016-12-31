@@ -75,6 +75,7 @@ class Collection(db.Document):
 
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
+    owner = db.EmailField()
     code = db.StringField(null=False, unique=True, default=generate_code)
 
     # Options

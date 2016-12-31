@@ -21,10 +21,17 @@
     },
     "WEB_CONCURRENCY": {
       "value": "4"
+    },
+    "SENDGRID_API_KEY": {
+      "required": true
+    },
+    "SENDGRID_DEFAULT_FROM": {
+      "required": true
     }
   },
   "addons":[
     "mongolab",
+    "sendgrid",
     "papertrail"
   ]
 }

@@ -60,7 +60,7 @@ SNIFFER := $(BIN_)sniffer
 # MAIN TASKS ###################################################################
 
 .PHONY: all
-all: doc
+all: install
 
 .PHONY: ci
 ci: check test ## Run all tasks that determine CI status
@@ -121,12 +121,12 @@ else ifdef LINUX
 endif
 	@ touch $@  # flag to indicate dependencies are installed
 
-$(DEPS_BASE): setup.py requirements.txt $(PYTHON)
-	$(PYTHON) setup.py develop
+$(DEPS_BASE): requirements.txt $(PYTHON)
+	$(PIP) install --upgrade -r $<
 	@ touch $@  # flag to indicate dependencies are installed
 
 $(PIP): $(PYTHON)
-	$(PYTHON) -m pip install --upgrade pip setuptools
+	$(PYTHON) -m pip install --upgrade pip
 	@ touch $@
 
 $(PYTHON):
@@ -140,7 +140,7 @@ data:
 	scripts/generate_sample_data.py
 else
 data: install
-	source env/bin/activate && scripts/generate_sample_data.py
+	PYTHONPATH=. source env/bin/activate && scripts/generate_sample_data.py
 endif
 
 # CHECKS #######################################################################
