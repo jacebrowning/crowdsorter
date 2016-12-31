@@ -68,7 +68,9 @@
                     <div class="form-control input-lg">{{ name }}</div>
                     <input type=hidden value="{{ name }}" name="remove"></input>
                     <span class="input-group-btn">
-                        <input type="submit" class="btn btn-danger" value="Remove Item"></input>
+                        <button type="submit" class="btn btn-danger" title="Remove this item">
+                            <i class="glyphicon glyphicon-minus-sign"></i>
+                        </button>
                     </span>
                 </form>
                 {% endfor %}
@@ -76,9 +78,11 @@
 
             <div class="row">
                 <form method="post" class="input-group input-group-lg">
-                    <input type="text" class="form-control input-lg" name="add" placeholder="Item Name">
+                    <input type="text" class="form-control input-lg" name="add" placeholder="New Item Name">
                     <span class="input-group-btn">
-                        <input type="submit" class="btn btn-success btn-lg" value="Add Item"></input>
+                        <button type="submit" class="btn btn-success" title="Add an item">
+                            <i class="glyphicon glyphicon-plus-sign"></i>
+                        </button>
                     </span>
                 </form>
             </div>
