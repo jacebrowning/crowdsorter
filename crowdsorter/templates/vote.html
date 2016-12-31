@@ -51,18 +51,14 @@
 
 {% block scripts %}
 {{- super() }}
-
     <!-- Custom -->
     <script type="text/javascript">
         $('.btn-vote').click( function() {
             $('.loader').show();
-            $('.btn-vote').prop('disabled', true);
             $('.btn-reload').prop('disabled', true);
         });
         $('.btn-reload').click( function() {
             $('.loader').show();
-            $('.btn-vote').prop('disabled', true);
-            $('.btn-reload').prop('disabled', true);
         });
     </script>
 {% endblock %}
