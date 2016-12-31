@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 
 
 def _show_collections():
-    return 'collections' in parts()
+    return not parts() or 'collections' in parts()
 
 
 def _activate_collections():

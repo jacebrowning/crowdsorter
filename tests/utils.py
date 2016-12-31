@@ -25,12 +25,15 @@ def load(response: flask.Response) -> (int, Union[dict, str]):
     return response.status_code, data
 
 
-def get(client, url):
+def get(client, url, *, minify: bool=False):
     """Simulate loading a page."""
     log.debug("GET request URL: %s", url)
     response = client.get(url, follow_redirects=True)
 
     html = response.data.decode('utf-8')
+
+    if minify:
+        html = html.replace('\n', '').replace(' ' * 2, '')
 
     log.debug("Response HTML: \n\n%s\n", html)
 

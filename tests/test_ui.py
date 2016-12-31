@@ -5,6 +5,55 @@ from expecter import expect
 from .utils import get, post
 
 
+def describe_navbar():
+
+    def for_index(client):
+        html = get(client, "/", minify=True)
+
+        expect(html).contains('<li class="active">'
+                              '<a href="/">Home</a>')
+        expect(html).contains('<li>'
+                              '<a href="/collections/">Collections</a>')
+
+    def for_collections(client):
+        html = get(client, "/collections", minify=True)
+
+        expect(html).contains('<li>'
+                              '<a href="/">Home</a>')
+        expect(html).contains('<li class="active">'
+                              '<a href="/collections/">Collections</a>')
+
+    def for_admin(client):
+        html = get(client, "/collections/abc123", minify=True)
+
+        expect(html).contains('<li>'
+                              '<a href="/">Home</a>')
+        expect(html).contains('<li>'
+                              '<a href="/collections/">Collections</a>')
+        expect(html).contains('<li class="active">'
+                              '<a href="/collections/abc123">Admin</a>')
+
+    def for_results(client):
+        html = get(client, "/foobar", minify=True)
+
+        expect(html).contains('<li>'
+                              '<a href="/">Home</a>')
+        expect(html).contains('<li class="active">'
+                              '<a href="/foobar">Results</a>')
+        expect(html).contains('<li>'
+                              '<a href="/foobar/vote">Vote</a>')
+
+    def for_vote(client):
+        html = get(client, "/foobar/vote", minify=True)
+
+        expect(html).contains('<li>'
+                              '<a href="/">Home</a>')
+        expect(html).contains('<li>'
+                              '<a href="/foobar">Results</a>')
+        expect(html).contains('<li class="active">'
+                              '<a href="/foobar/vote">Vote</a>')
+
+
 def describe_index():
 
     def it_contains_link_to_sample_collection(client):
