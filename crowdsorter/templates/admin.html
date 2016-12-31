@@ -11,20 +11,21 @@
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2">
 
-            <div class="row">
+            <div class="row bottom-buffer">
                 <p>
                     This is the admin page for the
                     <code>{{ collection['name'] }}</code>
                     collection.
                     Keep this URL private and do not share it with others.
+                    You will need to return to this page to make additional changes to this collection.
                 </p>
             </div>
 
             <div class="row">
                 <form method="post">
                     <div class="form-group">
-                        <label for="email">Your Email</label>
-                        <input type="text" class="form-control" id="email" name="email" value="{{ collection['owner'] }}">
+                        <label for="email">Admin Email</label>
+                        <input type="text" class="form-control" id="email" name="email" value="{{ collection['owner'] }}" placeholder="Your Email Address">
                     </div>
                     <div class="row center top-buffer">
                         <input type="submit" class="btn btn-primary btn-primary" value="Send Me a Link"></input>

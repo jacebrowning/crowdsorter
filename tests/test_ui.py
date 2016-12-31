@@ -158,14 +158,14 @@ def describe_admin():
             html = post(client, "/collections/abc123", data)
 
             expect(html).contains("Unable to send email: foo@bar.com")
-            expect(html).contains(' name="email" value="foo@bar.com">')
+            expect(html).contains(' name="email" value="foo@bar.com" ')
 
         def with_invalid_address(client, collection):
             data = dict(email="foobar")
             html = post(client, "/collections/abc123", data)
 
             expect(html).contains("Invalid email address: foobar")
-            expect(html).contains(' name="email" value="">')
+            expect(html).contains(' name="email" value="" ')
 
     def describe_save():
 
