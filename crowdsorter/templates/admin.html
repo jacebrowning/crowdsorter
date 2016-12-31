@@ -16,9 +16,20 @@
                     This is the admin page for the
                     <code>{{ collection['name'] }}</code>
                     collection.
-                    Bookmark this URL to make future changes to this collection.
                     Keep this URL private and do not share it with others.
                 </p>
+            </div>
+
+            <div class="row">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="text" class="form-control" id="email" name="email" value="{{ collection['email'] }}">
+                    </div>
+                    <div class="row center top-buffer">
+                        <input type="submit" class="btn btn-primary btn-primary" value="Send Me a Link"></input>
+                    </div>
+                </form>
             </div>
 
         </div>

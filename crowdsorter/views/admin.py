@@ -4,7 +4,7 @@ from flask import Blueprint, Response
 from flask import request, render_template, redirect, url_for, flash
 from flask_menu import register_menu
 
-from .. import api
+from .. import api, extensions
 
 from ._utils import call, parts
 
@@ -35,6 +35,7 @@ def detail(key):
 
 @blueprint.route("/collections/<key>", methods=['POST'])
 def update(key):
+    email = request.form.get('email')
     name = request.form.get('name')
     code = request.form.get('code')
     private = not request.form.getlist('public')
@@ -43,6 +44,7 @@ def update(key):
     add = request.form.get('add', '').strip()
     remove = request.form.get('remove', '').strip()
     delete = request.form.get('delete')
+    log.debug(f"Values: email={email} name={name} code={code}")
     log.debug(f"Options: private={private} locked={locked}")
     log.debug(f"Actions: save={save} add={add} remove={remove} delete={delete}")
 
@@ -69,5 +71,16 @@ def update(key):
         _, status = call(api.items.remove, key=key, name=remove)
         assert status == 200
         flash(f"Removed item: {remove}", 'info')
+
+    if email:
+        content, status = call(api.collections.update, key=key)  # , email=email)
+        assert status == 200
+        name = content['name']
+        url = url_for('admin.detail', key=content['key'], _external=True)
+        extensions.sendgrid.send_email(
+            subject=f"Crowd Sorter: {name}",
+            to=email,
+            text=f"The admin page for {name} can be found at: {url}",
+        )
 
     return redirect(url_for('admin.detail', key=key))

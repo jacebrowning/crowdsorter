@@ -38,6 +38,7 @@ class TestConfig(Config):
     SECRET_KEY = ENV
 
     MONGODB_DB = 'crowdsorter_test'
+    SENDGRID_DEFAULT_FROM = 'test@example.com'
 
     SAMPLE_COLLECTION_CODE = ENV
     AUTH_TOKEN = ENV
@@ -52,6 +53,7 @@ class DevConfig(Config):
     SECRET_KEY = ENV
 
     MONGODB_DB = 'crowdsorter_dev'
+    SENDGRID_DEFAULT_FROM = 'dev@example.com'
 
     SAMPLE_COLLECTION_CODE = 'sample'
     AUTH_TOKEN = ENV
