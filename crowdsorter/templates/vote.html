@@ -53,12 +53,10 @@
 {{- super() }}
     <!-- Custom -->
     <script type="text/javascript">
-        $('.btn-vote').click( function() {
+        $('form').submit(function(){
             $('.loader').show();
+            $('.btn-vote').prop('disabled', true);
             $('.btn-reload').prop('disabled', true);
-        });
-        $('.btn-reload').click( function() {
-            $('.loader').show();
         });
     </script>
 {% endblock %}
