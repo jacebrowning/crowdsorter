@@ -70,6 +70,7 @@ def describe_collections():
                                 "foo",
                                 "qux",
                             ],
+                            'vote_count': 1,
                         },
                     ],
 
@@ -137,6 +138,7 @@ def describe_collections():
                         "foo",
                         "qux",
                     ],
+                    'vote_count': 1,
                 }
 
             def when_missing(client):

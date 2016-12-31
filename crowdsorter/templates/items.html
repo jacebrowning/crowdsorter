@@ -12,15 +12,15 @@
         <div class="col-sm-8 col-sm-offset-2">
 
             <div class="row">
-                <ul class="item-score-list">
-                    <li class="list-group-item">
-                        <div class="item">
+                <ul class="list-group">
+                    <div class="list-group-item">
+                        <div class="left">
                             Items: {{ collection['item_count'] or 0 }}
                         </div>
-                        <div class="score">
+                        <div class="right">
                             Votes: {{ collection['vote_count'] or 0 }}
                         </div>
-                    </li>
+                    </div>
                 </ul>
             </div>
 
@@ -37,18 +37,18 @@
         <div class="col-sm-8 col-sm-offset-2">
 
             <div class="row">
-                <ul class="item-score-list">
+                <div class="list-group">
                     {% for item in collection['scores'] %}
-                    <li class="list-group-item">
-                        <div class="item">
+                    <div class="list-group-item">
+                        <div class="left">
                             {{ item['name'] }}
                         </div>
-                        <div class="score">
+                        <div class="right">
                             {{ "{0:.1f}".format(item['points']) }} @ {{ "{0:.1%}".format(item['confidence']) }}
                         </div>
-                    </li>
+                    </div>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
 
             {% if not collection['locked'] %}
