@@ -47,6 +47,11 @@
     <!-- Added by Flask-Menu -->
     <nav class="navbar navbar-default">
         <ul class="nav navbar-nav">
+        <li>
+            <a class="navbar-logo" href="/">
+                <img alt="Home" src="{{ url_for('static', filename='images/android-chrome-192x192.png') }}" height="36px">
+            </a>
+        </li>
         {%- for item in current_menu.children if item.visible -%}
             {%- if item.active %}
             <li class="active">
