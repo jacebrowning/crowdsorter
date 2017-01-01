@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, render_template, current_app
+from flask import Blueprint, Response, render_template, url_for, current_app
 from flask_menu import register_menu
 
 from .. import api
@@ -17,3 +17,14 @@ def get():
 
     return Response(render_template("index.html",
                                     collections=content['_items']))
+
+
+@blueprint.route('/robots.txt')
+def robots():
+    excludes = [
+        url_for('collections.index'),
+    ]
+    return Response(
+        render_template("robots.txt", excludes=excludes),
+        mimetype='text/plain',
+    )

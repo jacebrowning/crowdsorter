@@ -1,0 +1,4 @@
+User-agent: *
+{%- for exclude in excludes %}
+Disallow: {{ exclude }}
+{% endfor %}

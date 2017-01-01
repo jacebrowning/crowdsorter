@@ -55,6 +55,14 @@ def describe_index():
 
         expect(html).contains('href="/collections/"')
 
+    def for_robots(client):
+        text = get(client, "/robots.txt")
+
+        expect(text) == (
+            "User-agent: *" + '\n'
+            "Disallow: /collections/" + '\n'
+        )
+
 
 def describe_collections():
 
