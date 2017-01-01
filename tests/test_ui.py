@@ -10,24 +10,18 @@ def describe_navbar():
     def for_index(client):
         html = get(client, "/", minify=True)
 
-        expect(html).contains('<li class="active">'
-                              '<a href="/">Home</a>')
         expect(html).contains('<li>'
                               '<a href="/collections/">Collections</a>')
 
     def for_collections(client):
         html = get(client, "/collections", minify=True)
 
-        expect(html).contains('<li>'
-                              '<a href="/">Home</a>')
         expect(html).contains('<li class="active">'
                               '<a href="/collections/">Collections</a>')
 
     def for_admin(client):
         html = get(client, "/collections/abc123", minify=True)
 
-        expect(html).contains('<li>'
-                              '<a href="/">Home</a>')
         expect(html).contains('<li>'
                               '<a href="/collections/">Collections</a>')
         expect(html).contains('<li class="active">'
@@ -37,7 +31,7 @@ def describe_navbar():
         html = get(client, "/foobar", minify=True)
 
         expect(html).contains('<li>'
-                              '<a href="/">Home</a>')
+                              '<a href="/collections/">Collections</a>')
         expect(html).contains('<li class="active">'
                               '<a href="/foobar">Results</a>')
         expect(html).contains('<li>'
@@ -47,7 +41,7 @@ def describe_navbar():
         html = get(client, "/foobar/vote", minify=True)
 
         expect(html).contains('<li>'
-                              '<a href="/">Home</a>')
+                              '<a href="/collections/">Collections</a>')
         expect(html).contains('<li>'
                               '<a href="/foobar">Results</a>')
         expect(html).contains('<li class="active">'

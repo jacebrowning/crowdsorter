@@ -10,7 +10,6 @@ blueprint = Blueprint('index', __name__)
 
 
 @blueprint.route("/")
-@register_menu(blueprint, '.get', "Home", order=0)
 def get():
     content, status = call(api.collections.index, private=False, limit=3,
                            token=current_app.config['AUTH_TOKEN'])
