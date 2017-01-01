@@ -8,12 +8,75 @@
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm-10 col-sm-offset-1 center">
-                <a class="btn btn-primary" href="/collections/" role="button">
-                    View Popular Collections
-                </a>
+        <div class="col-sm-10 col-sm-offset-1">
+
+            <div class="row">
+                <h3>What is Crowd Sorter?</h3>
+                <p>
+                    Crowd Sorter is a platform to build collections of items to be voted on and ranked by the audience of your choosing.
+                </p>
             </div>
+
+            <div class="row">
+                <h3>What is a collection?</h3>
+                <p class="bottom-buffer">
+                    A collection is a list of related items that can be voted on to determine the order.
+                    Examples include artists, shows, restaurants, and breweries.
+                    Here are the most popular collections right now:
+                </p>
+                <div class="col-sm-10 col-sm-offset-1 top-buffer">
+                    <div class="list-group">
+                        {% for collection in collections %}
+                        <a href="/{{ collection['code'] }}" class="list-group-item">
+                            <div class="left">
+                                {{ collection['name'] }}
+                            </div>
+                            <div class="right">
+                                {{ collection['vote_count'] }} Votes
+                            </div>
+                        </a>
+                        {% endfor %}
+                        <a class="list-group-item" href="/collections/" role="button">
+                            See More...
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <h3>How does voting work?</h3>
+                <p>
+                    Share the link to your collection with whomever you want (or keep it private).
+                    Anyone voting on your collection with be shown a pair of items.
+                    After selecting a winner, two more items appear.
+
+                </p>
+            </div>
+
+            <div class="row">
+                <h3>How does scoring work?</h3>
+                <p>
+                    The winner of each pair gets a point and its opponent loses a point.
+                    Some points are also awarded for inferred wins on pairs that have not yet been voted on.
+                    Items with the least confidence score are prioritized for voting.
+                </p>
+            </div>
+
+            <div class="row">
+                <h3>Think you got it?</h3>
+                <p class="bottom-buffer">
+                    Create your own collection now in less than a minute. And it's free!
+                </p>
+                <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 top-buffer">
+                    <form method="post" action="/collections/" class="form-group">
+                            <input type="text" class="form-control input-lg" name="name" placeholder="My New Collection">
+                            <button type="submit" class="btn btn-block btn-primary">
+                                Create Your Own Collection!
+                            </button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock %}
