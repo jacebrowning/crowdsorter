@@ -63,7 +63,7 @@ def new():
     return redirect(url_for('admin.detail', key=content['key']))
 
 
-@blueprint.route("/<code>")
+@blueprint.route("/<code>", strict_slashes=False)
 @register_menu(blueprint, '.detail', "Results", order=2,
                visible_when=_show_items,
                active_when=_activate_items)
