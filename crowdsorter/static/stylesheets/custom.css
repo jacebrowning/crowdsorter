@@ -22,6 +22,7 @@ label {
 
 .navbar-nav {
     margin: 0;
+    width: 100%;
 }
 .navbar-nav > li {
     float: none;
@@ -30,12 +31,6 @@ label {
 .navbar-nav > li > a {
     padding-top: 15px;
     padding-bottom: 15px;
-}
-.navbar-nav > li.open > ul.dropdown-menu {
-    position: absolute;
-    border: 1px;
-    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
 
 .container {
@@ -70,6 +65,10 @@ label {
 
 .navbar-left-buffer {
     margin-left: .5em;
+}
+
+.navbar-right-buffer {
+    margin-right: .5em;
 }
 
 .center {

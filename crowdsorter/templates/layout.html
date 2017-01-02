@@ -47,11 +47,11 @@
     <!-- Added by Flask-Menu -->
     <nav class="navbar navbar-default">
         <ul class="nav navbar-nav">
-        <li>
-            <a class="navbar-logo" href="/">
-                <img alt="Home" src="{{ url_for('static', filename='images/android-chrome-192x192.png') }}" height="36px">
-            </a>
-        </li>
+            <li>
+                <a class="navbar-logo" href="/">
+                    <img alt="Home" src="{{ url_for('static', filename='images/android-chrome-192x192.png') }}" height="36px">
+                </a>
+            </li>
         {%- for item in current_menu.children if item.visible -%}
             {%- if item.active %}
             <li class="active">
@@ -63,7 +63,7 @@
         {%- endfor %}
         {% if collection is defined %}
         {% set url = request.url_root + collection['code'] %}
-            <li class="navbar-left-buffer">
+            <li class="navbar-btn pull-right navbar-right-buffer">
                 <button type="button" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Copy link: {{ url }}" data-clipboard-text="{{ url }}">
                     <span class="glyphicon glyphicon-share"></span>
                 </button>
