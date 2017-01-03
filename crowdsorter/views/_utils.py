@@ -30,7 +30,7 @@ def send_email(**kwargs):
     try:
         response = sendgrid.send_email(**kwargs)
     except HTTPError as exc:
-        log.error(exc)
+        log.exception(exc)
         response = None
 
     return response and 200 <= response.status_code < 300

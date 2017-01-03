@@ -12,7 +12,7 @@ Flask-Menu==0.5.1
 
 # Services
 SendGrid==3.6.3
-Flask-SendGrid==0.5.12
+Flask-SendGrid==0.5.2
 
 # Deployment
 Flask-Script==2.0.5
