@@ -51,7 +51,7 @@ def update(key):
 
     if delete:
         _, status = call(api.collections.delete, key=key)
-        assert 200 >= status < 300
+        assert 200 <= status < 300
         return redirect(url_for('collections.index'))
 
     if save:

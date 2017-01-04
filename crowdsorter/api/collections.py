@@ -107,7 +107,10 @@ def update(key, name=None, owner=None, code=None, private=None, locked=None):
 def delete(key):
     collection = Collection.objects(key=key).first()
     if collection:
+        log.info(f"Deleting: {collection!r}")
         collection.delete()
+    else:
+        log.warning(f"Already deleted: {collection!r}")
 
     return '', status.HTTP_204_NO_CONTENT
 

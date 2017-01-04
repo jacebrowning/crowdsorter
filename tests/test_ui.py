@@ -236,3 +236,12 @@ def describe_admin():
 
             expect(html).contains("Removed item: foo")
             expect(html).does_not_contain('value="foo" name="remove"')
+
+    def describe_delete():
+
+        def it_redirects_to_the_collections_index(client, collection):
+            data = dict(delete=True)
+            html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Popular Collections")
+            expect(html).does_not_contain('Sample List')
