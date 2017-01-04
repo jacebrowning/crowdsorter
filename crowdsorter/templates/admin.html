@@ -39,6 +39,8 @@
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2">
 
+            <h3 class="center">Settings</h3>
+
             <div class="row">
                 <form method="post">
                     <div class="form-group">
@@ -79,6 +81,8 @@
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2">
 
+            <h3 class="center">Items</h3>
+
             <div class="row">
                 {% for name in collection['items'] %}
                 <form method="post" class="input-group input-group-lg bottom-buffer">
@@ -104,17 +108,25 @@
                 </form>
             </div>
 
+            <div class="row center top-buffer">
+                <a class="btn btn-primary" role="button" href="/{{ collection['code'] }}">
+                    View Collection
+                </a>
+            </div>
+
         </div>
     </div>
     <hr>
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2">
 
-            <form method="post">
-                <div class="row center">
+            <h3 class="center">Danger Zone</h3>
+
+            <div class="row center">
+                <form method="post">
                     <input type="submit" class="btn btn-primary btn-danger" name="delete" value="Delete Collection"></input>
-                </div>
-            </form>
+                </form>
+            </div>
 
         </div>
     </div>

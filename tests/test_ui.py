@@ -146,6 +146,7 @@ def describe_admin():
 
         expect(html).contains('<a href="/collections/abc123">Admin</a>')
         expect(html).contains("Sample List")
+        expect(html).contains('href="/sample">')
 
     def with_unknown_key(client):
         html = get(client, "/collections/unknown")
