@@ -44,24 +44,30 @@ def update(key):
     save = request.form.get('save')
     add = request.form.get('add', '').strip()
     remove = request.form.get('remove', '').strip()
+    view = request.form.get('view')
+    clear = request.form.get('clear')
     delete = request.form.get('delete')
     log.debug(f"Values: email={email} name={name} code={code}")
     log.debug(f"Options: private={private} locked={locked}")
-    log.debug(f"Actions: save={save} add={add} remove={remove} delete={delete}")
+    log.debug(f"Actions: save={save} add={add} remove={remove} view={view} "
+              f"clear={clear} delete={delete}")
 
     if delete:
         _, status = call(api.collections.delete, key=key)
         assert 200 <= status < 300
         return redirect(url_for('collections.index'))
 
-    if save:
+    if save or view:
         content, status = call(api.collections.update, key=key,
                                name=name, code=code,
                                private=private, locked=locked)
-        if status == 200:
-            flash("Settings updated.", 'info')
-        else:
+        if status != 200:
             flash(content['message'], 'danger')
+        elif view:
+            code = content['code']
+            return redirect(url_for('collections.detail', code=code))
+        else:
+            flash("Settings updated.", 'info')
 
     if add:
         _, status = call(api.items.add, key=key, name=add)
@@ -92,5 +98,12 @@ def update(key):
 
         else:
             flash(content['message'], 'danger')
+
+    if clear:
+        content, status = call(api.votes.clear, key=key)
+        assert status == 200
+        flash("Votes cleared.", 'info')
+        code = content['code']
+        return redirect(url_for('collections.detail', code=code))
 
     return redirect(url_for('admin.detail', key=key))

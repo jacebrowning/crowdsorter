@@ -146,7 +146,6 @@ def describe_admin():
 
         expect(html).contains('<a href="/collections/abc123">Admin</a>')
         expect(html).contains("Sample List")
-        expect(html).contains('href="/sample">')
 
     def with_unknown_key(client):
         html = get(client, "/collections/unknown")
@@ -237,6 +236,22 @@ def describe_admin():
 
             expect(html).contains("Removed item: foo")
             expect(html).does_not_contain('value="foo" name="remove"')
+
+    def describe_view():
+
+        def it_redirects(client, collection):
+            data = dict(view=True)
+            html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Votes: 1")
+
+    def describe_clear():
+
+        def it_redirects_and_clears_votes(client, collection):
+            data = dict(clear=True)
+            html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Votes: 0")
 
     def describe_delete():
 

@@ -363,6 +363,14 @@ def describe_votes():
                 'message': "Winner and loser are required.",
             }
 
+    def describe_DELETE():
+
+        def it_clears_all_votes(client, url, collection):
+            status, content = load(client.delete(url))
+
+            expect(status) == 200
+            expect(content['vote_count']) == 0
+
 
 def describe_scores():
 

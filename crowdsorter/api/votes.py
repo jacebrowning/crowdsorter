@@ -40,6 +40,19 @@ def add(key, winner=None, loser=None):
     return serialize(collection), status.HTTP_200_OK
 
 
+@blueprint.route("/api/collections/<key>/votes", methods=['DELETE'])
+def clear(key):
+    collection = Collection.objects(key=key).first()
+    if not collection:
+        raise exceptions.NotFound
+
+    collection.votes.clear()
+    collection.vote_count = 0
+    collection.save()
+
+    return serialize(collection), status.HTTP_200_OK
+
+
 def serialize(collection):
     return dict(
         _links=dict(
@@ -50,4 +63,5 @@ def serialize(collection):
         name=collection.name,
         code=collection.code,
         items=collection.items_prioritized,
+        vote_count=collection.vote_count,
     )

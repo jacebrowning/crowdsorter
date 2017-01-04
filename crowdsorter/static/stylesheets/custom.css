@@ -83,6 +83,11 @@ label {
     padding: 0 0.5em;
 }
 
+.section {
+    margin-top: 0px;
+    margin-bottom: 20px
+}
+
 .btn-vote {
     padding: 4em 0.25em;
     white-space: normal;
