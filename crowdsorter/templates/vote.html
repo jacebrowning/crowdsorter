@@ -46,7 +46,6 @@
 
         </div>
     </div>
-    <div class="loader" style="display: none"></div>
 {% endblock %}
 
 {% block scripts %}
@@ -54,7 +53,6 @@
     <!-- Custom -->
     <script type="text/javascript">
         $('form').submit(function(){
-            $('.loader').show();
             $('.btn-vote').prop('disabled', true);
             $('.btn-reload').prop('disabled', true);
         });

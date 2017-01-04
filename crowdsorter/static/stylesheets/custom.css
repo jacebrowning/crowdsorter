@@ -100,27 +100,3 @@ label {
 .bottom-buffer {
     margin-bottom: .75em;
 }
-
-.loader {
-    border-top: 20px solid #4c2acf;
-    border-right: 20px solid #4c2acf;
-    border-bottom: 20px solid #bf7900;
-    border-left: 20px solid #bf7900;
-    opacity: 0.8;
-    border-radius: 50%;
-    width: 250px;
-    height: 250px;
-    animation: spin 1s linear infinite;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -125px;
-    margin-left: -125px;
-    z-index: 10;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}

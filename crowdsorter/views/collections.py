@@ -101,8 +101,6 @@ def add(code):
 @register_menu(blueprint, '.vote', "Vote", order=3,
                visible_when=_show_items)
 def vote(code):
-    timestamp = time.time()
-
     key = _get_key(code)
 
     if request.method == 'POST':
@@ -111,9 +109,6 @@ def vote(code):
 
         content, status = call(api.votes.add, key=key,
                                winner=winner, loser=loser)
-
-        while time.time() - timestamp < 1:
-            time.sleep(0.1)
 
         return redirect(url_for('collections.vote', code=code))
 
