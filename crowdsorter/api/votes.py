@@ -5,6 +5,7 @@ from flask_api import status
 
 from ..models import Collection
 
+from ._schemas import parser, VoteSchema
 from . import _exceptions as exceptions
 
 
@@ -22,16 +23,11 @@ def index(key):
 
 
 @blueprint.route("/api/collections/<key>/votes", methods=['POST'])
-def add(key, winner=None, loser=None):
+@parser.use_kwargs(VoteSchema)
+def add(key, winner, loser):
     collection = Collection.objects(key=key).first()
     if not collection:
         raise exceptions.NotFound
-
-    winner = winner or request.data.get('winner')
-    loser = loser or request.data.get('loser')
-    if not (winner and loser):
-        msg = "Winner and loser are required."
-        raise exceptions.UnprocessableEntity(msg)
 
     log.debug("Comparison result: %s > %s", winner, loser)
     collection.vote(winner, loser)

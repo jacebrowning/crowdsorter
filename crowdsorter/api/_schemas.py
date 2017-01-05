@@ -26,9 +26,25 @@ class ValidatorMixin(object):
     def log_parsed(self, data):  # pylint: disable=no-self-use
         log.debug("Parsed data: %r", data)
 
-    def handle_error(self, exc, data):
+    def handle_error(self, error, data):
         log.error("Unable to parse: %r", data)
-        raise UnprocessableEntity(exc.messages)
+
+        missing = []
+        for field in sorted(error.messages):
+            for message in error.messages[field]:
+                if message == "Missing data for required field.":
+                    missing.append(field)
+
+        if len(missing) == 1:
+            msg = f"{missing[0]} is required.".capitalize()
+            raise UnprocessableEntity(msg)
+
+        elif len(missing) == 2:
+            msg = f"{missing[0]} and {missing[1]} are required.".capitalize()
+            raise UnprocessableEntity(msg)
+
+        else:
+            raise UnprocessableEntity(error.messages)
 
     class Meta:
         strict = True
@@ -38,6 +54,8 @@ class ItemSchema(ValidatorMixin, Schema):
 
     name = fields.Str(required=True)
 
-    def handle_error(self, error, data):
-        log.error("Unable to parse: %r", data)
-        raise UnprocessableEntity("Name is required.")
+
+class VoteSchema(ValidatorMixin, Schema):
+
+    winner = fields.Str(required=True)
+    loser = fields.Str(required=True)

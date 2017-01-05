@@ -360,7 +360,7 @@ def describe_votes():
 
             expect(status) == 422
             expect(content) == {
-                'message': "Winner and loser are required.",
+                'message': "Loser and winner are required.",
             }
 
     def describe_DELETE():
