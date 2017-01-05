@@ -5,7 +5,8 @@ from flask_api import status
 
 from ..models import Collection
 
-from ._schemas import parser, NewCollectionSchema, CollectionSchema
+from ._schemas import (parser, CollectionSchema,
+                       NewCollectionSchema, EditCollectionSchema)
 from . import _exceptions as exceptions
 
 
@@ -61,27 +62,21 @@ def detail(key, code):
 
 
 @blueprint.route("/api/collections/<key>", methods=['PUT'])
-def update(key, name=None, owner=None, code=None, private=None, locked=None):
+@parser.use_kwargs(EditCollectionSchema)
+def update(key, name, owner, code, private, locked):
     collection = Collection.objects(key=key).first()
 
-    if name is None:
-        name = request.data.get('name', "")
-    if owner is None:
-        owner = request.data.get('owner', "")
-    if code is None:
-        code = request.data.get('code', "")
-    if private is None:
-        value = request.data.get('private', collection.private)
-        private = value not in [False, 'False']
-    if locked is None:
-        value = request.data.get('locked', collection.locked)
-        locked = value not in [False, 'False']
+    if name:
+        collection.name = name
+    if owner:
+        collection.owner = owner
+    if code:
+        collection.code = code
+    if private is not None:
+        collection.private = private
+    if locked is not None:
+        collection.locked = locked
 
-    collection.name = name.strip() or collection.name
-    collection.owner = owner.strip() or collection.owner
-    collection.code = code.strip().lower().replace(' ', '-') or collection.code
-    collection.private = private
-    collection.locked = locked
     try:
         collection.save()
     except exceptions.NotUniqueError:

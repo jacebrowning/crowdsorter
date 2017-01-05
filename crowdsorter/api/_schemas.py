@@ -50,16 +50,33 @@ class ValidatorMixin(object):
         strict = True
 
 
-class NewCollectionSchema(ValidatorMixin, Schema):
-
-    name = fields.Str(required=True)
-    code = fields.Str(missing=None)
-    items = fields.List(fields.Str(), missing=None)
-
-
 class CollectionSchema(ValidatorMixin, Schema):
 
     code = fields.Str(missing=None)
+
+
+class NewCollectionSchema(CollectionSchema):
+
+    name = fields.Str(required=True)
+    items = fields.List(fields.Str(), missing=None)
+
+
+class EditCollectionSchema(CollectionSchema):
+
+    name = fields.Str(missing=None)
+    owner = fields.Str(missing=None)
+    private = fields.Bool(missing=None)
+    locked = fields.Bool(missing=None)
+
+    @pre_load
+    def clean(self, data):
+        name = data.get('name')
+        if name:
+            data['name'] = name.strip()
+
+        code = data.get('code')
+        if code:
+            data['code'] = code.strip().lower().replace(' ', '-')
 
 
 class ItemSchema(ValidatorMixin, Schema):
