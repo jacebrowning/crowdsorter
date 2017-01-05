@@ -50,6 +50,11 @@ class ValidatorMixin(object):
         strict = True
 
 
+class TokenSchema(ValidatorMixin, Schema):
+
+    token = fields.Str(missing=None)
+
+
 class CollectionSchema(ValidatorMixin, Schema):
 
     code = fields.Str(missing=None)

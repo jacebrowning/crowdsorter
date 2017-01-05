@@ -1,11 +1,11 @@
 import logging
 
-from flask import Blueprint, request, url_for, current_app
+from flask import Blueprint, url_for, current_app
 from flask_api import status
 
 from ..models import Collection
 
-from ._schemas import (parser, CollectionSchema,
+from ._schemas import (parser, TokenSchema, CollectionSchema,
                        NewCollectionSchema, EditCollectionSchema)
 from . import _exceptions as exceptions
 
@@ -15,8 +15,8 @@ log = logging.getLogger(__name__)
 
 
 @blueprint.route("/api/collections/")
-def index(token=None, limit=None, **filter):
-    token = token or request.args.get('token')
+@parser.use_kwargs(TokenSchema)
+def index(token, limit=None, **filter):
     if token != current_app.config['AUTH_TOKEN']:
         raise exceptions.PermissionDenied
 
