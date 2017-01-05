@@ -1,10 +1,11 @@
 import logging
 
-from flask import Blueprint, request, url_for
+from flask import Blueprint, url_for
 from flask_api import status
 
 from ..models import Collection
 
+from ._schemas import parser, ItemSchema
 from . import _exceptions as exceptions
 
 
@@ -22,14 +23,11 @@ def index(key):
 
 
 @blueprint.route("/api/collections/<key>/items", methods=['POST'])
-def add(key, name=None):
+@parser.use_kwargs(ItemSchema)
+def add(key, name):
     collection = Collection.objects(key=key).first()
     if not collection:
         raise exceptions.NotFound
-
-    name = name or request.data.get('name')
-    if not name:
-        raise exceptions.UnprocessableEntity("Name is required.")
 
     log.debug("Adding to %r: %r", collection, name)
     collection.items.append(name)
@@ -39,7 +37,7 @@ def add(key, name=None):
 
 
 @blueprint.route("/api/collections/<key>/items/<name>", methods=['DELETE'])
-def remove(key, name=None):
+def remove(key, name):
     collection = Collection.objects(key=key).first()
     if not collection:
         raise exceptions.NotFound

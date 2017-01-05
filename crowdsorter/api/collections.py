@@ -1,10 +1,12 @@
 import logging
 
-from flask import Blueprint, request, url_for, current_app
+from flask import Blueprint, url_for, current_app
 from flask_api import status
 
 from ..models import Collection
 
+from ._schemas import (parser, TokenSchema, CollectionSchema,
+                       NewCollectionSchema, EditCollectionSchema)
 from . import _exceptions as exceptions
 
 
@@ -13,10 +15,10 @@ log = logging.getLogger(__name__)
 
 
 @blueprint.route("/api/collections/")
-def index(token=None, limit=None, **filter):
-    token = token or request.args.get('token')
+@parser.use_kwargs(TokenSchema)
+def index(token, limit=None, **filter):
     if token != current_app.config['AUTH_TOKEN']:
-        raise exceptions.PermissionDenied("An auth token is required.")
+        raise exceptions.PermissionDenied
 
     collections = Collection.objects(**filter) \
                             .order_by('-vote_count') \
@@ -34,18 +36,8 @@ def index(token=None, limit=None, **filter):
 
 
 @blueprint.route("/api/collections/", methods=['POST'])
-def create(name=None):
-    name = name or request.data.get('name')
-    code = request.data.get('code')
-    try:
-        items = request.data.getlist('items')
-    except AttributeError:
-        # TODO: figure out how to test this automatically
-        # it only seems to get triggered from the Flask-API browser
-        items = request.data.get('items', [])
-    if not name:
-        raise exceptions.UnprocessableEntity("Name is required.")
-
+@parser.use_kwargs(NewCollectionSchema)
+def create(name, code, items):
     collection = Collection(name=name, code=code, items=items)
     collection.save()
 
@@ -53,10 +45,10 @@ def create(name=None):
 
 
 @blueprint.route("/api/collections/<key>")
-def detail(key, code=None):
+@parser.use_kwargs(CollectionSchema)
+def detail(key, code):
     collection = None
 
-    code = code or request.args.get('code')
     if code:
         collection = Collection.objects(code=code).first()
 
@@ -70,27 +62,21 @@ def detail(key, code=None):
 
 
 @blueprint.route("/api/collections/<key>", methods=['PUT'])
-def update(key, name=None, owner=None, code=None, private=None, locked=None):
+@parser.use_kwargs(EditCollectionSchema)
+def update(key, name, owner, code, private, locked):
     collection = Collection.objects(key=key).first()
 
-    if name is None:
-        name = request.data.get('name', "")
-    if owner is None:
-        owner = request.data.get('owner', "")
-    if code is None:
-        code = request.data.get('code', "")
-    if private is None:
-        value = request.data.get('private', collection.private)
-        private = value not in [False, 'False']
-    if locked is None:
-        value = request.data.get('locked', collection.locked)
-        locked = value not in [False, 'False']
+    if name:
+        collection.name = name
+    if owner:
+        collection.owner = owner
+    if code:
+        collection.code = code
+    if private is not None:
+        collection.private = private
+    if locked is not None:
+        collection.locked = locked
 
-    collection.name = name.strip() or collection.name
-    collection.owner = owner.strip() or collection.owner
-    collection.code = code.strip().lower().replace(' ', '-') or collection.code
-    collection.private = private
-    collection.locked = locked
     try:
         collection.save()
     except exceptions.NotUniqueError:

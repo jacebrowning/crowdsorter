@@ -10,10 +10,11 @@ from ..extensions import sendgrid
 log = logging.getLogger(__name__)
 
 
-def call(function, *args, **kwargs):
+def call(function, **kwargs):
     """Helper function to call the API internally."""
     try:
-        content, status = function(*args, **kwargs)
+        request.data.update(kwargs)
+        content, status = function(**kwargs)  # TODO: remove kwargs
     except APIException as exc:
         content = {'message': exc.detail}
         status = exc.status_code
