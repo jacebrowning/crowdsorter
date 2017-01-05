@@ -5,6 +5,7 @@ from flask_api import status
 
 from ..models import Collection
 
+from ._schemas import parser, CollectionSchema
 from . import _exceptions as exceptions
 
 
@@ -34,18 +35,8 @@ def index(token=None, limit=None, **filter):
 
 
 @blueprint.route("/api/collections/", methods=['POST'])
-def create(name=None):
-    name = name or request.data.get('name')
-    code = request.data.get('code')
-    try:
-        items = request.data.getlist('items')
-    except AttributeError:
-        # TODO: figure out how to test this automatically
-        # it only seems to get triggered from the Flask-API browser
-        items = request.data.get('items', [])
-    if not name:
-        raise exceptions.UnprocessableEntity("Name is required.")
-
+@parser.use_kwargs(CollectionSchema)
+def create(name, code, items):
     collection = Collection(name=name, code=code, items=items)
     collection.save()
 

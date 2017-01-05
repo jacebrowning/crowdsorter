@@ -50,6 +50,13 @@ class ValidatorMixin(object):
         strict = True
 
 
+class CollectionSchema(ValidatorMixin, Schema):
+
+    name = fields.Str(required=True)
+    code = fields.Str(missing=None)
+    items = fields.List(fields.Str(), missing=None)
+
+
 class ItemSchema(ValidatorMixin, Schema):
 
     name = fields.Str(required=True)
