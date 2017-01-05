@@ -7,7 +7,7 @@ from marshmallow import Schema, fields, pre_load, post_load
 from ._exceptions import UnprocessableEntity
 
 
-parser = FlaskParser(('form', 'data'))
+parser = FlaskParser(('query', 'form', 'data'))
 log = logging.getLogger(__name__)
 
 
@@ -50,11 +50,16 @@ class ValidatorMixin(object):
         strict = True
 
 
-class CollectionSchema(ValidatorMixin, Schema):
+class NewCollectionSchema(ValidatorMixin, Schema):
 
     name = fields.Str(required=True)
     code = fields.Str(missing=None)
     items = fields.List(fields.Str(), missing=None)
+
+
+class CollectionSchema(ValidatorMixin, Schema):
+
+    code = fields.Str(missing=None)
 
 
 class ItemSchema(ValidatorMixin, Schema):

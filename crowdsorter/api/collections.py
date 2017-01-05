@@ -5,7 +5,7 @@ from flask_api import status
 
 from ..models import Collection
 
-from ._schemas import parser, CollectionSchema
+from ._schemas import parser, NewCollectionSchema, CollectionSchema
 from . import _exceptions as exceptions
 
 
@@ -35,7 +35,7 @@ def index(token=None, limit=None, **filter):
 
 
 @blueprint.route("/api/collections/", methods=['POST'])
-@parser.use_kwargs(CollectionSchema)
+@parser.use_kwargs(NewCollectionSchema)
 def create(name, code, items):
     collection = Collection(name=name, code=code, items=items)
     collection.save()
@@ -44,10 +44,10 @@ def create(name, code, items):
 
 
 @blueprint.route("/api/collections/<key>")
-def detail(key, code=None):
+@parser.use_kwargs(CollectionSchema)
+def detail(key, code):
     collection = None
 
-    code = code or request.args.get('code')
     if code:
         collection = Collection.objects(code=code).first()
 
