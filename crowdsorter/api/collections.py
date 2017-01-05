@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 def index(token=None, limit=None, **filter):
     token = token or request.args.get('token')
     if token != current_app.config['AUTH_TOKEN']:
-        raise exceptions.PermissionDenied("An auth token is required.")
+        raise exceptions.PermissionDenied
 
     collections = Collection.objects(**filter) \
                             .order_by('-vote_count') \

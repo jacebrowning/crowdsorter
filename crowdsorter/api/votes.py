@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, request, url_for
+from flask import Blueprint, url_for
 from flask_api import status
 
 from ..models import Collection
