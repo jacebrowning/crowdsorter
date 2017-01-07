@@ -72,7 +72,6 @@ def describe_collections():
             html = get(client, "/collections/")
 
             expect(html).contains("Popular Collections")
-            expect(html).contains('<a href="/test" class="list-group-item">')
             expect(html).contains('<a href="/sample" class="list-group-item">')
             expect(html).contains("1 Votes")
 

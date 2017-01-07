@@ -11,7 +11,6 @@ from .. import api
 from ._utils import call, parts
 
 
-SAMPLE_COLLECTION_NAME = "Sample Collection"
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
 UNKNOWN_COLLECTION_CODE = "unknown"
 
@@ -35,15 +34,11 @@ def _activate_items():
 @register_menu(blueprint, '.index', "Collections", order=1,
                active_when=_activate_collections)
 def index():
-    sample_code = current_app.config['SAMPLE_COLLECTION_CODE']
-
-    content, status = call(api.collections.index, private=False, limit=13,
+    content, status = call(api.collections.index, private=False, limit=15,
                            token=current_app.config['AUTH_TOKEN'])
     assert status == 200
 
     return Response(render_template("collections.html",
-                                    sample_name=SAMPLE_COLLECTION_NAME,
-                                    sample_code=sample_code,
                                     collections=content['_items']))
 
 

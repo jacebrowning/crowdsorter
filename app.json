@@ -16,9 +16,6 @@
     "AUTH_TOKEN": {
       "value": "review"
     },
-    "SAMPLE_COLLECTION_CODE": {
-      "value": "sample"
-    },
     "WEB_CONCURRENCY": {
       "value": "4"
     },
