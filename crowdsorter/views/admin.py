@@ -52,33 +52,6 @@ def update(key):
     log.debug(f"Actions: save={save} add={add} remove={remove} view={view} "
               f"clear={clear} delete={delete}")
 
-    if delete:
-        _, status = call(api.collections.delete, key=key)
-        assert 200 <= status < 300
-        return redirect(url_for('collections.index'))
-
-    if save or view:
-        content, status = call(api.collections.update, key=key,
-                               name=name, code=code,
-                               private=private, locked=locked)
-        if status != 200:
-            flash(content['message'], 'danger')
-        elif view:
-            code = content['code']
-            return redirect(url_for('collections.detail', code=code))
-        else:
-            flash("Settings updated.", 'info')
-
-    if add:
-        _, status = call(api.items.add, key=key, name=add)
-        assert status == 200
-        flash(f"Added item: {add}", 'info')
-
-    if remove:
-        _, status = call(api.items.remove, key=key, name=remove)
-        assert status == 200
-        flash(f"Removed item: {remove}", 'info')
-
     if email:
         content, status = call(api.collections.update, key=key, owner=email)
         if status == 200:
@@ -99,11 +72,41 @@ def update(key):
         else:
             flash(content['message'], 'danger')
 
+    if save:
+        content, status = call(api.collections.update, key=key,
+                               name=name, code=code,
+                               private=private, locked=locked)
+        if status == 200:
+            flash("Settings updated.", 'info')
+        else:
+            flash(content['message'], 'danger')
+
+    if add:
+        _, status = call(api.items.add, key=key, name=add)
+        assert status == 200
+        flash(f"Added item: {add}", 'info')
+
+    if remove:
+        _, status = call(api.items.remove, key=key, name=remove)
+        assert status == 200
+        flash(f"Removed item: {remove}", 'info')
+
+    if view:
+        content, status = call(api.collections.detail, key=key)
+        assert status == 200
+        code = content['code']
+        return redirect(url_for('collections.detail', code=code))
+
     if clear:
         content, status = call(api.votes.clear, key=key)
         assert status == 200
         flash("Votes cleared.", 'info')
         code = content['code']
         return redirect(url_for('collections.detail', code=code))
+
+    if delete:
+        _, status = call(api.collections.delete, key=key)
+        assert 200 <= status < 300
+        return redirect(url_for('collections.index'))
 
     return redirect(url_for('admin.detail', key=key))
