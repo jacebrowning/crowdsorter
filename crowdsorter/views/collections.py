@@ -3,7 +3,7 @@ import logging
 
 from flask import Blueprint, Response
 from flask import (request, render_template, redirect, url_for, flash,
-                   current_app)
+                   current_app, session)
 from flask_menu import register_menu
 
 from .. import api
@@ -113,6 +113,8 @@ def vote(code):
         content['code'] = UNKNOWN_COLLECTION_CODE
         content['items'] = ["---"] * 10
 
+    _removed_recently_viewed_items(content)
+
     return Response(render_template("vote.html", collection=content))
 
 
@@ -133,3 +135,28 @@ def _get_key(code, *, require_unlocked=False):
 
     log.warning("Unknown code: %s", code)
     return None
+
+
+def _removed_recently_viewed_items(content):
+    voted = session.get('voted') or []
+    names = content['items']
+
+    for pair in voted:
+        for name in pair:
+            if len(names) <= 2:
+                break
+            if name == names[0]:
+                names.pop(0)
+                break
+
+    if len(names) >= 2:
+        pair = names[0], names[1]
+        voted.append(pair)
+
+    while len(voted) > 3:
+        voted.pop(0)
+
+    session['voted'] = voted
+    content['items'] = names
+
+    return content
