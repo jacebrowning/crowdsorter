@@ -101,6 +101,17 @@ footer {
     margin-bottom: 20px
 }
 
+.bar-pos {
+    float: right;
+    height: 30px;
+    background: #4c2acf;
+}
+.bar-neg {
+    float: right;
+    height: 30px;
+    background: #bf7900;
+}
+
 .btn-vote {
     padding: 4em 0.25em;
     white-space: normal;
