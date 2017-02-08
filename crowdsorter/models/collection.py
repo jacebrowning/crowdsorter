@@ -103,8 +103,9 @@ class Collection(db.Document):
 
     @property
     def items_by_confidence(self):
-        return [s['name'] for s in
-                sorted(self.scores, key=lambda s: s.confidence)]
+        scores = self.scores.copy()
+        random.shuffle(scores)
+        return [s['name'] for s in sorted(scores, key=lambda s: s.confidence)]
 
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""
