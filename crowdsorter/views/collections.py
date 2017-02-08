@@ -141,12 +141,17 @@ def _removed_recently_viewed_items(content):
     voted = session.get('voted') or []
     names = content['items']
 
-    for name in voted:
-        if len(names) > 2:
-            names.remove(name)
+    for pair in voted:
+        for name in pair:
+            if len(names) <= 2:
+                break
+            if name == names[0]:
+                names.pop(0)
+                break
 
-    if names:
-        voted.append(names[0])
+    if len(names) >= 2:
+        pair = names[0], names[1]
+        voted.append(pair)
 
     while len(voted) > 3:
         voted.pop(0)
