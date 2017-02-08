@@ -38,13 +38,19 @@
 
             <div class="row">
                 <div class="list-group">
+                    {% set scale = collection['scores']|length / 250 %}
                     {% for item in collection['scores'] %}
                     <div class="list-group-item">
                         <div class="left">
                             {{ item['name'] }}
                         </div>
                         <div class="right">
-                            {{ "{0:.1f}".format(item['points']) }} @ {{ "{0:.1%}".format(item['confidence']) }}
+                            {% if item['points'] > 0 %}
+                            <div class="bar-pos" style="width: {{ item['points'] / +scale }}px; opacity: {{ item['confidence'] }};"></div>
+                            {% else %}
+                            <div class="bar-neg" style="width: {{ item['points'] / -scale }}px; opacity: {{ item['confidence'] }};"></div>
+
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
