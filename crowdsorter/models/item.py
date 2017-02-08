@@ -1,8 +1,9 @@
 import logging
 from collections import defaultdict
 
-from ._config import INFERRED_POINTS_IMPACT, INFERRED_RATIO_IMPACT
 
+INFERRED_POINTS_IMPACT = 0.9
+INFERRED_RATIO_IMPACT = 0.9
 
 log = logging.getLogger(__name__)
 

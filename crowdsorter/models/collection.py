@@ -6,7 +6,6 @@ from bson.objectid import ObjectId
 from ..extensions import db
 
 from . import Items
-from ._config import MINIMUM_ITEMS, CONFIDENCE_FUZZ
 
 
 ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
@@ -103,15 +102,9 @@ class Collection(db.Document):
         return len(self.items)
 
     @property
-    def items_prioritized(self):
-        scores = self.scores.copy()
-        scores.sort(key=self._fuzz_confidence)
-        return [item['name'] for item in scores]
-
-    def _fuzz_confidence(self, score):
-        fuzz = max(self.item_count / MINIMUM_ITEMS, 1.0) * CONFIDENCE_FUZZ
-        ratio = 1.0 - fuzz
-        return (score['confidence'] + .01) * random.uniform(ratio, 1.0)
+    def items_by_confidence(self):
+        return [s['name'] for s in
+                sorted(self.scores, key=lambda s: s.confidence)]
 
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""

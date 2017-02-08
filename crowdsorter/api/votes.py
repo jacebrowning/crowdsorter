@@ -58,6 +58,6 @@ def serialize(collection):
         ),
         name=collection.name,
         code=collection.code,
-        items=collection.items_prioritized,
+        items=collection.items_by_confidence,
         vote_count=collection.vote_count,
     )
