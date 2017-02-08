@@ -147,13 +147,12 @@ def _removed_recently_viewed_items(content):
                 break
             if name == names[0]:
                 names.pop(0)
-                break
 
     if len(names) >= 2:
         pair = names[0], names[1]
         voted.append(pair)
 
-    while len(voted) > 3:
+    while len(voted) > 10:
         voted.pop(0)
 
     session['voted'] = voted
