@@ -140,6 +140,7 @@ def _get_key(code, *, require_unlocked=False):
 def _removed_recently_viewed_items(content):
     voted = session.get('voted') or []
     names = content['items']
+    count = len(names)
 
     for pair in voted:
         for name in pair:
@@ -152,7 +153,7 @@ def _removed_recently_viewed_items(content):
         pair = names[0], names[1]
         voted.append(pair)
 
-    while len(voted) > 10:
+    while len(voted) > count // 2:
         voted.pop(0)
 
     session['voted'] = voted
