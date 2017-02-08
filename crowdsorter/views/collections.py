@@ -148,6 +148,7 @@ def _removed_recently_viewed_items(content):
                 break
             if name == names[0]:
                 names.pop(0)
+                break
 
     if len(names) >= 2:
         pair = names[0], names[1]
