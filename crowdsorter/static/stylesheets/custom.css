@@ -105,12 +105,12 @@ footer {
 .bar-pos {
     float: right;
     height: 30px;
-    background: #4c2acf;
+    background: #694ef0;
 }
 .bar-neg {
     float: right;
     height: 30px;
-    background: #bf7900;
+    background: #f0ad4e;
 }
 
 .btn-vote {
