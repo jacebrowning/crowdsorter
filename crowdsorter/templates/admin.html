@@ -2,6 +2,15 @@
 
 {% block title %}{{ super() }} | {{ collection['name'] }} | Admin{% endblock %}
 
+{% block metas %}
+
+    <!-- Metadata -->
+    <meta name="description" content="Crowd Sorter admin page for the {{ collection['name'] }} collection.">
+    <meta name="twitter:description" content="Crowd Sorter admin page for the {{ collection['name'] }} collection.">
+    <meta property="og:description" content="Crowd Sorter admin page for the {{ collection['name'] }} collection.">
+{{ super() }}
+{% endblock %}
+
 {% block content %}
 {{ super() }}
     <div class="jumbotron text-center">

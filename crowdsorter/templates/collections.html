@@ -2,6 +2,15 @@
 
 {% block title %}{{ super() }} | Collections{% endblock %}
 
+{% block metas %}
+
+    <!-- Metadata -->
+    <meta name="description" content="Crowdsourced list sorting.">
+    <meta name="twitter:description" content="Crowdsourced list sorting.">
+    <meta property="og:description" content="Crowdsourced list sorting.">
+{{ super() }}
+{% endblock %}
+
 {% block content %}
 {{ super() }}
     <div class="jumbotron text-center">

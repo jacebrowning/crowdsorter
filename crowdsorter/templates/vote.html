@@ -2,6 +2,15 @@
 
 {% block title %}{{ super() }} | {{ collection['name'] }} | Vote{% endblock %}
 
+{% block metas %}
+
+    <!-- Metadata -->
+    <meta name="description" content="Cast your votes on the {{ collection['name'] }} collection.">
+    <meta name="twitter:description" content="Cast your votes on the {{ collection['name'] }} collection.">
+    <meta property="og:description" content="Cast your votes on the {{ collection['name'] }} collection.">
+{{ super() }}
+{% endblock %}
+
 {% block content %}
 {{ super() }}
     <div class="jumbotron text-center">
