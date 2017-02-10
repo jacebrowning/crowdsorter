@@ -150,7 +150,7 @@ PEP257 := $(BIN_)pep257
 PYLINT := $(BIN_)pylint
 
 .PHONY: check
-check: pep8 pep257 ## Run linters and static analysis
+check: pep8 pep257 pylint ## Run linters and static analysis
 
 .PHONY: pep8
 pep8: install ## Check for convention issues
@@ -216,8 +216,17 @@ read-coverage:
 
 # DOCUMENTATION ################################################################
 
+PYREVERSE := $(BIN)/pyreverse
+
 .PHONY: doc
-doc:  ## Generate documentation
+doc: uml ## Generate documentation
+
+.PHONY: uml
+uml: install docs/*.png ## Generate UML diagrams for classes and packages
+docs/*.png: $(MODULES)
+	$(PYREVERSE) $(PACKAGE) -p $(PACKAGE) -a 1 -f ALL -o png --ignore tests
+	- mv -f classes_$(PACKAGE).png docs/classes.png
+	- mv -f packages_$(PACKAGE).png docs/packages.png
 
 # CLEANUP ######################################################################
 

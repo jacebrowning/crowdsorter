@@ -1,4 +1,4 @@
-# pylint: disable=unused-variable,unused-argument,redefined-outer-name
+# pylint: disable=unused-variable,unused-argument,redefined-outer-name,expression-not-assigned
 
 from expecter import expect
 

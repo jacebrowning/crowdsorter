@@ -26,7 +26,7 @@ class ValidatorMixin(object):
     def log_parsed(self, data):  # pylint: disable=no-self-use
         log.debug("Parsed data: %r", data)
 
-    def handle_error(self, error, data):
+    def handle_error(self, error, data):  # pylint: disable=no-self-use
         log.error("Unable to parse: %r", data)
 
         missing = []
@@ -74,7 +74,7 @@ class EditCollectionSchema(CollectionSchema):
     locked = fields.Bool(missing=None)
 
     @pre_load
-    def clean(self, data):
+    def clean(self, data):  # pylint: disable=no-self-use
         name = data.get('name')
         if name:
             data['name'] = name.strip()
