@@ -44,7 +44,11 @@
 
         </div>
     </div>
-    <hr>
+
+    <div class="container-fluid">
+        <hr>
+    </div>
+
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2">
 
@@ -68,7 +72,7 @@
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="public" {{ "" if collection['private'] else "checked=true" }}>
-                                Show this collection in search results
+                                Allow sharing and display in search results
                             </label>
                         </div>
                         <div class="checkbox">
@@ -86,7 +90,11 @@
 
         </div>
     </div>
-    <hr>
+
+    <div class="container-fluid">
+        <hr>
+    </div>
+
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2">
 
@@ -125,7 +133,11 @@
 
         </div>
     </div>
-    <hr>
+
+    <div class="container-fluid">
+        <hr>
+    </div>
+
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2">
 
@@ -140,7 +152,6 @@
 
         </div>
     </div>
-    <br>
 
     {% include "footer.html" %}
 {% endblock %}

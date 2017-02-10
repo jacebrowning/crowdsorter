@@ -18,9 +18,9 @@
     </div>
 
     <div class="container">
-        <div class="col-sm-8 col-sm-offset-2">
 
-            <div class="row">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
                 <ul class="list-group">
                     <div class="list-group-item">
                         <div class="left">
@@ -32,16 +32,22 @@
                     </div>
                 </ul>
             </div>
+        </div>
 
-            <div class="row center">
+        <div class="row center">
+            <div class="col-sm-8 col-sm-offset-2">
                 <a class="btn btn-primary" href="/{{ collection['code'] }}/vote" role="button">
                     Vote on Items
                 </a>
             </div>
-
         </div>
+
     </div>
-    <hr>
+
+    <div class="container-fluid">
+        <hr>
+    </div>
+
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2">
 
@@ -89,7 +95,29 @@
 
         </div>
     </div>
-    <br>
+
+    {% if not collection['private'] %}
+    <div class="container-fluid">
+        <hr>
+    </div>
+
+    <div class="container">
+        <div class="row center">
+            <div class="col-sm-8 col-sm-offset-2">
+                <a class="btn btn-default" href="https://www.facebook.com/sharer/sharer.php?u={{ url_for('collections.detail', code=collection['code'], _external=True) }}" target="_blank">
+                    <img src="{{ url_for('static', filename='images/facebook.png') }}" height=30></img>
+                    &nbsp;
+                    Share on Facebook
+                </a>
+                <a class="btn btn-default" href="https://twitter.com/home?status={{ url_for('collections.detail', code=collection['code'], _external=True) }}" target="_blank">
+                    <img src="{{ url_for('static', filename='images/twitter.png') }}" height=30></img>
+                    &nbsp;
+                    Share on Twitter
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
     {% include "footer.html" %}
 {% endblock %}
