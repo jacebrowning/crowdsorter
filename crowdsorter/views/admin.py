@@ -55,20 +55,10 @@ def update(key):
     if email:
         content, status = call(api.collections.update, key=key, owner=email)
         if status == 200:
-
-            name = content['name']
-            url = url_for('admin.detail', key=content['key'], _external=True)
-
-            if send_email(
-                subject=f"Crowd Sorter: {name}",
-                to_email=content['owner'],
-                text=f"The admin page for {name} can be found at: {url}",
-            ):
+            if send_email(**_generate_email_data(content)):
                 flash(f"Email sent: {email}", 'info')
-
             else:
                 flash(f"Unable to send email: {email}", 'danger')
-
         else:
             flash(content['message'], 'danger')
 
@@ -110,3 +100,19 @@ def update(key):
         return redirect(url_for('collections.index'))
 
     return redirect(url_for('admin.detail', key=key))
+
+
+def _generate_email_data(content):
+    """Generate keyword arguments for the `send_email` utility."""
+    name = content['name']
+    admin = url_for('admin.detail', key=content['key'], _external=True)
+    api = url_for('collections_api.detail', key=content['key'], _external=True)
+    return dict(
+        subject=f"Crowd Sorter: {name}",
+        to_email=content['owner'],
+        text=(
+            f"The admin page for {name} can be found at: {admin}"
+            "\n\n"
+            f"Your private collection API can be found at: {api}"
+        ),
+    )
