@@ -55,9 +55,13 @@
                         </div>
                         <div class="right">
                             {% if item['points'] > 0 %}
-                            <div class="bar-pos" style="width: {{ item['points'] / +scale }}%; opacity: {{ item['confidence'] }};"></div>
+                            <div class="bar-pos" style="width: {{ item['points'] / +scale }}%; opacity: {{ item['confidence'] }};">
+                                {{ item['points'] if item['points']|abs > 0.75 else '' }}
+                            </div>
                             {% else %}
-                            <div class="bar-neg" style="width: {{ item['points'] / -scale }}%; opacity: {{ item['confidence'] }};"></div>
+                            <div class="bar-neg" style="width: {{ item['points'] / -scale }}%; opacity: {{ item['confidence'] }};">
+                                {{ item['points'] if item['points']|abs > 0.75 else '' }}
+                            </div>
 
                             {% endif %}
                         </div>

@@ -105,12 +105,16 @@ footer {
 .bar-pos {
     float: right;
     height: 30px;
+    padding-right: 5px;
     background: #694ef0;
+    color: white;
 }
 .bar-neg {
     float: right;
     height: 30px;
+    padding-right: 5px;
     background: #f0ad4e;
+    color: white;
 }
 
 .btn-vote {
