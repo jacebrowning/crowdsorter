@@ -105,18 +105,22 @@ footer {
 .bar-pos {
     float: right;
     height: 30px;
-    padding-top: 5px;
+    padding-top: 6px;
     padding-right: 5px;
-    font-size: 14px;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: " ";
     background: #694ef0;
     color: white;
 }
 .bar-neg {
     float: right;
     height: 30px;
-    padding-top: 5px;
+    padding-top: 6px;
     padding-right: 5px;
-    font-size: 14px;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: " ";
     background: #f0ad4e;
     color: white;
 }
