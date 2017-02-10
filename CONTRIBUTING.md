@@ -5,9 +5,9 @@
 ### Requirements
 
 * Make:
-    * Windows: https://cygwin.com/install.html
-    * Mac: https://developer.apple.com/xcode
-    * Linux: https://www.gnu.org/software/make (likely already installed)
+    * Windows: http://mingw.org/download/installer
+    * Mac: http://developer.apple.com/xcode
+    * Linux: http://www.gnu.org/software/make
 
 To confirm these system dependencies are configured correctly:
 

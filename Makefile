@@ -2,9 +2,11 @@
 PROJECT := CrowdSorter
 PACKAGE := crowdsorter
 REPOSITORY := jacebrowning/crowdsorter
+
+# Project paths
 PACKAGES := $(PACKAGE) tests
-CONFIG := $(shell ls *.py)
-MODULES := $(shell find $(PACKAGES) -name '*.py') $(CONFIG)
+CONFIG := $(wildcard *.py)
+MODULES := $(wildcard $(PACKAGE)/*.py)
 
 # Python settings
 ifndef TRAVIS
@@ -33,7 +35,11 @@ else
 endif
 
 # Virtual environment paths
-ENV := env
+ifdef TRAVIS
+	ENV := $(shell dirname $(shell dirname $(shell which $(SYS_PYTHON))))/
+else
+	ENV := env
+endif
 ifneq ($(findstring win32, $(PLATFORM)), )
 	BIN := $(ENV)/Scripts
 	ACTIVATE := $(BIN)/activate.bat
@@ -49,13 +55,10 @@ else
 endif
 
 # Virtual environment executables
-ifndef TRAVIS
-	BIN_ := $(BIN)/
-endif
-PYTHON := $(BIN_)python
-PIP := $(BIN_)pip
-EASY_INSTALL := $(BIN_)easy_install
-SNIFFER := $(BIN_)sniffer
+PYTHON := $(BIN)/python
+PIP := $(BIN)/pip
+EASY_INSTALL := $(BIN)/easy_install
+SNIFFER := $(BIN)/sniffer
 
 # MAIN TASKS ###################################################################
 
@@ -71,7 +74,7 @@ watch: install .clean-test ## Continuously run all CI tasks when files chanage
 
 # SERVER TARGETS ###############################################################
 
-HONCHO := $(ACTIVATE) && $(BIN_)honcho
+HONCHO := $(ACTIVATE) && $(BIN)honcho
 
 export MONGODB_URI ?= mongodb://localhost:27017/crowdsorter_dev
 IP ?= $(shell ipconfig getifaddr en0 || ipconfig getifaddr en1)
@@ -129,7 +132,7 @@ $(PIP): $(PYTHON)
 	@ touch $@
 
 $(PYTHON):
-	$(SYS_PYTHON) -m venv --clear $(ENV)
+	$(SYS_PYTHON) -m venv $(ENV)
 
 # DATA GENERATION ##############################################################
 
@@ -144,39 +147,34 @@ endif
 
 # CHECKS #######################################################################
 
-PEP8 := $(BIN_)pep8
-PEP8RADIUS := $(BIN_)pep8radius
-PEP257 := $(BIN_)pep257
-PYLINT := $(BIN_)pylint
+PYLINT := $(BIN)/pylint
+PYCODESTYLE := $(BIN)/pycodestyle
+PYDOCSTYLE := $(BIN)/pydocstyle
 
 .PHONY: check
-check: pep8 pep257 ## Run linters and static analysis
-
-.PHONY: pep8
-pep8: install ## Check for convention issues
-	$(PEP8) $(PACKAGES) $(CONFIG) --config=.pep8rc
-
-.PHONY: pep257
-pep257: install ## Check for docstring issues
-	$(PEP257) $(PACKAGES) $(CONFIG)
+check: pycodestyle pydocstyle ## Run linters and static analysis
 
 .PHONY: pylint
-pylint: install ## Check for code issues
-	$(PYLINT) $(PACKAGES) $(CONFIG) --rcfile=.pylintrc
+pylint: install
+	$(PYLINT) $(PACKAGES) $(CONFIG) --rcfile=.pylint.ini
 
-.PHONY: fix
-fix: install
-	$(PEP8RADIUS) --docformatter --in-place
+.PHONY: pycodestyle
+pycodestyle: install
+	$(PYCODESTYLE) $(PACKAGES) $(CONFIG) --config=.pycodestyle.ini
+
+.PHONY: pydocstyle
+pydocstyle: install
+	$(PYDOCSTYLE) $(PACKAGES) $(CONFIG)
 
 # TESTS ########################################################################
 
-PYTEST := FLASK_ENV=test $(BIN_)py.test
-COVERAGE := $(BIN_)coverage
-COVERAGE_SPACE := $(BIN_)coverage.space
+PYTEST := FLASK_ENV=test $(BIN)/py.test
+COVERAGE := $(BIN)/coverage
+COVERAGE_SPACE := $(BIN)/coverage.space
 
 RANDOM_SEED ?= $(shell date +%s)
 
-PYTEST_CORE_OPTS := -r xXw -vv
+PYTEST_CORE_OPTS := -ra -vv
 PYTEST_COV_OPTS := --cov=$(PACKAGE) --no-cov-on-fail --cov-report=term-missing:skip-covered --cov-report=html
 PYTEST_RANDOM_OPTS := --random --random-seed=$(RANDOM_SEED)
 
@@ -187,24 +185,24 @@ FAILURES := .cache/v/cache/lastfailed
 REPORTS ?= xmlreport
 
 .PHONY: test
-test: test-all
+test: test-all ## Run unit and integration tests
 
 .PHONY: test-unit
-test-unit: install ## Run the unit tests
+test-unit: install
 	@- mv $(FAILURES) $(FAILURES).bak
 	$(PYTEST) $(PYTEST_OPTS) $(PACKAGE) --junitxml=$(REPORTS)/unit.xml
 	@- mv $(FAILURES).bak $(FAILURES)
 	$(COVERAGE_SPACE) $(REPOSITORY) unit
 
 .PHONY: test-int
-test-int: install ## Run the integration tests
+test-int: install
 	@ if test -e $(FAILURES); then $(PYTEST) $(PYTEST_OPTS_FAILFAST) tests; fi
 	@ rm -rf $(FAILURES)
 	$(PYTEST) $(PYTEST_OPTS) tests --junitxml=$(REPORTS)/integration.xml
 	$(COVERAGE_SPACE) $(REPOSITORY) integration
 
 .PHONY: test-all
-test-all: install ## Run all the tests
+test-all: install
 	@ if test -e $(FAILURES); then $(PYTEST) $(PYTEST_OPTS_FAILFAST) $(PACKAGES); fi
 	@ rm -rf $(FAILURES)
 	$(PYTEST) $(PYTEST_OPTS) $(PACKAGES) --junitxml=$(REPORTS)/overall.xml
