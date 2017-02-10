@@ -60,7 +60,7 @@
                             </div>
                             {% else %}
                             <div class="bar-neg" style="width: {{ item['points'] / -scale }}%; opacity: {{ item['confidence'] }};">
-                                {{ item['points']|round(1) if item['points'] < -2.0 else '' }}
+                                {{ item['points']|round(1) if item['points'] < -3.0 else '' }}
                             </div>
 
                             {% endif %}
