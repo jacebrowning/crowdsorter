@@ -100,6 +100,7 @@ def describe_collections():
             expect(html).contains("Sample List")
             expect(html).contains("Items: 3")
             expect(html).contains('glyphicon-plus-sign')
+            expect(html).contains("Share on Facebook")
 
         def with_unknown_code(client, collection):
             html = get(client, "/unknown")
@@ -107,6 +108,12 @@ def describe_collections():
             expect(html).contains("No Such Collection")
             expect(html).contains("Items: 0")
             expect(html).does_not_contain('glyphicon-plus-sign')
+            expect(html).does_not_contain("Share on Facebook")
+
+        def on_private_collection(client, collection_private):
+            html = get(client, "/sample")
+
+            expect(html).does_not_contain("Share on Facebook")
 
         def describe_add():
 

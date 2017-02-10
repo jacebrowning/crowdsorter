@@ -70,6 +70,7 @@ def detail(code):
         content['name'] = UNKNOWN_COLLECTION_NAME
         content['code'] = code
         content['locked'] = True
+        content['private'] = True
 
     return Response(render_template("items.html", collection=content))
 

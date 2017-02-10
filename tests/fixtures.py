@@ -42,6 +42,13 @@ def collection_inferred(collection):
 
 
 @pytest.fixture
+def collection_private(collection):
+    collection.private = True
+    collection.save()
+    return collection
+
+
+@pytest.fixture
 def collection_locked(collection):
     collection.locked = True
     collection.save()
