@@ -105,14 +105,18 @@ footer {
 .bar-pos {
     float: right;
     height: 30px;
+    padding-top: 5px;
     padding-right: 5px;
+    font-size: 14px;
     background: #694ef0;
     color: white;
 }
 .bar-neg {
     float: right;
     height: 30px;
+    padding-top: 5px;
     padding-right: 5px;
+    font-size: 14px;
     background: #f0ad4e;
     color: white;
 }
