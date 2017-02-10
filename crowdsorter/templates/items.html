@@ -64,13 +64,13 @@
                             <div class="bar-pos" style="
                                     width: {{ item['points'] / +scale }}%;
                                     opacity: {{ item['confidence'] }};">
-                                {{ item['points']|round(1) }}
+                                &nbsp;&nbsp;+ {{ item['points']|round(1) }}
                             </div>
                             {% else %}
                             <div class="bar-neg" style="
                                     width: {{ item['points'] / -scale }}%;
                                     opacity: {{ item['confidence'] }};">
-                                {{ item['points']|round(1) }}
+                                &nbsp;&nbsp;- {{ item['points']|abs|round(1) }}
                             </div>
 
                             {% endif %}
