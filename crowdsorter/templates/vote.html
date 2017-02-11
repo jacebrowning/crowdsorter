@@ -22,7 +22,9 @@
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="{{ percent }}"
           aria-valuemin="0" aria-valuemax="100" style="width:{{ percent }}%">
+            {% if percent > 9 %}
             {{ percent|round|int }}%
+            {% endif %}
           </div>
         </div>
 
