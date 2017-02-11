@@ -42,7 +42,7 @@ def filter_pairs(content):
     """Filter previously viewed pairs and return the remaining percent."""
     key = content['code'] + '-pairs'
     viewed_pairs = session.get(key) or []
-    names = content['items']
+    names = content['items'].copy()
     total_pairs = len(names) * (len(names) - 1) / 2
 
     if len(viewed_pairs) >= total_pairs:
@@ -54,7 +54,11 @@ def filter_pairs(content):
         next_pair.sort()
 
         if next_pair in viewed_pairs:
-            random.shuffle(names)
+            if len(names) > 2:
+                names.pop(0)
+            else:
+                names = content['items'].copy()
+                random.shuffle(names)
             next_pair = None
         else:
             break

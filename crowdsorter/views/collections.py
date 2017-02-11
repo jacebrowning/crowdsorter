@@ -123,7 +123,7 @@ def vote(code):
         collection['items'] = ["---"] * 2
         results = url_for('collections.detail', code=code, _external=True)
         msg = Markup("You have voted on every pair in this collection. "
-                     f"Back to the results: <a href='{results}'>{results}</a>")
+                     f"Go back to the results: <a href='{results}'>{results}</a>")
         flash(msg, 'warning')
 
     return Response(render_template("vote.html",
