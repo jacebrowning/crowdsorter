@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 
 class Config:
@@ -11,6 +12,7 @@ class Config:
     DEBUG = False
     THREADED = False
     SECRET_KEY = os.getenv('SECRET_KEY')
+    PERMANENT_SESSION_LIFETIME = timedelta(days=7)
 
     SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
     SENDGRID_DEFAULT_FROM = os.getenv('SENDGRID_DEFAULT_FROM')
