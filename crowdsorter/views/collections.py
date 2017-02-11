@@ -122,9 +122,9 @@ def vote(code):
         percent = 100
         collection['items'] = ["---"] * 2
         results = url_for('collections.detail', code=code, _external=True)
-        msg = Markup("You have viewed every pair in this collection. "
-                     f"View the results: <a href='{results}'>{results}</a>")
-        flash(msg, 'info')
+        msg = Markup("You have voted on every pair in this collection. "
+                     f"Back to the results: <a href='{results}'>{results}</a>")
+        flash(msg, 'warning')
 
     return Response(render_template("vote.html",
                                     collection=collection, percent=percent))
