@@ -42,11 +42,14 @@ def filter_pairs(content):
     """Filter previously viewed pairs and return the remaining percent."""
     key = content['code'] + '-pairs'
     viewed_pairs = session.get(key) or []
-    names = content['items'].copy()
+    names = content['items']
     total_pairs = len(names) * (len(names) - 1) / 2
 
+    if len(viewed_pairs) >= total_pairs:
+        return None, content
+
     next_pair = None
-    while len(viewed_pairs) < total_pairs:
+    while True:
         next_pair = names[0:2]
         next_pair.sort()
 
@@ -62,7 +65,6 @@ def filter_pairs(content):
         session.permanent = True
 
     percent = len(viewed_pairs) / total_pairs * 100
-    collection = content.copy()
-    collection['items'] = names
+    content['items'] = names
 
-    return percent, collection
+    return percent, content

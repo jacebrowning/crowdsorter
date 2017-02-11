@@ -118,7 +118,8 @@ def vote(code):
     else:
         percent, collection = filter_pairs(content)
 
-    if percent >= 100:
+    if percent is None:
+        percent = 100
         flash(f"You have viewed every pair in this collection.", 'info')
         collection['items'] = ["---"] * 2
 
