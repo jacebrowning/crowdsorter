@@ -1,7 +1,7 @@
 import time
 import logging
 
-from flask import Blueprint, Response
+from flask import Blueprint, Response, Markup
 from flask import (request, render_template, redirect, url_for, flash,
                    current_app, session)
 from flask_menu import register_menu
@@ -120,8 +120,11 @@ def vote(code):
 
     if percent is None:
         percent = 100
-        flash(f"You have viewed every pair in this collection.", 'info')
         collection['items'] = ["---"] * 2
+        results = url_for('collections.detail', code=code, _external=True)
+        msg = Markup("You have viewed every pair in this collection. "
+                     f"View the results: <a href='{results}'>{results}</a>")
+        flash(msg, 'info')
 
     return Response(render_template("vote.html",
                                     collection=collection, percent=percent))
