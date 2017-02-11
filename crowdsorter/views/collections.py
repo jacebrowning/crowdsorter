@@ -1,14 +1,14 @@
 import time
 import logging
 
-from flask import Blueprint, Response
+from flask import Blueprint, Response, Markup
 from flask import (request, render_template, redirect, url_for, flash,
                    current_app, session)
 from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts
+from ._utils import call, parts, filter_pairs
 
 
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
@@ -110,13 +110,24 @@ def vote(code):
 
     content, status = call(api.votes.index, key=key)
     if status == 404:
-        content['name'] = UNKNOWN_COLLECTION_NAME
-        content['code'] = UNKNOWN_COLLECTION_CODE
-        content['items'] = ["---"] * 10
+        collection = {}
+        collection['name'] = UNKNOWN_COLLECTION_NAME
+        collection['code'] = UNKNOWN_COLLECTION_CODE
+        collection['items'] = ["---"] * 2
+        percent = 0
+    else:
+        percent, collection = filter_pairs(content)
 
-    _removed_recently_viewed_items(content)
+    if percent is None:
+        percent = 100
+        collection['items'] = ["---"] * 2
+        results = url_for('collections.detail', code=code, _external=True)
+        msg = Markup("You have voted on every pair in this collection. "
+                     f"Back to the results: <a href='{results}'>{results}</a>")
+        flash(msg, 'warning')
 
-    return Response(render_template("vote.html", collection=content))
+    return Response(render_template("vote.html",
+                                    collection=collection, percent=percent))
 
 
 def _get_key(code, *, require_unlocked=False):
@@ -136,29 +147,3 @@ def _get_key(code, *, require_unlocked=False):
 
     log.warning("Unknown code: %s", code)
     return None
-
-
-def _removed_recently_viewed_items(content):
-    voted = session.get('voted') or []
-    names = content['items']
-    count = len(names)
-
-    for pair in voted:
-        for name in pair:
-            if len(names) <= 2:
-                break
-            if name == names[0]:
-                names.pop(0)
-                break
-
-    if len(names) >= 2:
-        pair = names[0], names[1]
-        voted.append(pair)
-
-    while len(voted) > count // 2:
-        voted.pop(0)
-
-    session['voted'] = voted
-    content['items'] = names
-
-    return content

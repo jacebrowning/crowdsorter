@@ -60,6 +60,7 @@
                             {{ item['name'] }}
                         </div>
                         <div class="right">
+                            {% if scale %}
                             {% if item['points'] > 0 %}
                             <div class="bar-pos" style="
                                     width: {{ item['points'] / +scale }}%;
@@ -72,7 +73,7 @@
                                     opacity: {{ item['confidence'] }};">
                                 &nbsp;&nbsp;- {{ item['points']|abs|round(1) }}
                             </div>
-
+                            {% endif %}
                             {% endif %}
                         </div>
                     </div>

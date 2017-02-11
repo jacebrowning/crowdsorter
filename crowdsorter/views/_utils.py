@@ -1,7 +1,8 @@
 import logging
 from urllib.error import HTTPError
+import random
 
-from flask import request
+from flask import request, session
 from flask_api.exceptions import APIException
 
 from ..extensions import sendgrid
@@ -35,3 +36,35 @@ def send_email(**kwargs):
         response = None
 
     return response and 200 <= response.status_code < 300
+
+
+def filter_pairs(content):
+    """Filter previously viewed pairs and return the remaining percent."""
+    key = content['code'] + '-pairs'
+    viewed_pairs = session.get(key) or []
+    names = content['items']
+    total_pairs = len(names) * (len(names) - 1) / 2
+
+    if len(viewed_pairs) >= total_pairs:
+        return None, content
+
+    next_pair = None
+    while True:
+        next_pair = names[0:2]
+        next_pair.sort()
+
+        if next_pair in viewed_pairs:
+            random.shuffle(names)
+            next_pair = None
+        else:
+            break
+
+    if next_pair:
+        viewed_pairs.append(next_pair)
+        session[key] = viewed_pairs
+        session.permanent = True
+
+    percent = len(viewed_pairs) / total_pairs * 100
+    content['items'] = names
+
+    return percent, content
