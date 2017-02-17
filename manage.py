@@ -1,11 +1,9 @@
-#!env/bin/python
-
 import os
 
 from flask_script import Manager, Server
 
 from crowdsorter.settings import get_config
-from crowdsorter.app import create_app
+from crowdsorter.factory import create_app
 
 
 def find_assets():

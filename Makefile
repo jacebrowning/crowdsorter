@@ -54,13 +54,9 @@ else
 	endif
 endif
 
-# Virtual environment executables
-PYTHON := $(BIN)/python
-PIP := $(BIN)/pip
-EASY_INSTALL := $(BIN)/easy_install
-SNIFFER := $(BIN)/sniffer
-
 # MAIN TASKS ###################################################################
+
+SNIFFER := pipenv run sniffer
 
 .PHONY: all
 all: install
@@ -81,7 +77,7 @@ IP ?= $(shell ipconfig getifaddr en0 || ipconfig getifaddr en1)
 
 .PHONY: run
 run: install data
-	status=1; while [ $$status -eq 1 ]; do FLASK_ENV=dev $(PYTHON) manage.py run; status=$$?; sleep 1; done
+	status=1; while [ $$status -eq 1 ]; do FLASK_ENV=dev pipenv run python manage.py run; status=$$?; sleep 1; done
 
 .PHONY: run-prod
 run-prod: install
@@ -95,61 +91,38 @@ launch: install
 
 # SYSTEM DEPENDENCIES ##########################################################
 
+.PHONY: setup
+setup:
+	pip install pipenv==3.4.1
+	pipenv lock
+	touch Pipfile
+
 .PHONY: doctor
 doctor:  ## Confirm system dependencies are available
 	bin/verchew
 
 # PROJECT DEPENDENCIES #########################################################
 
-DEPS_CI := $(ENV)/.install-ci
-DEPS_DEV := $(ENV)/.install-dev
-DEPS_BASE := $(ENV)/.install-base
+export PIPENV_SHELL_COMPAT=true
+export PIPENV_ENV_IN_PROJECT=true
 
 .PHONY: install
-install: $(DEPS_CI) $(DEPS_DEV) $(DEPS_BASE) ## Install all project dependencies
-
-$(DEPS_CI): requirements/ci.txt $(PIP)
-	$(PIP) install --upgrade -r $<
-	@ touch $@  # flag to indicate dependencies are installed
-
-$(DEPS_DEV): requirements/dev.txt $(PIP)
-	$(PIP) install --upgrade -r $<
-ifdef WINDOWS
-	@ echo "Manually install pywin32: https://sourceforge.net/projects/pywin32/files/pywin32"
-else ifdef MAC
-	$(PIP) install --upgrade pync MacFSEvents
-else ifdef LINUX
-	$(PIP) install --upgrade pyinotify
-endif
-	@ touch $@  # flag to indicate dependencies are installed
-
-$(DEPS_BASE): requirements.txt $(PYTHON)
-	$(PIP) install --upgrade -r $<
-	@ touch $@  # flag to indicate dependencies are installed
-
-$(PIP): $(PYTHON)
-	$(PYTHON) -m pip install --upgrade pip
+install: $(ENV)
+$(ENV): Pipfile*
+	pipenv install --dev
 	@ touch $@
 
-$(PYTHON):
-	$(SYS_PYTHON) -m venv $(ENV)
-
-# DATA GENERATION ##############################################################
+# RUNTIME DEPENDENCIES #########################################################
 
 .PHONY: data
-ifdef VIRTUAL_ENV
-data:
-	scripts/generate_sample_data.py
-else
 data: install
-	PYTHONPATH=. source env/bin/activate && scripts/generate_sample_data.py
-endif
+	PYTHONPATH=. pipenv run python scripts/generate_sample_data.py
 
 # CHECKS #######################################################################
 
-PYLINT := $(BIN)/pylint
-PYCODESTYLE := $(BIN)/pycodestyle
-PYDOCSTYLE := $(BIN)/pydocstyle
+PYLINT := pipenv run pylint
+PYCODESTYLE := pipenv run pycodestyle
+PYDOCSTYLE := pipenv run pydocstyle
 
 .PHONY: check
 check: pycodestyle pydocstyle ## Run linters and static analysis
@@ -168,9 +141,9 @@ pydocstyle: install
 
 # TESTS ########################################################################
 
-PYTEST := FLASK_ENV=test $(BIN)/py.test
-COVERAGE := $(BIN)/coverage
-COVERAGE_SPACE := $(BIN)/coverage.space
+PYTEST := FLASK_ENV=test pipenv run py.test
+COVERAGE := pipenv run coverage
+COVERAGE_SPACE := pipenv run coverage.space
 
 RANDOM_SEED ?= $(shell date +%s)
 

@@ -9,8 +9,12 @@ containerInfo:
 stages:
   build:
     workDir: /home/ubuntu/crowdsorter
+    environment:
+      PIPENV_NOSPIN: true
     steps:
       - type: checkout
+      - type: shell
+        command: make setup
       - type: shell
         command: make doctor
       - type: shell

@@ -1,11 +1,14 @@
 {
-  "name":"crowdsorter",
-  "scripts":{
+  "scripts": {
     "postdeploy": "make data"
   },
-  "env":{
+  "env": {
     "VIRTUAL_ENV": {
       "value": "heroku"
+    },
+
+    "AUTH_TOKEN": {
+      "value": "review"
     },
     "FLASK_ENV": {
       "required": true
@@ -13,22 +16,23 @@
     "SECRET_KEY": {
       "generator": "secret"
     },
-    "AUTH_TOKEN": {
-      "value": "review"
-    },
-    "WEB_CONCURRENCY": {
-      "value": "4"
-    },
     "SENDGRID_API_KEY": {
       "required": true
     },
     "SENDGRID_DEFAULT_FROM": {
       "required": true
+    },
+    "WEB_CONCURRENCY": {
+      "value": "4"
     }
   },
+  "buildpacks": [
+    {
+      "url": "https://github.com/jacebrowning/heroku-buildpack-pipenv"
+    }
+  ],
   "addons":[
     "mongolab",
-    "sendgrid",
-    "papertrail"
+    "sendgrid"
   ]
 }
