@@ -1,5 +1,3 @@
-#!env/bin/python
-
 import os
 
 from flask_script import Manager, Server
