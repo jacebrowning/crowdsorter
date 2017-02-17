@@ -115,13 +115,8 @@ $(ENV): Pipfile*
 # RUNTIME DEPENDENCIES #########################################################
 
 .PHONY: data
-ifdef VIRTUAL_ENV
-data:
-	scripts/generate_sample_data.py
-else
 data: install
-	PYTHONPATH=. pipenv shell -c "scripts/generate_sample_data.py; exit $$?"
-endif
+	PYTHONPATH=. pipenv run python scripts/generate_sample_data.py
 
 # CHECKS #######################################################################
 
