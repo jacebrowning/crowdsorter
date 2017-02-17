@@ -2,8 +2,8 @@
 
 import pytest
 
-from crowdsorter.app import create_app
 from crowdsorter.settings import get_config
+from crowdsorter.factory import create_app
 from crowdsorter.models import Collection
 
 
