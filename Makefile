@@ -35,11 +35,7 @@ else
 endif
 
 # Virtual environment paths
-ifdef TRAVIS
-	ENV := $(shell dirname $(shell dirname $(shell which $(SYS_PYTHON))))/
-else
-	ENV := env
-endif
+ENV := .venv
 ifneq ($(findstring win32, $(PLATFORM)), )
 	BIN := $(ENV)/Scripts
 	ACTIVATE := $(BIN)/activate.bat
@@ -54,9 +50,13 @@ else
 	endif
 endif
 
-# MAIN TASKS ###################################################################
-
+# Virtual environment executables
+PYTHON := pipenv run python
+PIP := pipenv run pip
+EASY_INSTALL := pipenv run easy_install
 SNIFFER := pipenv run sniffer
+
+# MAIN TASKS ###################################################################
 
 .PHONY: all
 all: install
@@ -70,7 +70,7 @@ watch: install .clean-test ## Continuously run all CI tasks when files chanage
 
 # SERVER TARGETS ###############################################################
 
-HONCHO := $(ACTIVATE) && $(BIN)honcho
+HONCHO := $(ACTIVATE) && $(BIN)/honcho
 
 export MONGODB_URI ?= mongodb://localhost:27017/crowdsorter_dev
 IP ?= $(shell ipconfig getifaddr en0 || ipconfig getifaddr en1)
@@ -104,11 +104,30 @@ doctor:  ## Confirm system dependencies are available
 # PROJECT DEPENDENCIES #########################################################
 
 export PIPENV_SHELL_COMPAT=true
-export PIPENV_ENV_IN_PROJECT=true
+export PIPENV_VENV_IN_PROJECT=true
+
+DEPS := $(ENV)/.deps
+INFO := *.egg-info
 
 .PHONY: install
-install: $(ENV)
-$(ENV): Pipfile*
+install: $(ENV) $(DEPS) $(INFO)
+
+$(ENV):
+	pipenv --python=$(SYS_PYTHON)
+	@ touch $@
+
+$(DEPS): $(ENV) Pipfile*
+	pipenv install --dev
+ifdef WINDOWS
+	@ echo "Manually install pywin32: https://sourceforge.net/projects/pywin32/files/pywin32"
+else ifdef MAC
+	$(PIP) install pync MacFSEvents
+else ifdef LINUX
+	$(PIP) install pyinotify
+endif
+	@ touch $@
+
+$(INFO): $(ENV)
 	pipenv install --dev
 	@ touch $@
 
