@@ -8,7 +8,7 @@
         ],
         "requires": {},
         "hash": {
-            "sha256": "d8ed3ca946292d647cd2db9884a92dd84f12587178c9fd9cb71228dd3164eb53"
+            "sha256": "d5b177c862aacdb1602ddcfb4a80fd5e6f5542447159e5f673d610ef5235e033"
         }
     },
     "default": {
@@ -36,7 +36,7 @@
             "hash": "sha256:b01027cb3ee697485bdf94fb0db3bd6b7424b32ebaacc178d2691374c9bdd862",
             "version": "==0.5.1"
         },
-        "flask-mongoengine": {
+        "Flask-MongoEngine": {
             "hash": "sha256:f746e8ec78e40482f8861dd15427b714fb395b4461754521371819745cf0502a",
             "version": "==0.8.2"
         },
@@ -69,8 +69,12 @@
             "version": "==0.23"
         },
         "marshmallow": {
-            "hash": "sha256:3eea5f0b224a412911af298c428ca145b7db6a5c9184bbe65dc4c216c33654b6",
-            "version": "==2.12.2"
+            "hash": "sha256:0f1822fb98b09b6d523f9c5d6d53f5e62793a962e96a81ea8b776e634ff0fa3a",
+            "version": "==2.13.0"
+        },
+        "MongoEngine": {
+            "hash": "sha256:1db3a8b0f2ccc47dbeef5fb028c600143531203d1cd3c1099483829be09b8e79",
+            "version": "==0.10.9"
         },
         "mongoengine": {
             "hash": "sha256:39532b0d2d26de3bb2bb174fef0209bb1925f81942b999808050d99917c0c6b9",
@@ -84,7 +88,7 @@
             "hash": "sha256:2e86716cdc68c28bf25fd64786246cb2d91a6803dd3a4e1028204f1e63ee90bc",
             "version": "==2.2.1"
         },
-        "sendgrid": {
+        "SendGrid": {
             "hash": "sha256:804cad97607c7885e302dd42754ddbee046567d1509020048e1d44d3c7024679",
             "version": "==3.6.3"
         },
