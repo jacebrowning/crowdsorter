@@ -7,6 +7,7 @@
     <!-- Metadata -->
     <meta name="description" content="Crowd Sorter admin page for the {{ collection['name'] }} collection.">
     <meta name="twitter:description" content="Crowd Sorter admin page for the {{ collection['name'] }} collection.">
+    <meta property="og:url" content="{{ request.url }}">
     <meta property="og:description" content="Crowd Sorter admin page for the {{ collection['name'] }} collection.">
 {{ super() }}
 {% endblock %}
