@@ -134,8 +134,13 @@ $(INFO): $(ENV)
 # RUNTIME DEPENDENCIES #########################################################
 
 .PHONY: data
+ifdef VIRTUAL_ENV
+data:
+	PYTHONPATH=. python scripts/generate_sample_data.py
+else
 data: install
 	PYTHONPATH=. pipenv run python scripts/generate_sample_data.py
+endif
 
 # CHECKS #######################################################################
 
