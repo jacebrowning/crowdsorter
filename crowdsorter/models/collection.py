@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 
 from ..extensions import db
 
-from . import Items
+from . import Item, Scores
 
 
 ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
@@ -83,6 +83,7 @@ class Collection(db.Document):
 
     # Input data
     items = db.ListField(db.StringField())
+    item_keys = db.ListField(db.ReferenceField(Item))
 
     # User data
     votes = db.EmbeddedDocumentListField(Wins)
@@ -156,7 +157,7 @@ class Collection(db.Document):
 
     def _clean_scores(self):
         """Sort the items list based on comparison data."""
-        items = Items.build(self.items)
+        items = Scores.build(self.items)
 
         for wins in self.votes:
             for loss in wins.against:

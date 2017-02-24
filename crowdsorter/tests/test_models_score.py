@@ -3,14 +3,14 @@
 import pytest
 from expecter import expect
 
-from crowdsorter.models import Item, Items
+from crowdsorter.models import Score, Scores
 
 
 def describe_item():
 
     @pytest.fixture
     def item():
-        return Item("Sample Item")
+        return Score("Sample Item")
 
     def describe_repr():
 
@@ -26,18 +26,18 @@ def describe_item():
 
         def by_points():
             items = [
-                Item("a", _points=1.1),
-                Item("b", _points=1.0),
-                Item("c", _points=-10),
+                Score("a", _points=1.1),
+                Score("b", _points=1.0),
+                Score("c", _points=-10),
             ]
 
             expect(sorted(items)) == items
 
         def by_confidence():
             items = [
-                Item("a", _points=1, _confidence=0.9),
-                Item("b", _points=1, _confidence=0.8),
-                Item("c", _points=0.9),
+                Score("a", _points=1, _confidence=0.9),
+                Score("b", _points=1, _confidence=0.8),
+                Score("c", _points=0.9),
             ]
 
             expect(sorted(items)) == items
@@ -46,15 +46,15 @@ def describe_item():
 
         @pytest.fixture
         def better():
-            return Item("Better Item")
+            return Score("Better Item")
 
         @pytest.fixture
         def worse():
-            return Item("Worse Item")
+            return Score("Worse Item")
 
         @pytest.fixture
         def equal():
-            return Item("Equal Item")
+            return Score("Equal Item")
 
         def with_no_data(item):
             expect(item.score) == (0.0, 0.0)
@@ -124,22 +124,22 @@ def describe_items():
 
         @pytest.fixture
         def items():
-            return Items([Item("found")])
+            return Scores([Score("found")])
 
         def when_found(items):
-            expect(items.find("found")) == Item("found")
+            expect(items.find("found")) == Score("found")
 
         def when_missing(items):
             expect(items.find("missing")) == None
 
         def when_missing_with_creation(items):
-            expect(items.find("missing", create=True)) == Item("missing")
+            expect(items.find("missing", create=True)) == Score("missing")
 
     def describe_add_pair():
 
         @pytest.fixture
         def items():
-            return Items.build(["b", "a", "c"])
+            return Scores.build(["b", "a", "c"])
 
         def when_transitive(items):
             items.add_pair("a", "b")
@@ -147,7 +147,7 @@ def describe_items():
 
             items.sort()
             expect(items) == [
-                Item("a"),
-                Item("b"),
-                Item("c"),
+                Score("a"),
+                Score("b"),
+                Score("c"),
             ]
