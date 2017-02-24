@@ -59,7 +59,7 @@ footer {
     bottom: 0;
     padding-left: 10px;
     padding-right: 10px;
-    padding-bottom: 10px;
+    width: 100%;
     opacity: 1;
     color: black;
     background-color: rgba(255,255,255,0.9);
