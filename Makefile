@@ -76,7 +76,7 @@ export MONGODB_URI ?= mongodb://localhost:27017/crowdsorter_dev
 IP ?= $(shell ipconfig getifaddr en0 || ipconfig getifaddr en1)
 
 .PHONY: run
-run: install data
+run: install
 	status=1; while [ $$status -eq 1 ]; do FLASK_ENV=dev pipenv run python manage.py run; status=$$?; sleep 1; done
 
 .PHONY: run-prod
