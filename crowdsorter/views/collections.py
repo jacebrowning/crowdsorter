@@ -1,9 +1,8 @@
-import time
 import logging
 
 from flask import Blueprint, Response, Markup
 from flask import (request, render_template, redirect, url_for, flash,
-                   current_app, session)
+                   current_app)
 from flask_menu import register_menu
 
 from .. import api
@@ -82,7 +81,7 @@ def add(code):
     name = request.form['name'].strip()
 
     if name:
-        content, status = call(api.items.add, key=key, name=name)
+        _, status = call(api.items.add, key=key, name=name)
         if status == 200:
             flash(f"Added item: {name}", 'info')
         else:
@@ -122,8 +121,9 @@ def vote(code):
         percent = 100
         collection['items'] = ["---"] * 2
         results = url_for('collections.detail', code=code, _external=True)
-        msg = Markup("You have voted on every pair in this collection. "
-                     f"Go back to the results: <a href='{results}'>{results}</a>")
+        msg = Markup(
+            "You have voted on every pair in this collection. "
+            f"Go back to the results: <a href='{results}'>{results}</a>")
         flash(msg, 'warning')
 
     return Response(render_template("vote.html",

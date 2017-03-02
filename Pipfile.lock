@@ -8,7 +8,7 @@
         ],
         "requires": {},
         "hash": {
-            "sha256": "9585eec23ddd701293471fe6bfb0a2f0116a12f2639e5f713496fb6036a37830"
+            "sha256": "d8ed3ca946292d647cd2db9884a92dd84f12587178c9fd9cb71228dd3164eb53"
         }
     },
     "default": {
@@ -24,15 +24,15 @@
             "hash": "sha256:7f03bb2c255452444f7265eddb51601806e5447b6f8a2d50bbc77a654a14c118",
             "version": "==0.12"
         },
-        "flask-api": {
+        "Flask-API": {
             "hash": "sha256:1c79ccc34ceb9a8ac02dd32bbd1c0c0472a5db4c4e2811bb88749a522bb1d182",
             "version": "==0.6.9"
         },
-        "flask-bootstrap": {
+        "Flask-Bootstrap": {
             "hash": "sha256:cb08ed940183f6343a64e465e83b3a3f13c53e1baabb8d72b5da4545ef123ac8",
             "version": "==3.3.7.1"
         },
-        "flask-menu": {
+        "Flask-Menu": {
             "hash": "sha256:b01027cb3ee697485bdf94fb0db3bd6b7424b32ebaacc178d2691374c9bdd862",
             "version": "==0.5.1"
         },
@@ -40,11 +40,11 @@
             "hash": "sha256:f746e8ec78e40482f8861dd15427b714fb395b4461754521371819745cf0502a",
             "version": "==0.8.2"
         },
-        "flask-script": {
+        "Flask-Script": {
             "hash": "sha256:cef76eac751396355429a14c38967bb14d4973c53e07dec94af5cc8fb017107f",
             "version": "==2.0.5"
         },
-        "flask-sendgrid": {
+        "Flask-SendGrid": {
             "hash": "sha256:e2437a997dfa2bb32a663ea6b88ea6e3afacf3397651e68a4a6a9b16472fc249",
             "version": "==0.5.2"
         },
@@ -111,8 +111,8 @@
     },
     "develop": {
         "appdirs": {
-            "hash": "sha256:566f148ff9f2e9a36912637a4ab1eaf708a499255d42a055c59dd0549507583d",
-            "version": "==1.4.1"
+            "hash": "sha256:a53330b9d53b66aba1e26907dea2958982ebad92735f9faf3897b73c909a20c1",
+            "version": "==1.4.2"
         },
         "astroid": {
             "hash": "sha256:944400d94e45865af150fb98700b27b788ddee5ad17c77d0725f67ac271f7a10",
@@ -211,8 +211,8 @@
             "version": "==2.13.0"
         },
         "setuptools": {
-            "hash": "sha256:75d352eeeddd96a3fb702b1da9f8b89e5f8c045dbd86e3894516733eb5f99713",
-            "version": "==34.2.0"
+            "hash": "sha256:ef40d2d360ba1be284a47c51a5a489afa7d8cde5ca39f2321876e00e93fe04cd",
+            "version": "==34.3.0"
         },
         "six": {
             "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1",

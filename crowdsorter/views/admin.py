@@ -1,8 +1,7 @@
 import logging
 
 from flask import Blueprint, Response
-from flask import (request, render_template, redirect, url_for, flash,
-                   current_app)
+from flask import request, render_template, redirect, url_for, flash
 from flask_menu import register_menu
 
 from .. import api
@@ -105,14 +104,16 @@ def update(key):
 def _generate_email_data(content):
     """Generate keyword arguments for the `send_email` utility."""
     name = content['name']
-    admin = url_for('admin.detail', key=content['key'], _external=True)
-    api = url_for('collections_api.detail', key=content['key'], _external=True)
+    admin_url = url_for('admin.detail', key=content['key'], _external=True)
+    api_url = url_for('collections_api.detail', key=content['key'],
+                      _external=True)
+
     return dict(
         subject=f"Crowd Sorter: {name}",
         to_email=content['owner'],
         text=(
-            f"The admin page for {name} can be found at: {admin}"
+            f"The admin page for {name} can be found at: {admin_url}"
             "\n\n"
-            f"Your private collection API can be found at: {api}"
+            f"Your private collection API can be found at: {api_url}"
         ),
     )
