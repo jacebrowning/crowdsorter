@@ -37,6 +37,7 @@ def targets(*_):
         (('make', 'test-int', 'CI=true'), "Integration Tests", False),
         (('make', 'test-all'), "Combined Tests", False),
         (('make', 'check'), "Static Analysis", True),
+        (('make', 'doc'), "Generate Documentation", True),
     ), start=1):
 
         if not run(command, title, count, retry):
