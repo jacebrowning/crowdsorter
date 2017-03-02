@@ -213,7 +213,7 @@ read-coverage:
 
 # DOCUMENTATION ################################################################
 
-PYREVERSE := $(BIN)/pyreverse
+PYREVERSE := pipenv run pyreverse
 
 .PHONY: doc
 doc: uml ## Generate documentation
