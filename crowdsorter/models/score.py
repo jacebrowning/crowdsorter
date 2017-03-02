@@ -124,9 +124,9 @@ class Scores(list):
             item = Score(name)
             self.append(item)
             return item
-        else:
-            log.warning("Unknown item: %s", name)
-            return None
+
+        log.warning("Unknown item: %s", name)
+        return None
 
     def add_pair(self, winner, loser, count=1):
         winning_item = self.find(winner)

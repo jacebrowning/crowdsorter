@@ -25,7 +25,7 @@ def load(response: flask.Response) -> (int, Union[dict, str]):
     return response.status_code, data
 
 
-def get(client, url, *, minify: bool=False):
+def get(client, url, *, minify: bool = False):
     """Simulate loading a page."""
     log.debug("GET request URL: %s", url)
     response = client.get(url, follow_redirects=True)

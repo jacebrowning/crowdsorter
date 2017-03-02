@@ -129,6 +129,8 @@ endif
 
 $(INFO): $(ENV)
 	pipenv install --dev
+	pipenv run pip install git+git://github.com/PyCQA/pylint.git@e0fdd25c214e60bef10fbaa46252f4aaa74de8c2
+	pipenv run pip install git+git://github.com/PyCQA/astroid.git@4e7d9fee4080d2e0db67a3e0463be8b196e56a95
 	@ touch $@
 
 # RUNTIME DEPENDENCIES #########################################################
@@ -149,7 +151,7 @@ PYCODESTYLE := pipenv run pycodestyle
 PYDOCSTYLE := pipenv run pydocstyle
 
 .PHONY: check
-check: pycodestyle pydocstyle ## Run linters and static analysis
+check: pylint pycodestyle pydocstyle ## Run linters and static analysis
 
 .PHONY: pylint
 pylint: install
@@ -211,8 +213,17 @@ read-coverage:
 
 # DOCUMENTATION ################################################################
 
+PYREVERSE := $(BIN)/pyreverse
+
 .PHONY: doc
-doc:  ## Generate documentation
+doc: uml ## Generate documentation
+
+.PHONY: uml
+uml: install docs/*.png ## Generate UML diagrams for classes and packages
+docs/*.png: $(MODULES)
+	$(PYREVERSE) $(PACKAGE) -p $(PACKAGE) -a 1 -f ALL -o png --ignore tests
+	- mv -f classes_$(PACKAGE).png docs/classes.png
+	- mv -f packages_$(PACKAGE).png docs/packages.png
 
 # CLEANUP ######################################################################
 
