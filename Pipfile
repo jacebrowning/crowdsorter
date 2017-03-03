@@ -16,7 +16,6 @@ Flask-SendGrid = "~=0.5.2"
 Flask-Script = "~=2.0.5"
 
 [dev-packages]
-pylint = "*"
 pycodestyle = "*"
 pydocstyle = "*"
 pytest = "*"
@@ -28,3 +27,11 @@ coverage = "*"
 "coverage.space" = "*"
 sniffer = ">=0.3.6"
 honcho = "*"
+
+[dev-packages.pylint]
+git = "https://github.com/PyCQA/pylint.git"
+ref = "e0fdd25c214e60bef10fbaa46252f4aaa74de8c2"
+
+[dev-packages.astroid]
+git = "https://github.com/PyCQA/astroid.git"
+ref = "4e7d9fee4080d2e0db67a3e0463be8b196e56a95"

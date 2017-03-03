@@ -93,7 +93,7 @@ launch: install
 
 .PHONY: setup
 setup:
-	pip install pipenv==3.4.1
+	pip install pipenv==3.5.0
 	pipenv lock
 	touch Pipfile
 
@@ -106,17 +106,12 @@ doctor:  ## Confirm system dependencies are available
 export PIPENV_SHELL_COMPAT=true
 export PIPENV_VENV_IN_PROJECT=true
 
-DEPS := $(ENV)/.deps
-INFO := *.egg-info
+DEPENDENCIES := $(ENV)/.installed
 
 .PHONY: install
-install: $(ENV) $(DEPS) $(INFO)
+install: $(DEPENDENCIES)
 
-$(ENV):
-	pipenv --python=$(SYS_PYTHON)
-	@ touch $@
-
-$(DEPS): $(ENV) Pipfile*
+$(DEPENDENCIES): $(ENV) Pipfile*
 	pipenv install --dev
 ifdef WINDOWS
 	@ echo "Manually install pywin32: https://sourceforge.net/projects/pywin32/files/pywin32"
@@ -127,10 +122,8 @@ else ifdef LINUX
 endif
 	@ touch $@
 
-$(INFO): $(ENV)
-	pipenv install --dev
-	pipenv run pip install git+git://github.com/PyCQA/pylint.git@e0fdd25c214e60bef10fbaa46252f4aaa74de8c2
-	pipenv run pip install git+git://github.com/PyCQA/astroid.git@4e7d9fee4080d2e0db67a3e0463be8b196e56a95
+$(ENV):
+	pipenv --python=$(SYS_PYTHON)
 	@ touch $@
 
 # RUNTIME DEPENDENCIES #########################################################
@@ -213,13 +206,13 @@ read-coverage:
 
 # DOCUMENTATION ################################################################
 
-PYREVERSE := $(BIN)/pyreverse
+PYREVERSE := pipenv run pyreverse
 
 .PHONY: doc
 doc: uml ## Generate documentation
 
 .PHONY: uml
-uml: install docs/*.png ## Generate UML diagrams for classes and packages
+uml: install docs/*.png
 docs/*.png: $(MODULES)
 	$(PYREVERSE) $(PACKAGE) -p $(PACKAGE) -a 1 -f ALL -o png --ignore tests
 	- mv -f classes_$(PACKAGE).png docs/classes.png
