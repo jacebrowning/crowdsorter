@@ -3,7 +3,7 @@ version: 2
 executorType: docker
 
 containerInfo:
-  - image: python:3.6.0rc2
+  - image: python:3.6.0
   - image: mongo:3.2.11
 
 stages:
