@@ -1,27 +1,13 @@
 import random
 import logging
 
-from bson.objectid import ObjectId
-
 from ..extensions import db
 
 from . import Item, Scores
-
-
-ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789"
+from ._utils import generate_key, generate_code
 
 
 log = logging.getLogger(__name__)
-
-
-def generate_key():
-    """Generate a MongoDB ObjectID-compatible string."""
-    return str(ObjectId())
-
-
-def generate_code():
-    """Generate a URL-compatible short code."""
-    return ''.join(random.choice(ALPHABET) for _ in range(10))
 
 
 class Loss(db.EmbeddedDocument):
@@ -83,7 +69,7 @@ class Collection(db.Document):
 
     # Input data
     items = db.ListField(db.StringField())
-    item_keys = db.ListField(db.ReferenceField(Item))
+    items2 = db.ListField(db.ReferenceField(Item))
 
     # User data
     votes = db.EmbeddedDocumentListField(Wins)

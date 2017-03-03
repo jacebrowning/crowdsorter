@@ -137,6 +137,15 @@ data: install
 	PYTHONPATH=. pipenv run python scripts/generate_sample_data.py
 endif
 
+.PHONY: migrate
+ifdef VIRTUAL_ENV
+migrate:
+	PYTHONPATH=. python scripts/convert_items_to_objects.py
+else
+migrate: install
+	PYTHONPATH=. pipenv run python scripts/convert_items_to_objects.py
+endif
+
 # CHECKS #######################################################################
 
 PYLINT := pipenv run pylint
