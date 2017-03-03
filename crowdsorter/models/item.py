@@ -13,3 +13,6 @@ class Item(db.Document):
 
     def __repr__(self):
         return f"<item: {self.key}>"
+
+    def __lt__(self, other):
+        return self.key < other.key

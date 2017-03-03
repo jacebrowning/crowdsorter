@@ -13,7 +13,7 @@ def index():
     content = dict(
         _links=dict(
             self=url_for('.index', _external=True),
-            collections=url_for('collections_api.index', _external=True)
+            collections=url_for('collections_api.index', _external=True),
         ),
     )
 

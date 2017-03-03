@@ -3,7 +3,7 @@ import logging
 from flask import Blueprint, url_for
 from flask_api import status
 
-from ..models import Collection
+from ..models import Collection, Item
 
 from ._schemas import parser, ItemSchema
 from . import _exceptions as exceptions
@@ -30,10 +30,21 @@ def add(key, name):
         raise exceptions.NotFound
 
     log.debug("Adding to %r: %r", collection, name)
-    collection.items.append(name)
+    item = Item(name=name)
+    item.save()
+    collection.items2.append(item)
     collection.save()
 
     return serialize(collection), status.HTTP_200_OK
+
+
+@blueprint.route("/api/items/<key>")
+def detail(key):
+    item = Item.objects(key=key).first()
+    if not item:
+        raise exceptions.NotFound
+
+    return serialize_item(item), status.HTTP_200_OK
 
 
 @blueprint.route("/api/collections/<key>/items/<name>", methods=['DELETE'])
@@ -43,13 +54,16 @@ def remove(key, name):
         raise exceptions.NotFound
 
     log.debug("Removing from %r: %r", collection, name)
-    try:
-        collection.items.remove(name)
-    except ValueError:
+    for item in collection.items2:
+        if item.name == name:
+            collection.items2.remove(item)
+            collection.save()
+            item.delete()
+            break
+    else:
         log.warning("No such item: %s", name)
-    collection.save()
 
-    return sorted(collection.items), status.HTTP_200_OK
+    return sorted([i.name for i in collection.items2]), status.HTTP_200_OK
 
 
 def serialize(collection):
@@ -59,5 +73,15 @@ def serialize(collection):
             collection=url_for('collections_api.detail',
                                key=collection.key, _external=True),
         ),
-        items=collection.items,
+        _objects=[serialize_item(o) for o in collection.items2],
+    )
+
+
+def serialize_item(item):
+    return dict(
+        _links=dict(
+            self=url_for('items_api.detail', key=item.key, _external=True),
+        ),
+        key=item.key,
+        name=item.name,
     )

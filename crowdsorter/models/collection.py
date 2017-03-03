@@ -13,6 +13,19 @@ log = logging.getLogger(__name__)
 class Loss(db.EmbeddedDocument):
     """The number of times an item has lost a comparison."""
 
+    loser = db.ReferenceField(Item)
+    count = db.IntField()
+
+    def __repr__(self):
+        return repr(dict([
+            ('loser', self.loser),
+            ('count', self.count)
+        ]))
+
+
+class Loss_(db.EmbeddedDocument):
+    """Temporary migration document."""
+
     loser = db.StringField()
     count = db.IntField()
 
@@ -26,8 +39,21 @@ class Loss(db.EmbeddedDocument):
 class Wins(db.EmbeddedDocument):
     """Stores the result of comparisons to other items."""
 
-    winner = db.StringField()
+    winner = db.ReferenceField(Item)
     against = db.EmbeddedDocumentListField(Loss)
+
+    def __repr__(self):
+        return repr(dict([
+            ('winner', self.winner),
+            ('against', repr(self.against))
+        ]))
+
+
+class Wins_(db.EmbeddedDocument):
+    """Temporary migration document."""
+
+    winner = db.StringField()
+    against = db.EmbeddedDocumentListField(Loss_)
 
     def __repr__(self):
         return repr(dict([
@@ -72,7 +98,8 @@ class Collection(db.Document):
     items2 = db.ListField(db.ReferenceField(Item))
 
     # User data
-    votes = db.EmbeddedDocumentListField(Wins)
+    votes = db.EmbeddedDocumentListField(Wins_)
+    votes2 = db.EmbeddedDocumentListField(Wins)
 
     # Computed properties
     scores = db.EmbeddedDocumentListField(Score)
@@ -86,7 +113,7 @@ class Collection(db.Document):
 
     @property
     def item_count(self):
-        return len(self.items)
+        return len(self.items2)
 
     @property
     def items_by_confidence(self):
@@ -96,15 +123,33 @@ class Collection(db.Document):
 
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""
-        wins = self._find_wins(self.votes, winner)
+        # TODO: find the correct way to do this
+        if isinstance(winner, str):
+            for item in self.items2:
+                if item.name == winner:
+                    winner = item
+                    break
+            else:
+                log.warning("Unknown winner: %s", winner)
+                return
+        if isinstance(loser, str):
+            for item in self.items2:
+                if item.name == loser:
+                    loser = item
+                    break
+            else:
+                log.warning("Unknown loser: %s", loser)
+                return
+
+        wins = self._find_wins(self.votes2, winner)
         loss = self._find_loss(wins, loser)
+
         loss.count += 1
         self.vote_count += 1
 
     def clean(self):
         """Called automatically prior to saving."""
         self._clean_code()
-        self._clean_items()
         vote_count = self._clean_votes()
         self.vote_count = vote_count
         self._clean_scores()
@@ -114,68 +159,64 @@ class Collection(db.Document):
             log.warning("Generating missing code for %s", self.name)
             self.code = generate_code()
 
-    def _clean_items(self):
-        """Sort the items and remove duplicates."""
-        self.items = sorted(set(self.items))
-
     def _clean_votes(self):
         """Add default comparison data for new items and remove stale votes."""
         count = 0
 
-        for winner in self.items:
-            wins = self._find_wins(self.votes, winner)
-            for loser in self.items:
+        for winner in self.items2:
+            wins = self._find_wins(self.votes2, winner)
+            for loser in self.items2:
                 if loser != winner:
                     loss = self._find_loss(wins, loser)
                     count += loss.count
 
-        for wins in list(self.votes):
-            if wins.winner in self.items:
+        for wins in list(self.votes2):
+            if wins.winner in self.items2:
                 for loss in list(wins.against):
-                    if loss.loser not in self.items:
+                    if loss.loser not in self.items2:
                         log.warning("Removing stale loss: %s", loss.loser)
                         wins.against.remove(loss)
             else:
                 log.warning("Removing stale win: %s", wins.winner)
-                self.votes.remove(wins)
+                self.votes2.remove(wins)
 
         return count
 
     def _clean_scores(self):
         """Sort the items list based on comparison data."""
-        items = Scores.build(self.items)
+        scores = Scores.build(self.items2)
 
-        for wins in self.votes:
+        for wins in self.votes2:
             for loss in wins.against:
-                items.add_pair(wins.winner, loss.loser, loss.count)
+                scores.add_pair(wins.winner, loss.loser, loss.count)
 
-        items.sort()
-        for index, item in enumerate(items):
-            log.debug("Updated scores %s: %r", index, item)
+        scores.sort()
+        for index, score in enumerate(scores):
+            log.debug("Updated scores %s: %r", index, score)
 
         self.scores = []
-        for item in items:
-            score = Score(name=item.name,
-                          points=item.score[0],
-                          confidence=item.score[1])
+        for score in scores:
+            score = Score(name=str(score.item),
+                          points=score.score[0],
+                          confidence=score.score[1])
             self.scores.append(score)
 
     @staticmethod
-    def _find_wins(votes, name):
+    def _find_wins(votes, item):
         for wins in votes:
-            if wins.winner == name:
+            if wins.winner == item:
                 return wins
 
-        wins = Wins(winner=name)
+        wins = Wins(winner=item)
         votes.append(wins)
         return wins
 
     @staticmethod
-    def _find_loss(wins, name):
+    def _find_loss(wins, item):
         for loss in wins.against:
-            if loss.loser == name:
+            if loss.loser == item:
                 return loss
 
-        loss = Loss(loser=name, count=0)
+        loss = Loss(loser=item, count=0)
         wins.against.append(loss)
         return loss

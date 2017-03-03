@@ -260,10 +260,28 @@ def describe_items():
                     'self': "http://localhost/api/collections/abc123/items",
                     'collection': "http://localhost/api/collections/abc123",
                 },
-                'items': [
-                    "bar",
-                    "foo",
-                    "qux",
+                '_objects': [
+                    {
+                        '_links': {
+                            'self': "http://localhost/api/items/d4",
+                        },
+                        'key': "d4",
+                        'name': "bar",
+                    },
+                    {
+                        '_links': {
+                            'self': "http://localhost/api/items/f5",
+                        },
+                        'key': "f5",
+                        'name': "foo",
+                    },
+                    {
+                        '_links': {
+                            'self': "http://localhost/api/items/g6",
+                        },
+                        'key': "g6",
+                        'name': "qux",
+                    },
                 ],
             }
 
@@ -275,22 +293,13 @@ def describe_items():
     def describe_POST():
 
         def it_appends_to_the_list(client, url, collection):
+            assert len(collection.items2) == 3
+
             data = {'name': "new"}
             status, content = load(client.post(url, data=data))
 
             expect(status) == 200
-            expect(content) == {
-                '_links': {
-                    'self': "http://localhost/api/collections/abc123/items",
-                    'collection': "http://localhost/api/collections/abc123",
-                },
-                'items': [
-                    "bar",
-                    "foo",
-                    "new",
-                    "qux",
-                ],
-            }
+            expect(len(content['_objects'])) == 4
 
         def when_missing(client, url):
             data = {'name': "Foobar"}

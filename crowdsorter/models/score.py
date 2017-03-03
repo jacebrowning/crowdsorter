@@ -10,8 +10,8 @@ log = logging.getLogger(__name__)
 
 class Score(object):
 
-    def __init__(self, name, *, _points=None, _confidence=None):
-        self.name = name
+    def __init__(self, item, *, _points=None, _confidence=None):
+        self.item = item
         # Attributes set via the factory:
         self.opponents = []
         self.wins = defaultdict(int)
@@ -22,22 +22,22 @@ class Score(object):
 
     def __repr__(self):
         points, confidence = self.score
-        return f"<item: {self.name!r} = {points:.1f} @ {confidence:.1f}>"
+        return f"<item: '{self.item}' = {points:.1f} @ {confidence:.1f}>"
 
     def __str__(self):
-        return self.name
+        return f"{self.item}"
 
     def __eq__(self, other):
-        return self.name == other.name
+        return self.item == other.item
 
     def __ne__(self, other):
-        return self.name != other.name
+        return self.item != other.item
 
     def __lt__(self, other):
         return self.score > other.score
 
     def __hash__(self):
-        return hash(self.name)
+        return hash(self.item)
 
     @property
     def score(self):
@@ -102,30 +102,30 @@ class Score(object):
 class Scores(list):
 
     @classmethod
-    def build(cls, names):
-        items = cls()
+    def build(cls, items):
+        scores = cls()
 
-        for name in names:
-            items.find(name, create=True)
+        for item in items:
+            scores.find(item, create=True)
 
-        for this in items:
-            for that in items:
+        for this in scores:
+            for that in scores:
                 if this != that:
                     this.opponents.append(that)
 
-        return items
+        return scores
 
-    def find(self, name, create=False):
-        for item in self:
-            if item.name == name:
-                return item
+    def find(self, item, create=False):
+        for score in self:
+            if score.item == item:
+                return score
 
         if create:
-            item = Score(name)
-            self.append(item)
-            return item
+            score = Score(item)
+            self.append(score)
+            return score
 
-        log.warning("Unknown item: %s", name)
+        log.warning("Unknown item: %s", item)
         return None
 
     def add_pair(self, winner, loser, count=1):

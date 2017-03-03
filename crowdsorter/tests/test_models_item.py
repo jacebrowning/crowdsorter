@@ -25,3 +25,14 @@ def describe_item():
 
         def it_uses_the_name(item):
             expect(str(item)) == "Sample Item"
+
+    def describe_sort():
+
+        def it_sorts_by_key():
+            objs = [
+                Item(key='1'),
+                Item(key='_'),
+                Item(key='a'),
+            ]
+
+            expect(sorted(objs)) == objs
