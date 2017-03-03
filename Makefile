@@ -219,7 +219,7 @@ PYREVERSE := pipenv run pyreverse
 doc: uml ## Generate documentation
 
 .PHONY: uml
-uml: install docs/*.png ## Generate UML diagrams for classes and packages
+uml: install docs/*.png
 docs/*.png: $(MODULES)
 	$(PYREVERSE) $(PACKAGE) -p $(PACKAGE) -a 1 -f ALL -o png --ignore tests
 	- mv -f classes_$(PACKAGE).png docs/classes.png
