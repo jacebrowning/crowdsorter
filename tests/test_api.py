@@ -287,7 +287,7 @@ def describe_items():
                     ],
                 }
 
-            def when_missing(client):
+            def when_unknown(client):
                 url = "/api/collections/unknown/items"
                 status, content = load(client.get(url))
 
@@ -332,7 +332,7 @@ def describe_items():
                 expect(status) == 200
                 expect(content) == ["bar", "foo", "qux"]
 
-            def with_unknown_collections(client):
+            def with_unknown_collection(client):
                 url = "/api/collections/unknown/items/foo"
                 status, content = load(client.delete(url))
 
@@ -358,7 +358,7 @@ def describe_items():
                     'name': "Sample Item",
                 }
 
-            def when_missing(client):
+            def when_unknown(client):
                 status, content = load(client.get("/api/items/unknown"))
 
                 expect(status) == 404
@@ -400,6 +400,13 @@ def describe_votes():
                 'message': "Loser and winner are required.",
             }
 
+        def with_unknown_collection(client):
+            url = "/api/collections/unknown/votes"
+            data = {'winner': "foo", 'loser': "bar"}
+            status, content = load(client.post(url, data=data))
+
+            expect(status) == 404
+
     def describe_DELETE():
 
         def it_clears_all_votes(client, url, collection):
@@ -407,6 +414,12 @@ def describe_votes():
 
             expect(status) == 200
             expect(content['vote_count']) == 0
+
+        def with_unknown_collection(client):
+            url = "/api/collections/unknown/votes"
+            status, content = load(client.delete(url))
+
+            expect(status) == 404
 
 
 def describe_scores():
