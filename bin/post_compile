@@ -10,5 +10,5 @@ puts-step() {
   echo "-----> $@"
 }
 
-puts-step "Running migrations..."
-make migrate | indent
+puts-step "Running migrations"
+make migrate VIRTUAL_ENV=heroku | indent
