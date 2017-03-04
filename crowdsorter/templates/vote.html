@@ -76,7 +76,11 @@
 {{- super() }}
     <!-- Custom -->
     <script type="text/javascript">
-        $('form').submit( function(){
+        $(document).ready( function () {
+           $('html,body').css('cursor','pointer');
+        });
+
+        $('form').submit( function() {
             $('#vote-a').prop('disabled', true);
             $('#vote-b').prop('disabled', true);
             $('#reload').prop('disabled', true);
