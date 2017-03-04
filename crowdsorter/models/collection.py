@@ -84,6 +84,9 @@ class Score(db.EmbeddedDocument):
 class Collection(db.Document):
     """Represents a named collection of items."""
 
+    # TODO: remove this after migration
+    meta = {'strict': False}
+
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
     owner = db.EmailField()
