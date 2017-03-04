@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "postdeploy": "make data"
+    "postdeploy": "make data migrate"
   },
   "env": {
     "PIPENV_COLORBLIND" : {

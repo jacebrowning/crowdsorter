@@ -4,7 +4,7 @@ import pytest
 
 from crowdsorter.settings import get_config
 from crowdsorter.factory import create_app
-from crowdsorter.models import Collection
+from crowdsorter.models import Collection, Item
 
 
 @pytest.fixture
@@ -21,7 +21,11 @@ def client(app):
 @pytest.fixture
 def collection():
     collection = Collection(name="Sample List", key='abc123', code='sample')
-    collection.items = ["bar", "foo", "qux"]
+    collection.items2 = [
+        Item(name="bar", key='d4').save(),
+        Item(name="foo", key='f5').save(),
+        Item(name="qux", key='g6').save(),
+    ]
     collection.vote("foo", "bar")
     collection.save()
     return collection
@@ -53,3 +57,10 @@ def collection_locked(collection):
     collection.locked = True
     collection.save()
     return collection
+
+
+@pytest.fixture
+def item():
+    item = Item(name="Sample Item", key='_item')
+    item.save()
+    return item

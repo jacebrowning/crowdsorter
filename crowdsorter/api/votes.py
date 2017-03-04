@@ -42,7 +42,7 @@ def clear(key):
     if not collection:
         raise exceptions.NotFound
 
-    collection.votes.clear()
+    collection.votes2.clear()
     collection.vote_count = 0
     collection.save()
 

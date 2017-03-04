@@ -3,7 +3,7 @@ import logging
 from flask import Blueprint, url_for, current_app
 from flask_api import status
 
-from ..models import Collection
+from ..models import Collection, Item
 
 from ._schemas import (parser, TokenSchema, CollectionSchema,
                        NewCollectionSchema, EditCollectionSchema)
@@ -38,7 +38,9 @@ def index(token, limit=None, **kwargs):
 @blueprint.route("/api/collections/", methods=['POST'])
 @parser.use_kwargs(NewCollectionSchema)
 def create(name, code, items):
-    collection = Collection(name=name, code=code, items=items)
+    if items:
+        items = [Item(name=name).save() for name in items]
+    collection = Collection(name=name, code=code, items2=items)
     collection.save()
 
     return serialize(collection), status.HTTP_201_CREATED
@@ -119,6 +121,6 @@ def serialize(collection):
         code=collection.code,
         private=collection.private,
         locked=collection.locked,
-        items=collection.items,
+        items=sorted([item.name for item in collection.items2]),
         vote_count=collection.vote_count,
     )
