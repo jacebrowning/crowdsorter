@@ -36,5 +36,23 @@ def main():
             print(collection.votes2)
 
 
+        items = {}
+        for item in collection.items2:
+            items[item.name] = item
+
+        for wins in collection.votes:
+            for loss in wins.against:
+                print(loss.count)
+
+                for wins2 in collection.votes2:
+                    for loss2 in wins2.against:
+
+                        if wins.winner == wins2.winner.name and \
+                                loss.loser == loss2.loser.name:
+                            loss2.count = loss.count
+                            print("Updated loss count")
+                            collection.save()
+                            break
+
 if __name__ == '__main__':
     main()
