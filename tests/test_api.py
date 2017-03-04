@@ -245,95 +245,123 @@ def describe_collections():
 
 def describe_items():
 
-    @pytest.fixture
-    def url():
-        return "/api/collections/abc123/items"
+    def describe_index():
 
-    def describe_GET():
+        @pytest.fixture
+        def url():
+            return "/api/collections/abc123/items"
 
-        def it_returns_the_list_of_items(client, url, collection):
-            status, content = load(client.get(url))
+        def describe_GET():
 
-            expect(status) == 200
-            expect(content) == {
-                '_links': {
-                    'self': "http://localhost/api/collections/abc123/items",
-                    'collection': "http://localhost/api/collections/abc123",
-                },
-                '_objects': [
-                    {
-                        '_links': {
-                            'self': "http://localhost/api/items/d4",
-                        },
-                        'key': "d4",
-                        'name': "bar",
+            def it_returns_the_list_of_items(client, url, collection):
+                status, content = load(client.get(url))
+
+                expect(status) == 200
+                expect(content) == {
+                    '_links': {
+                        'self': "http://localhost/api/collections/abc123/items",
+                        'collection': "http://localhost/api/collections/abc123",
                     },
-                    {
-                        '_links': {
-                            'self': "http://localhost/api/items/f5",
+                    '_objects': [
+                        {
+                            '_links': {
+                                'self': "http://localhost/api/items/d4",
+                            },
+                            'key': "d4",
+                            'name': "bar",
                         },
-                        'key': "f5",
-                        'name': "foo",
-                    },
-                    {
-                        '_links': {
-                            'self': "http://localhost/api/items/g6",
+                        {
+                            '_links': {
+                                'self': "http://localhost/api/items/f5",
+                            },
+                            'key': "f5",
+                            'name': "foo",
                         },
-                        'key': "g6",
-                        'name': "qux",
+                        {
+                            '_links': {
+                                'self': "http://localhost/api/items/g6",
+                            },
+                            'key': "g6",
+                            'name': "qux",
+                        },
+                    ],
+                }
+
+            def when_missing(client):
+                url = "/api/collections/unknown/items"
+                status, content = load(client.get(url))
+
+                expect(status) == 404
+
+        def describe_POST():
+
+            def it_appends_to_the_list(client, url, collection):
+                assert len(collection.items2) == 3
+
+                data = {'name': "new"}
+                status, content = load(client.post(url, data=data))
+
+                expect(status) == 200
+                expect(len(content['_objects'])) == 4
+
+            def when_missing(client, url):
+                data = {'name': "Foobar"}
+                status, content = load(client.post(url, data=data))
+
+                expect(status) == 404
+
+            def without_name(client, url, collection):
+                status, content = load(client.post(url))
+
+                expect(status) == 422
+                expect(content['message']) == "Name is required."
+
+        def describe_DELETE():
+
+            def it_removes_an_item_by_name(client, url, collection):
+                url += "/foo"
+                status, content = load(client.delete(url))
+
+                expect(status) == 200
+                expect(content) == ["bar", "qux"]
+
+            def unknown_items_are_ignored(client, url, collection):
+                url += "/unknown"
+                status, content = load(client.delete(url))
+
+                expect(status) == 200
+                expect(content) == ["bar", "foo", "qux"]
+
+            def with_unknown_collections(client):
+                url = "/api/collections/unknown/items/foo"
+                status, content = load(client.delete(url))
+
+                expect(status) == 404
+
+    def describe_detail():
+
+        @pytest.fixture
+        def url():
+            return "/api/items/_item"
+
+        def describe_GET():
+
+            def it_returns_info_on_the_item(client, url, item):
+                status, content = load(client.get(url))
+
+                expect(status) == 200
+                expect(content) == {
+                    '_links': {
+                        'self': "http://localhost/api/items/_item",
                     },
-                ],
-            }
+                    'key': "_item",
+                    'name': "Sample Item",
+                }
 
-        def when_missing(client):
-            status, content = load(client.get("/api/collections/unknown/items"))
+            def when_missing(client):
+                status, content = load(client.get("/api/items/unknown"))
 
-            expect(status) == 404
-
-    def describe_POST():
-
-        def it_appends_to_the_list(client, url, collection):
-            assert len(collection.items2) == 3
-
-            data = {'name': "new"}
-            status, content = load(client.post(url, data=data))
-
-            expect(status) == 200
-            expect(len(content['_objects'])) == 4
-
-        def when_missing(client, url):
-            data = {'name': "Foobar"}
-            status, content = load(client.post(url, data=data))
-
-            expect(status) == 404
-
-        def without_name(client, url, collection):
-            status, content = load(client.post(url))
-
-            expect(status) == 422
-            expect(content['message']) == "Name is required."
-
-    def describe_DELETE():
-
-        def it_removes_an_item_by_name(client, url, collection):
-            url += "/foo"
-            status, content = load(client.delete(url))
-
-            expect(status) == 200
-            expect(content) == ["bar", "qux"]
-
-        def unknown_items_are_ignored(client, url, collection):
-            url += "/unknown"
-            status, content = load(client.delete(url))
-
-            expect(status) == 200
-            expect(content) == ["bar", "foo", "qux"]
-
-        def with_unknown_collections(client):
-            url = "/api/collections/unknown/items/foo"
-            status, content = load(client.delete(url))
-
-            expect(status) == 404
+                expect(status) == 404
 
 
 def describe_votes():

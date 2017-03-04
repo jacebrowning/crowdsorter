@@ -57,3 +57,10 @@ def collection_locked(collection):
     collection.locked = True
     collection.save()
     return collection
+
+
+@pytest.fixture
+def item():
+    item = Item(name="Sample Item", key='_item')
+    item.save()
+    return item
