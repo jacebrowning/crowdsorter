@@ -48,7 +48,7 @@ def main():
                     for loss2 in wins2.against:
 
                         if wins.winner == wins2.winner.name and \
-                                loss.loser == loss2.loser.name:
+                                loss.loser == loss2.loser.name and loss.count:
                             loss2.count = loss.count
                             print("Updated loss count")
                             collection.save()
