@@ -296,7 +296,7 @@ def describe_items():
         def describe_POST():
 
             def it_appends_to_the_list(client, url, collection):
-                assert len(collection.items2) == 3
+                assert len(collection.items) == 3
 
                 data = {'name': "new"}
                 status, content = load(client.post(url, data=data))
