@@ -32,7 +32,7 @@ def add(key, name):
     log.debug("Adding to %r: %r", collection, name)
     item = Item(name=name)
     item.save()
-    collection.items2.append(item)
+    collection.items.append(item)
     collection.save()
 
     return serialize(collection), status.HTTP_200_OK
@@ -54,16 +54,16 @@ def remove(key, name):
         raise exceptions.NotFound
 
     log.debug("Removing from %r: %r", collection, name)
-    for item in collection.items2:
+    for item in collection.items:
         if item.name == name:
-            collection.items2.remove(item)
+            collection.items.remove(item)
             collection.save()
             item.delete()
             break
     else:
         log.warning("No such item: %s", name)
 
-    return sorted([i.name for i in collection.items2]), status.HTTP_200_OK
+    return sorted([i.name for i in collection.items]), status.HTTP_200_OK
 
 
 def serialize(collection):
@@ -73,7 +73,7 @@ def serialize(collection):
             collection=url_for('collections_api.detail',
                                key=collection.key, _external=True),
         ),
-        _objects=[serialize_item(o) for o in collection.items2],
+        _objects=[serialize_item(o) for o in collection.items],
     )
 
 

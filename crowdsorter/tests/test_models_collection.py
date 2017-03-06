@@ -12,7 +12,7 @@ def describe_collection():
     @pytest.fixture
     def collection():
         c = Collection(name="Sample List")
-        c.items2 = [
+        c.items = [
             Item(name="foo"),
             Item(name="bar"),
         ]
@@ -42,7 +42,7 @@ def describe_collection():
         def is_the_number_of_items(collection):
             expect(collection.item_count) == 2
 
-            collection.items2.append(Item(name="foobar"))
+            collection.items.append(Item(name="foobar"))
             expect(collection.item_count) == 3
 
     def describe_vote_count():
@@ -69,7 +69,7 @@ def describe_collection():
             collection.vote("foo", "bar")
             collection.vote("foo", "unknown")
             collection.vote("unknown", "bar")
-            assert collection.votes2 == [
+            assert collection.votes == [
                 Wins(winner="foo", against=[
                     Loss(loser="bar", count=1),
                     Loss(loser="unknown", count=1),
@@ -82,7 +82,7 @@ def describe_collection():
 
             collection.clean()
 
-            expect(collection.votes2) == [
+            expect(collection.votes) == [
                 Wins(winner="foo", against=[
                     Loss(loser="bar", count=1),
                 ]),

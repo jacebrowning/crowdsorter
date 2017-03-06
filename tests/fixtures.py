@@ -21,7 +21,7 @@ def client(app):
 @pytest.fixture
 def collection():
     collection = Collection(name="Sample List", key='abc123', code='sample')
-    collection.items2 = [
+    collection.items = [
         Item(name="bar", key='d4').save(),
         Item(name="foo", key='f5').save(),
         Item(name="qux", key='g6').save(),

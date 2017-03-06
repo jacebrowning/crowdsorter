@@ -40,7 +40,7 @@ def index(token, limit=None, **kwargs):
 def create(name, code, items):
     if items:
         items = [Item(name=name).save() for name in items]
-    collection = Collection(name=name, code=code, items2=items)
+    collection = Collection(name=name, code=code, items=items)
     collection.save()
 
     return serialize(collection), status.HTTP_201_CREATED
@@ -121,6 +121,6 @@ def serialize(collection):
         code=collection.code,
         private=collection.private,
         locked=collection.locked,
-        items=sorted([item.name for item in collection.items2]),
+        items=sorted([item.name for item in collection.items]),
         vote_count=collection.vote_count,
     )
