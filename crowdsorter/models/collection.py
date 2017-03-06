@@ -69,11 +69,9 @@ class Collection(db.Document):
 
     # Input data
     items = db.ListField(db.ReferenceField(Item))
-    items2 = db.ListField(db.ReferenceField(Item))
 
     # User data
     votes = db.EmbeddedDocumentListField(Wins)
-    votes2 = db.EmbeddedDocumentListField(Wins)
 
     # Computed properties
     scores = db.EmbeddedDocumentListField(Score)

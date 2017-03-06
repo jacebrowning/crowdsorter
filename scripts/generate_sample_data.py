@@ -14,29 +14,29 @@ def main():
     collection.save()
 
     collection = Collection(name="New Collection", key='_new')
-    collection.items2.append(Item(name="Foo").save())
-    collection.items2.append(Item(name="Bar").save())
-    collection.items2.append(Item(name="A really long name with lots of words.").save())
-    collection.items2.append(Item(name="special_character:#").save())
-    collection.items2.append(Item(name="special_character:&").save())
-    collection.items2.append(Item(name="special_character:'").save())
+    collection.items.append(Item(name="Foo").save())
+    collection.items.append(Item(name="Bar").save())
+    collection.items.append(Item(name="A really long name with lots of words.").save())
+    collection.items.append(Item(name="special_character:#").save())
+    collection.items.append(Item(name="special_character:&").save())
+    collection.items.append(Item(name="special_character:'").save())
     collection.save()
 
     collection = Collection(name="Colors", key='_sample', code='sample',
                             private=True)
-    collection.items2.append(Item(name="Red").save())
-    collection.items2.append(Item(name="Green").save())
-    collection.items2.append(Item(name="Blue").save())
-    collection.items2.append(Item(name="Yellow").save())
+    collection.items.append(Item(name="Red").save())
+    collection.items.append(Item(name="Green").save())
+    collection.items.append(Item(name="Blue").save())
+    collection.items.append(Item(name="Yellow").save())
     collection.save()
 
     collection = Collection(name="Numbers", key='_numbers', code='numbers')
-    collection.items2 = [Item(name=str(n)).save() for n in range(1, 21)]
+    collection.items = [Item(name=str(n)).save() for n in range(1, 21)]
     collection.save()
 
     collection = Collection(name="Private Collection",
                             key='_private', private=True)
-    collection.items2 = [
+    collection.items = [
         Item(name="Secret One").save(),
         Item(name="Secret Two").save(),
     ]
@@ -44,7 +44,7 @@ def main():
 
     collection = Collection(name="Locked Collection",
                             key='_locked', locked=True)
-    collection.items2 = [
+    collection.items = [
         Item(name="Item One").save(),
         Item(name="Item Two").save(),
     ]
