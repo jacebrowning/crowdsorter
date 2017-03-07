@@ -97,9 +97,9 @@ class Collection(db.Document):
         random.shuffle(scores)
         return [s['name'] for s in sorted(scores, key=lambda s: s.confidence)]
 
-    def add(self, name, *, _save=True):
+    def add(self, name, *, _save=True, **kwargs):
         """Add a new item and save it."""
-        item = Item(name=name)
+        item = Item(name=name, **kwargs)
 
         if _save:
             item.save()

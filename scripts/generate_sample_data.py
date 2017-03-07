@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# pylint: disable=line-too-long
 
 import os
 
@@ -48,6 +49,28 @@ def main():
         Item(name="Item One").save(),
         Item(name="Item Two").save(),
     ]
+    collection.save()
+
+    collection = Collection(name="Metadata Collection",
+                            key='_metadata', code='dogs')
+    collection.add(
+        "Collie",
+        description="Medium-sized, fairly lightly built dog, with a pointed snout.",
+        image_url="https://upload.wikimedia.org/wikipedia/commons/e/e4/Border_Collie_600.jpg",
+        ref_url="https://en.wikipedia.org/wiki/Collie",
+    )
+    collection.add(
+        "Golden Retriever",
+        description="Instinctive love of water, and are easy to train to basic or advanced obedience standards.",
+        image_url="https://upload.wikimedia.org/wikipedia/commons/9/93/Golden_Retriever_Carlos_%2810581910556%29.jpg",
+        ref_url="https://en.wikipedia.org/wiki/Golden_Retriever",
+    )
+    collection.add(
+        "Pug",
+        description="The Pug is a breed of dog with a wrinkly, short-muzzled face, and curled tail. ",
+        image_url="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Pug_portrait.jpg/400px-Pug_portrait.jpg",
+        ref_url="https://en.wikipedia.org/wiki/Pug",
+    )
     collection.save()
 
 
