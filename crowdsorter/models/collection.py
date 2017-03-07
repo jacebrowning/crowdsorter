@@ -90,11 +90,23 @@ class Collection(db.Document):
     def item_count(self):
         return len(self.items)
 
+    # TODO: rename to items_names_*
     @property
     def items_by_confidence(self):
         scores = self.scores.copy()
         random.shuffle(scores)
         return [s['name'] for s in sorted(scores, key=lambda s: s.confidence)]
+
+    def add(self, name, *, _save=True):
+        """Add a new item and save it."""
+        item = Item(name=name)
+
+        if _save:
+            item.save()
+
+        self.items.append(item)
+
+        return item
 
     def vote(self, winner, loser):
         """Apply a new vote and update the items order."""
