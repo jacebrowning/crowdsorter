@@ -53,6 +53,13 @@ def describe_collection():
             collection.vote("foo", "bar")
             expect(collection.vote_count) == 1
 
+    def describe_add():
+
+        def it_creates_an_item(collection):
+            item = collection.add("New Item", _save=False)
+
+            expect(item.name) == collection.items[-1].name
+
     def describe_clean():
 
         def it_generates_a_unique_code():

@@ -30,9 +30,7 @@ def add(key, name):
         raise exceptions.NotFound
 
     log.debug("Adding to %r: %r", collection, name)
-    item = Item(name=name)
-    item.save()
-    collection.items.append(item)
+    collection.add(name)
     collection.save()
 
     return serialize(collection), status.HTTP_200_OK
