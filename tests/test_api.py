@@ -27,6 +27,11 @@ def describe_root():
                     }
                 }
 
+        def redirects_with_slash(client, url):
+            status, content = load(client.get(url + "/"))
+
+            expect(status) == 302
+
 
 def describe_collections():
 

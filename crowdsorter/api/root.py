@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, url_for
+from flask import Blueprint, url_for, redirect
 from flask_api import status
 
 
@@ -18,3 +18,8 @@ def index():
     )
 
     return content, status.HTTP_200_OK
+
+
+@blueprint.route("/api/")
+def redirect_to_index():
+    return redirect(url_for('.index'))
