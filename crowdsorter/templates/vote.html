@@ -5,12 +5,12 @@
 {% block metas %}
 
     <!-- Metadata -->
-    <meta name="description" content="Cast your votes on the {{ collection['name'] }} collection.">
+    <meta name="description" content="Cast your votes in the {{ collection['name'] }} collection on Crowd Sorter.">
     <meta name="twitter:title" content="{{ collection['name'] }}">
-    <meta name="twitter:description" content="Cast your votes on the {{ collection['name'] }} collection.">
+    <meta name="twitter:description" content="Cast your votes in the {{ collection['name'] }} collection on Crowd Sorter.">
     <meta property="og:title" content="{{ collection['name'] }}">
     <meta property="og:url" content="{{ url_for('collections.detail', code=collection['code'], _external=True) }}">
-    <meta property="og:description" content="Cast your votes on the {{ collection['name'] }} collection.">
+    <meta property="og:description" content="Cast your votes in the {{ collection['name'] }} collection on Crowd Sorter.">
 {{ super() }}
 {% endblock %}
 
