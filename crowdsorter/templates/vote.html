@@ -32,29 +32,37 @@
         </div>
 
         <div class="row">
+            {% set first = collection['item_data'][0] %}
+            {% set second = collection['item_data'][1] %}
 
-            <div class="col-xs-6">
-                <form method="post" action="{{ request.path }}?winner={{ collection['item_data'][0]['name']|urlencode }}&loser={{ collection['item_data'][1]['name']|urlencode }}">
+            <div class="col-xs-12 col-sm-6">
+                <form method="post" action="{{ request.path }}?winner={{ first['name']|urlencode }}&loser={{ second['name']|urlencode }}">
                     <div class="form-group">
-                        <button id="vote-a" type="submit" class="btn btn-default btn-block btn-vote">
-                            <p>{{ collection['item_data'][0]['name'] }}</p>
-                            <img src="{{ collection['item_data'][0]['image_url'] }}" alt="{{ collection['item_data'][0]['name'] }}" height="300" width="300">
-                            <p>{{ collection['item_data'][0]['description'] }}</p>
+                        <button id="vote-first" type="submit" class="btn btn-default btn-block btn-vote">
+                            <p>{{ first['name'] }}</p>
+                            {% if first['image_url'] %}
+                            <img src="{{ first['image_url'] }}" alt="{{ first['name'] }}" height="300" width="300">
+                            {% endif %}
+                            {% if first['description'] %}
+                            <p>{{ first['description'] }}</p>
+                            {% endif %}
                         </button>
-                        <a href="{{ collection['item_data'][0]['ref_url'] }}" target="_blank">Additional information...</a>
                     </div>
                 </form>
             </div>
 
-            <div class="col-xs-6">
-                <form method="post" action="{{ request.path }}?winner={{ collection['item_data'][1]['name']|urlencode }}&loser={{ collection['item_data'][0]['name']|urlencode }}">
+            <div class="col-xs-12 col-sm-6">
+                <form method="post" action="{{ request.path }}?winner={{ second['name']|urlencode }}&loser={{ first['name']|urlencode }}">
                     <div class="form-group">
-                        <button id="vote-b" type="submit" class="btn btn-default btn-block btn-vote">
-                            <p>{{ collection['item_data'][1]['name'] }}</p>
-                            <img src="{{ collection['item_data'][1]['image_url'] }}" alt="{{ collection['item_data'][1]['name'] }}" height="300" width="300">
-                            <p>{{ collection['item_data'][1]['description'] }}</p>
+                        <button id="vote-second" type="submit" class="btn btn-default btn-block btn-vote">
+                            <p>{{ second['name'] }}</p>
+                            {% if second['image_url'] %}
+                            <img src="{{ second['image_url'] }}" alt="{{ second['name'] }}" height="300" width="300">
+                            {% endif %}
+                            {% if second['description'] %}
+                            <p>{{ second['description'] }}</p>
+                            {% endif %}
                         </button>
-                        <a href="{{ collection['item_data'][1]['ref_url'] }}" target="_blank">Additional information...</a>
                     </div>
                 </form>
             </div>
@@ -85,8 +93,8 @@
     <!-- Custom -->
     <script type="text/javascript">
         $('form').submit( function(){
-            $('#vote-a').prop('disabled', true);
-            $('#vote-b').prop('disabled', true);
+            $('#vote-first').prop('disabled', true);
+            $('#vote-second').prop('disabled', true);
             $('#reload').prop('disabled', true);
             $('#reload').html("Loading next pair...");
         });
