@@ -6,7 +6,9 @@
 
     <!-- Metadata -->
     <meta name="description" content="Cast your votes on the {{ collection['name'] }} collection.">
+    <meta name="twitter:title" content="{{ collection['name'] }}">
     <meta name="twitter:description" content="Cast your votes on the {{ collection['name'] }} collection.">
+    <meta property="og:title" content="{{ collection['name'] }}">
     <meta property="og:url" content="{{ request.url }}">
     <meta property="og:description" content="Cast your votes on the {{ collection['name'] }} collection.">
 {{ super() }}
