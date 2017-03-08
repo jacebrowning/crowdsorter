@@ -62,5 +62,8 @@ def collection_locked(collection):
 @pytest.fixture
 def item():
     item = Item(name="Sample Item", key='_item')
+    item.description = "This is the sample item."
+    item.image_url = "http://www.gstatic.com/webp/gallery/1.jpg"
+    item.ref_url = "http://example.com"
     item.save()
     return item

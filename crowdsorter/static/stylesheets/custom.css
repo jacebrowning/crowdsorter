@@ -128,13 +128,18 @@ footer {
 }
 
 .btn-vote {
-    padding: 4em 0.25em;
+    min-height: 8em;
     white-space: normal;
 }
 
+.img-vote {
+    max-width: 90%;
+    max-height: 300px;
+    padding-bottom: 10px;
+}
+
 .btn-reload {
-    padding: 1em 0;
-    white-space: normal;
+    min-height: 1em;
 }
 
 .top-buffer {

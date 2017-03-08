@@ -274,6 +274,9 @@ def describe_items():
                             },
                             'key': "d4",
                             'name': "bar",
+                            'description': None,
+                            'image_url': None,
+                            'ref_url': None,
                         },
                         {
                             '_links': {
@@ -281,6 +284,9 @@ def describe_items():
                             },
                             'key': "f5",
                             'name': "foo",
+                            'description': None,
+                            'image_url': None,
+                            'ref_url': None,
                         },
                         {
                             '_links': {
@@ -288,6 +294,9 @@ def describe_items():
                             },
                             'key': "g6",
                             'name': "qux",
+                            'description': None,
+                            'image_url': None,
+                            'ref_url': None,
                         },
                     ],
                 }
@@ -361,6 +370,9 @@ def describe_items():
                     },
                     'key': "_item",
                     'name': "Sample Item",
+                    'description': "This is the sample item.",
+                    'image_url': "http://www.gstatic.com/webp/gallery/1.jpg",
+                    'ref_url': "http://example.com",
                 }
 
             def when_unknown(client):
@@ -386,7 +398,7 @@ def describe_votes():
                 'collection': "http://localhost/api/collections/abc123",
             },
             expect(content['name']) == "Sample List"
-            expect(len(content['items'])) == 3
+            expect(len(content['item_data'])) == 3
 
     def describe_POST():
 

@@ -3,7 +3,7 @@ import logging
 
 from ..extensions import db
 
-from . import Item, Scores
+from . import Item, Results
 from ._utils import generate_key, generate_code
 
 
@@ -39,7 +39,8 @@ class Wins(db.EmbeddedDocument):
 class Score(db.EmbeddedDocument):
     """Stores the computed score for an item."""
 
-    name = db.StringField()
+    name = db.StringField()  # TODO: delete field
+    item = db.ReferenceField(Item)
     points = db.FloatField()
     confidence = db.FloatField()
 
@@ -49,7 +50,7 @@ class Score(db.EmbeddedDocument):
     @property
     def data(self):
         return dict(
-            name=self.name,
+            name=self.item.name,
             points=self.points,
             confidence=self.confidence,
         )
@@ -90,16 +91,15 @@ class Collection(db.Document):
     def item_count(self):
         return len(self.items)
 
-    # TODO: rename to items_names_*
     @property
     def items_by_confidence(self):
         scores = self.scores.copy()
         random.shuffle(scores)
-        return [s['name'] for s in sorted(scores, key=lambda s: s.confidence)]
+        return [s.item for s in sorted(scores, key=lambda s: s.confidence)]
 
-    def add(self, name, *, _save=True):
+    def add(self, name, *, _save=True, **kwargs):
         """Add a new item and save it."""
-        item = Item(name=name)
+        item = Item(name=name, **kwargs)
 
         if _save:
             item.save()
@@ -171,21 +171,21 @@ class Collection(db.Document):
 
     def _clean_scores(self):
         """Sort the items list based on comparison data."""
-        scores = Scores.build(self.items)
+        results = Results.build(self.items)
 
         for wins in self.votes:
             for loss in wins.against:
-                scores.add_pair(wins.winner, loss.loser, loss.count)
+                results.add_pair(wins.winner, loss.loser, loss.count)
 
-        scores.sort()
-        for index, score in enumerate(scores):
-            log.debug("Updated scores %s: %r", index, score)
+        results.sort()
+        for index, result in enumerate(results):
+            log.debug("Updated scores %s: %r", index, result)
 
         self.scores = []
-        for score in scores:
-            score = Score(name=str(score.item),
-                          points=score.score[0],
-                          confidence=score.score[1])
+        for result in results:
+            score = Score(item=result.item,
+                          points=result.score[0],
+                          confidence=result.score[1])
             self.scores.append(score)
 
     @staticmethod

@@ -7,6 +7,9 @@ class Item(db.Document):
 
     key = db.StringField(primary_key=True, default=generate_key)
     name = db.StringField()
+    description = db.StringField()
+    image_url = db.URLField()
+    ref_url = db.URLField()
 
     def __str__(self):
         return f"{self.name}"

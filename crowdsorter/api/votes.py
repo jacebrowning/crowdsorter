@@ -58,6 +58,15 @@ def serialize(collection):
         ),
         name=collection.name,
         code=collection.code,
-        items=collection.items_by_confidence,
+        item_data=[serialize_item(i) for i in collection.items_by_confidence],
         vote_count=collection.vote_count,
+    )
+
+
+def serialize_item(item):
+    return dict(
+        name=item.name,
+        description=item.description,
+        image_url=item.image_url,
+        ref_url=item.ref_url,
     )
