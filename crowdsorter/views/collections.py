@@ -112,7 +112,7 @@ def vote(code):
         collection = {}
         collection['name'] = UNKNOWN_COLLECTION_NAME
         collection['code'] = UNKNOWN_COLLECTION_CODE
-        collection['items'] = ["---"] * 2
+        collection['item_data'] = [{'name': "---"}] * 2
         percent = 0
     else:
         percent, collection = filter_pairs(content)

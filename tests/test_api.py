@@ -398,7 +398,7 @@ def describe_votes():
                 'collection': "http://localhost/api/collections/abc123",
             },
             expect(content['name']) == "Sample List"
-            expect(len(content['items'])) == 3
+            expect(len(content['item_data'])) == 3
 
     def describe_POST():
 

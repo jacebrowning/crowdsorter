@@ -8,7 +8,7 @@ INFERRED_RATIO_IMPACT = 0.9
 log = logging.getLogger(__name__)
 
 
-class Score(object):
+class Result(object):
 
     def __init__(self, item, *, _points=None, _confidence=None):
         self.item = item
@@ -99,21 +99,21 @@ class Score(object):
         return points, ratio
 
 
-class Scores(list):
+class Results(list):
 
     @classmethod
     def build(cls, items):
-        scores = cls()
+        results = cls()
 
         for item in items:
-            scores.find(item, create=True)
+            results.find(item, create=True)
 
-        for this in scores:
-            for that in scores:
+        for this in results:
+            for that in results:
                 if this != that:
                     this.opponents.append(that)
 
-        return scores
+        return results
 
     def find(self, item, create=False):
         for score in self:
@@ -121,9 +121,9 @@ class Scores(list):
                 return score
 
         if create:
-            score = Score(item)
-            self.append(score)
-            return score
+            result = Result(item)
+            self.append(result)
+            return result
 
         log.warning("Unknown item: %s", item)
         return None

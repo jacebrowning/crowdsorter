@@ -1,3 +1,3 @@
 from .item import Item
-from .score import Score, Scores
+from .result import Result, Results
 from .collection import Collection, Wins, Loss

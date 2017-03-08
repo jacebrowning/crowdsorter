@@ -32,21 +32,27 @@
         <div class="row">
 
             <div class="col-xs-6">
-                <form method="post" action="{{ request.path }}?winner={{ collection['items'][0]|urlencode }}&loser={{ collection['items'][1]|urlencode }}">
+                <form method="post" action="{{ request.path }}?winner={{ collection['item_data'][0]['name']|urlencode }}&loser={{ collection['item_data'][1]['name']|urlencode }}">
                     <div class="form-group">
                         <button id="vote-a" type="submit" class="btn btn-default btn-block btn-vote">
-                            {{ collection['items'][0] }}
+                            <p>{{ collection['item_data'][0]['name'] }}</p>
+                            <img src="{{ collection['item_data'][0]['image_url'] }}" alt="{{ collection['item_data'][0]['name'] }}" height="300" width="300">
+                            <p>{{ collection['item_data'][0]['description'] }}</p>
                         </button>
+                        <a href="{{ collection['item_data'][0]['ref_url'] }}" target="_blank">Additional information...</a>
                     </div>
                 </form>
             </div>
 
             <div class="col-xs-6">
-                <form method="post" action="{{ request.path }}?winner={{ collection['items'][1]|urlencode }}&loser={{ collection['items'][0]|urlencode }}">
+                <form method="post" action="{{ request.path }}?winner={{ collection['item_data'][1]['name']|urlencode }}&loser={{ collection['item_data'][0]['name']|urlencode }}">
                     <div class="form-group">
                         <button id="vote-b" type="submit" class="btn btn-default btn-block btn-vote">
-                            {{ collection['items'][1] }}
+                            <p>{{ collection['item_data'][1]['name'] }}</p>
+                            <img src="{{ collection['item_data'][1]['image_url'] }}" alt="{{ collection['item_data'][1]['name'] }}" height="300" width="300">
+                            <p>{{ collection['item_data'][1]['description'] }}</p>
                         </button>
+                        <a href="{{ collection['item_data'][1]['ref_url'] }}" target="_blank">Additional information...</a>
                     </div>
                 </form>
             </div>
