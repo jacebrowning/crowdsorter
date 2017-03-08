@@ -13,7 +13,7 @@
       "value": "true"
     },
     "VIRTUAL_ENV": {
-      "value": "heroku"
+      "value": "/app/.heroku/python"
     },
 
     "AUTH_TOKEN": {
