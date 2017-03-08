@@ -39,9 +39,9 @@
                 <form method="post" action="{{ request.path }}?winner={{ first['name']|urlencode }}&loser={{ second['name']|urlencode }}">
                     <div class="form-group">
                         <button id="vote-first" type="submit" class="btn btn-default btn-block btn-vote">
-                            <p>{{ first['name'] }}</p>
+                            <p><b>{{ first['name'] }}</b></p>
                             {% if first['image_url'] %}
-                            <img src="{{ first['image_url'] }}" alt="{{ first['name'] }}" height="300" width="300">
+                            <img class="img-vote" src="{{ first['image_url'] }}" alt="{{ first['name'] }}">
                             {% endif %}
                             {% if first['description'] %}
                             <p>{{ first['description'] }}</p>
@@ -55,9 +55,9 @@
                 <form method="post" action="{{ request.path }}?winner={{ second['name']|urlencode }}&loser={{ first['name']|urlencode }}">
                     <div class="form-group">
                         <button id="vote-second" type="submit" class="btn btn-default btn-block btn-vote">
-                            <p>{{ second['name'] }}</p>
+                            <p><b>{{ second['name'] }}</b></p>
                             {% if second['image_url'] %}
-                            <img src="{{ second['image_url'] }}" alt="{{ second['name'] }}" height="300" width="300">
+                            <img class="img-vote" src="{{ second['image_url'] }}" alt="{{ second['name'] }}">
                             {% endif %}
                             {% if second['description'] %}
                             <p>{{ second['description'] }}</p>
