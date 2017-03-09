@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# pylint: disable=line-too-long
+# pylint: disable=import-error,line-too-long
 
 import os
 
