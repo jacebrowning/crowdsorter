@@ -24,13 +24,13 @@ def index(key):
 
 @blueprint.route("/api/collections/<key>/items", methods=['POST'])
 @parser.use_kwargs(ItemSchema)
-def add(key, name):
+def add(key, name, **kwargs):
     collection = Collection.objects(key=key).first()
     if not collection:
         raise exceptions.NotFound
 
     log.debug("Adding to %r: %r", collection, name)
-    collection.add(name)
+    collection.add(name, **kwargs)
     collection.save()
 
     return serialize(collection), status.HTTP_200_OK

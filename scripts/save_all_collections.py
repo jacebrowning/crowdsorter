@@ -1,6 +1,9 @@
 #!/usr/bin/env python
-
 # pylint: disable=import-error
+
+"""
+Save all collections to updated calculated fields.
+"""
 
 import os
 

@@ -87,6 +87,9 @@ class EditCollectionSchema(CollectionSchema):
 class ItemSchema(ValidatorMixin, Schema):
 
     name = fields.Str(required=True)
+    description = fields.Str(missing=None)
+    image_url = fields.Str(missing=None)
+    ref_url = fields.Str(missing=None)
 
 
 class VoteSchema(ValidatorMixin, Schema):

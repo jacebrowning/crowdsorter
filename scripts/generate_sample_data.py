@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # pylint: disable=import-error,line-too-long
 
+"""
+Generate sample data for manual testing.
+"""
+
 import os
 
 from crowdsorter.settings import get_config

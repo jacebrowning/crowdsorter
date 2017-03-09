@@ -317,6 +317,30 @@ def describe_items():
 
                 expect(status) == 200
                 expect(len(content['_objects'])) == 4
+                expect(content['_objects'][-1]['description']) == None
+                expect(content['_objects'][-1]['image_url']) == None
+                expect(content['_objects'][-1]['ref_url']) == None
+
+            def with_metadata(client, url, collection):
+                data = {
+                    'name': "Sample Item",
+                    'description': "The item description.",
+                    'image_url': "http://image.url",
+                    'ref_url': "http://ref.url",
+                }
+                status, content = load(client.post(url, data=data))
+
+                # Remove values that are non-deterministic
+                del content['_objects'][-1]['_links']
+                del content['_objects'][-1]['key']
+
+                expect(status) == 200
+                expect(content['_objects'][-1]) == {
+                    'name': "Sample Item",
+                    'description': "The item description.",
+                    'image_url': "http://image.url",
+                    'ref_url': "http://ref.url",
+                }
 
             def when_missing(client, url):
                 data = {'name': "Foobar"}
