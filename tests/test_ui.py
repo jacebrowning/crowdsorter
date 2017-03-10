@@ -82,8 +82,8 @@ def describe_collections():
                 data = {'name': "My List"}
                 html = post(client, "/collections/", data)
 
-                expect(html).contains("Created collection: My List")
                 expect(html).contains("My List")
+                expect(html).contains("This is the admin page")
 
             def without_name(client):
                 data = {}
@@ -259,7 +259,7 @@ def describe_admin():
             html = post(client, "/collections/_c", data)
 
             expect(html).contains("Votes cleared.")
-            expect(html).contains('<a href="/collections/_c">Admin</a>')
+            expect(html).contains("This is the admin page")
 
             html = get(client, "/sample")
 
