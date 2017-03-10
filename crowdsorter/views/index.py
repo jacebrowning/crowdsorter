@@ -15,7 +15,7 @@ def get():
     assert status == 200
 
     return Response(render_template("index.html",
-                                    collections=content['_items']))
+                                    collections=content['_objects']))
 
 
 @blueprint.route('/robots.txt')

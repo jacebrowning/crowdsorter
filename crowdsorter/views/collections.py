@@ -38,7 +38,7 @@ def index():
     assert status == 200
 
     return Response(render_template("collections.html",
-                                    collections=content['_items']))
+                                    collections=content['_objects']))
 
 
 @blueprint.route("/collections/", methods=['POST'])
@@ -131,6 +131,7 @@ def vote(code):
 
 
 def _get_key(code, *, require_unlocked=False):
+    # TODO: considering making a separate API for this to avoid exposing details
     log.debug("Looking up key from code: %s", code)
     content, status = call(api.collections.detail, key=None, code=code)
 

@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ super() }} | {{ item['name'] }} | Details {% endblock %}
+
+{# Hide the navbar because collection metadata isn't available here #}
+{% block navbar %}{% endblock %}
+
+{% block content %}
+{{ super() }}
+    <div class="jumbotron text-center">
+        <h2 class="title">{{ item['name'] }}</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            <h3 class="section center">Item Properties</h3>
+
+            <div class="col-xs-12">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="item-name">Name</label>
+                        <input type="text" class="form-control" id="item-name" name="name" value="{{ item['name'] }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-image-url">Image URL</label>
+                        <input type="text" class="form-control" id="item-image-url" name="name" value="{{ item['image_url'] }}" placeholder="Optinal image to display when voting on the item.">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-description">Description (optional)</label>
+                        <input type="text" class="form-control" id="item-description" name="name" value="{{ item['description'] }}" placeholder="Optional text to display when voting on the item.">
+                    </div>
+                    <div class="form-group">
+                        <label for="item-ref-url">Reference URL (optional)</label>
+                        <input type="text" class="form-control" id="item-ref-url" name="name" value="{{ item['ref_url'] }}" placeholder="Optional URL to link the item to an external source.">
+                    </div>
+                    <div class="row center top-buffer">
+                        <input type="submit" class="btn btn-primary btn-primary" name="save" value="Save Changes"></input>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+{# TODO: this needs to delete the item from all collections #}
+{#     <div class="container-fluid">
+        <hr>
+    </div>
+
+    <div class="container">
+        <div class="col-sm-8 col-sm-offset-2">
+
+            <h3 class="section center">Danger Zone</h3>
+
+            <div class="row center">
+                <form method="post">
+                    <input type="submit" class="btn btn-danger" name="delete" value="Delete Item"/>
+                </form>
+            </div>
+
+        </div>
+    </div> #}
+
+    {% include "footer.html" %}
+{% endblock %}

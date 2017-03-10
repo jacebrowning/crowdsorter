@@ -7,6 +7,7 @@ from ..models import Collection, Item
 
 from ._schemas import (parser, TokenSchema, CollectionSchema,
                        NewCollectionSchema, EditCollectionSchema)
+from ._serializers import serialize_item
 from . import _exceptions as exceptions
 
 
@@ -29,7 +30,7 @@ def index(token, limit=None, **kwargs):
             root=url_for('root_api.index', _external=True),
             self=url_for('collections_api.index', _external=True),
         ),
-        _items=[serialize(c) for c in collections]
+        _objects=[serialize(c, embed_items=False) for c in collections],
     )
 
     return content, status.HTTP_200_OK
@@ -103,7 +104,7 @@ def delete(key):
     return '', status.HTTP_204_NO_CONTENT
 
 
-def serialize(collection):
+def serialize(collection, *, embed_items=True):
     return dict(
         _links=dict(
             self=url_for('collections_api.detail', key=collection.key,
@@ -121,6 +122,8 @@ def serialize(collection):
         code=collection.code,
         private=collection.private,
         locked=collection.locked,
-        items=sorted([item.name for item in collection.items]),
         vote_count=collection.vote_count,
+        _embedded=dict(
+            items=[serialize_item(o) for o in sorted(collection.items)],
+        ) if embed_items else {}
     )

@@ -92,10 +92,12 @@
             <h3 class="section center">Items</h3>
 
             <div class="row">
-                {% for name in collection['items'] %}
+                {% for item in collection['_embedded']['items'] %}
                 <form method="post" class="input-group input-group-lg bottom-buffer">
-                    <div class="form-control input-lg">{{ name }}</div>
-                    <input type=hidden value="{{ name }}" name="remove"/>
+                    <div class="form-control input-lg">
+                        <a href="{{ url_for('items.detail', key=item['key']) }}" target="_blank">{{ item['name'] }}</a>
+                    </div>
+                    <input type=hidden value="{{ item['name'] }}" name="remove"/>
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-danger" title="Remove this item">
                             <i class="glyphicon glyphicon-minus-sign"></i>
