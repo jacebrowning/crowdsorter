@@ -86,10 +86,10 @@
 
             {% if not collection['locked'] %}
             <div class="row">
-                <form method="post" class="input-group input-group-lg">
+                <form id="add-item-form" method="post" class="input-group input-group-lg" target="_blank">
                     <input type="text" class="form-control input-lg" name="name" placeholder="New Item Name">
                     <span class="input-group-btn">
-                        <button type="submit" class="btn btn-success" title="Add an item">
+                        <button type="submit" class="btn btn-success" title="Add an item" onClick="reload();">
                             <i class="glyphicon glyphicon-plus-sign"></i>
                         </button>
                     </span>
@@ -124,4 +124,17 @@
     {% endif %}
 
     {% include "footer.html" %}
+{% endblock %}
+
+{% block scripts %}
+{{- super() }}
+    <!-- Custom -->
+    <script type="text/javascript">
+        function reload() {
+            setTimeout(function() {
+                document.getElementById("add-item-form").reset();
+                window.location.reload();
+            }, 3000);
+        }
+    </script>
 {% endblock %}

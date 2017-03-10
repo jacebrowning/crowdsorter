@@ -122,13 +122,13 @@ def describe_collections():
                 data = dict(name="New Item")
                 html = post(client, "/sample", data)
 
-                expect(html).contains("Added item: New Item")
+                expect(html).contains('<h2 class="title">New Item</h2>')
 
             def on_locked_collection(client, collection_locked):
                 data = dict(name="New Item")
                 html = post(client, "/sample", data)
 
-                expect(html).contains("Unable to add items.")
+                expect(html).contains("This window will close automatically...")
 
     def describe_votes():
 

@@ -7,7 +7,7 @@ from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts, filter_pairs
+from ._utils import call, parts, filter_pairs, autoclose
 
 
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
@@ -81,15 +81,17 @@ def add(code):
     name = request.form['name'].strip()
 
     if name:
-        _, status = call(api.items.add, key=key, name=name)
+        content, status = call(api.items.add, key=key, name=name)
         if status == 200:
             flash(f"Added item: {name}", 'info')
+            key = content['_objects'][-1]['key']
+            return redirect(url_for('items.detail', key=key))
         else:
             flash("Unable to add items.", 'danger')
     else:
         flash("A name is required.", 'danger')
 
-    return redirect(url_for('collections.detail', code=code))
+    return autoclose(seconds=1.5)
 
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
