@@ -83,7 +83,6 @@ def add(code):
     if name:
         content, status = call(api.items.add, key=key, name=name)
         if status == 200:
-            flash(f"Added item: {name}", 'info')
             key = content['_objects'][-1]['key']
             return redirect(url_for('items.detail', key=key))
         else:
