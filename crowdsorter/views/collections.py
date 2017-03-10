@@ -22,7 +22,7 @@ def _activate_collections():
 
 
 def _show_items():
-    return parts() and parts()[0] != 'collections'
+    return parts() and parts()[0] not in ['collections', 'items']
 
 
 def _activate_items():

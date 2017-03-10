@@ -56,9 +56,9 @@ def update(key, name, description, image_url, ref_url):
     if description is not None:
         item.description = description.strip()
     if image_url is not None:
-        item.image_url = image_url.strip()
+        item.image_url = image_url.strip() or None
     if ref_url is not None:
-        item.ref_url = ref_url.strip()
+        item.ref_url = ref_url.strip() or None
 
     try:
         item.save()
