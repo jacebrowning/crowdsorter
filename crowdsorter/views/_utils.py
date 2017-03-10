@@ -74,7 +74,7 @@ def filter_pairs(content):
     return percent, content
 
 
-def autoclose(seconds=1):
+def autoclose(seconds=2):
     """Automatically close unused target=_"blank" links."""
     template = """
 

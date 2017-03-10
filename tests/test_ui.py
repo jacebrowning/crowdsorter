@@ -232,8 +232,7 @@ def describe_admin():
             data = dict(add="New Item")
             html = post(client, "/collections/_c", data)
 
-            expect(html).contains("Added item: New Item")
-            expect(html).contains('value="New Item" name="remove"')
+            expect(html).contains('<h2 class="title">New Item</h2>')
 
     def describe_remove():
 
