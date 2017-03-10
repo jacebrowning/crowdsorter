@@ -432,35 +432,63 @@ def describe_item():
 
                 expect(status) == 404
 
-        # def describe_PUT():
+        def describe_PUT():
 
-        #     def it_can_update_the_name(client, url, item):
-        #         data = {'name': "Updated Name"}
-        #         status, content = load(client.put(url, data=data))
+            def it_can_update_the_name(client, url, item):
+                data = {'name': "Updated Name  "}
+                status, content = load(client.put(url, data=data))
 
-        #         expect(status) == 200
-        #         expect(content['name']) == "Updated Name"
+                expect(status) == 200
+                expect(content['name']) == "Updated Name"
 
-        #     def it_ignores_empty_names(client, url, collection):
-        #         data = {'name': "  "}
-        #         status, content = load(client.put(url, data=data))
+            def it_ignores_empty_names(client, url, item):
+                data = {'name': "  "}
+                status, content = load(client.put(url, data=data))
 
-        #         expect(status) == 200
-        #         expect(content['name']) == "Sample List"
+                expect(status) == 200
+                expect(content['name']) == "Sample Item"
 
-        #     def it_can_update_the_description(client, url, collection):
-        #         data = {'description': "The description."}
-        #         status, content = load(client.put(url, data=data))
+            def it_can_update_the_description(client, url, item):
+                data = {'description': "The description.  "}
+                status, content = load(client.put(url, data=data))
 
-        #         expect(status) == 200
-        #         expect(content['description']) == "The description."
+                expect(status) == 200
+                expect(content['description']) == "The description."
 
-        #     def it_can_clear_the_description(client, url, collection):
-        #         data = {'description': ""}
-        #         status, content = load(client.put(url, data=data))
+            def it_can_clear_the_description(client, url, item):
+                data = {'description': "  "}
+                status, content = load(client.put(url, data=data))
 
-        #         expect(status) == 200
-        #         expect(content['description']) == ""
+                expect(status) == 200
+                expect(content['description']) == ""
+
+            def it_can_update_the_image_url(client, url, item):
+                data = {'image_url': "http://example.com/image.jpg"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['image_url']) == "http://example.com/image.jpg"
+
+            def it_rejects_invalid_image_urls(client, url, item):
+                data = {'image_url': "http://foo"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 422
+                expect(content['message']) == "Invalid URL: http://foo"
+
+            def it_can_update_the_ref_url(client, url, item):
+                data = {'ref_url': "http://example.com/ref"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['ref_url']) == "http://example.com/ref"
+
+            def it_rejects_invalid_ref_urls(client, url, item):
+                data = {'ref_url': "http://foo"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 422
+                expect(content['message']) == "Invalid URL: http://foo"
 
 
 def describe_votes():

@@ -92,6 +92,11 @@ class ItemSchema(ValidatorMixin, Schema):
     ref_url = fields.Str(missing=None)
 
 
+class EditItemSchema(ItemSchema):
+
+    name = fields.Str(missing=None)
+
+
 class VoteSchema(ValidatorMixin, Schema):
 
     winner = fields.Str(required=True)

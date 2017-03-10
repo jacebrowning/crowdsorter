@@ -40,7 +40,7 @@
       "url": "https://github.com/jacebrowning/heroku-buildpack-pipenv.git#910c815d6946cc0a13c7a0410ff31276a55efe62"
     }
   ],
-  "addons":[
+  "addons": [
     "mongolab",
     "sendgrid"
   ]
