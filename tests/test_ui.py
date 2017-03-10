@@ -254,9 +254,14 @@ def describe_admin():
 
     def describe_clear():
 
-        def it_redirects_and_clears_votes(client, collection):
+        def it_clears_votes(client, collection):
             data = dict(clear=True)
             html = post(client, "/collections/abc123", data)
+
+            expect(html).contains("Votes cleared.")
+            expect(html).contains('<a href="/collections/abc123">Admin</a>')
+
+            html = get(client, "/sample")
 
             expect(html).contains("Votes: 0")
 

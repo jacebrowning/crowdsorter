@@ -91,8 +91,6 @@ def update(key):
         content, status = call(api.votes.clear, key=key)
         assert status == 200
         flash("Votes cleared.", 'info')
-        code = content['code']
-        return redirect(url_for('collections.detail', code=code))
 
     if delete:
         _, status = call(api.collections.delete, key=key)
