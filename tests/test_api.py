@@ -57,7 +57,7 @@ def describe_collections():
                         'root': "http://localhost/api",
                         'self': "http://localhost/api/collections/",
                     },
-                    '_items': [
+                    '_objects': [
                         {
                             '_links': {
                                 'self': "http://localhost/api/collections/abc123",
@@ -71,12 +71,8 @@ def describe_collections():
                             'code': "sample",
                             'private': False,
                             'locked': False,
-                            'items': [
-                                "bar",
-                                "foo",
-                                "qux",
-                            ],
                             'vote_count': 1,
+                            '_embedded': {},
                         },
                     ],
 
@@ -91,7 +87,7 @@ def describe_collections():
                 expect(status) == 201
                 expect(content['name']) == "Foobar"
                 expect(content['code']) != None
-                expect(content['items']) == ["a", "b", "c"]
+                expect(len(content['_embedded']['items'])) == 3
 
             def it_creates_an_empty_list_when_not_provided(client, url):
                 data = {'name': "Foobar"}
@@ -99,7 +95,7 @@ def describe_collections():
 
                 expect(status) == 201
                 expect(content['name']) == "Foobar"
-                expect(len(content['items'])) == 0
+                expect(len(content['_embedded']['items'])) == 0
 
             def it_requires_a_name(client, url):
                 status, content = load(client.post(url))
@@ -140,12 +136,41 @@ def describe_collections():
                     'code': "sample",
                     'private': False,
                     'locked': False,
-                    'items': [
-                        "bar",
-                        "foo",
-                        "qux",
-                    ],
                     'vote_count': 1,
+                    '_embedded': {
+                        'items': [
+                            {
+                                '_links': {
+                                    'self': "http://localhost/api/items/d4",
+                                },
+                                'key': "d4",
+                                'name': "bar",
+                                'description': "",
+                                'image_url': "",
+                                'ref_url': "",
+                            },
+                            {
+                                '_links': {
+                                    'self': "http://localhost/api/items/f5",
+                                },
+                                'key': "f5",
+                                'name': "foo",
+                                'description': "",
+                                'image_url': "",
+                                'ref_url': "",
+                            },
+                            {
+                                '_links': {
+                                    'self': "http://localhost/api/items/g6",
+                                },
+                                'key': "g6",
+                                'name': "qux",
+                                'description': "",
+                                'image_url': "",
+                                'ref_url': "",
+                            },
+                        ],
+                    },
                 }
 
             def when_missing(client):
@@ -274,9 +299,9 @@ def describe_items():
                             },
                             'key': "d4",
                             'name': "bar",
-                            'description': None,
-                            'image_url': None,
-                            'ref_url': None,
+                            'description': "",
+                            'image_url': "",
+                            'ref_url': "",
                         },
                         {
                             '_links': {
@@ -284,9 +309,9 @@ def describe_items():
                             },
                             'key': "f5",
                             'name': "foo",
-                            'description': None,
-                            'image_url': None,
-                            'ref_url': None,
+                            'description': "",
+                            'image_url': "",
+                            'ref_url': "",
                         },
                         {
                             '_links': {
@@ -294,9 +319,9 @@ def describe_items():
                             },
                             'key': "g6",
                             'name': "qux",
-                            'description': None,
-                            'image_url': None,
-                            'ref_url': None,
+                            'description': "",
+                            'image_url': "",
+                            'ref_url': "",
                         },
                     ],
                 }
@@ -317,9 +342,9 @@ def describe_items():
 
                 expect(status) == 200
                 expect(len(content['_objects'])) == 4
-                expect(content['_objects'][-1]['description']) == None
-                expect(content['_objects'][-1]['image_url']) == None
-                expect(content['_objects'][-1]['ref_url']) == None
+                expect(content['_objects'][-1]['description']) == ""
+                expect(content['_objects'][-1]['image_url']) == ""
+                expect(content['_objects'][-1]['ref_url']) == ""
 
             def with_metadata(client, url, collection):
                 data = {
@@ -376,6 +401,9 @@ def describe_items():
 
                 expect(status) == 404
 
+
+def describe_item():
+
     def describe_detail():
 
         @pytest.fixture
@@ -403,6 +431,64 @@ def describe_items():
                 status, content = load(client.get("/api/items/unknown"))
 
                 expect(status) == 404
+
+        def describe_PUT():
+
+            def it_can_update_the_name(client, url, item):
+                data = {'name': "Updated Name  "}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['name']) == "Updated Name"
+
+            def it_ignores_empty_names(client, url, item):
+                data = {'name': "  "}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['name']) == "Sample Item"
+
+            def it_can_update_the_description(client, url, item):
+                data = {'description': "The description.  "}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['description']) == "The description."
+
+            def it_can_clear_the_description(client, url, item):
+                data = {'description': "  "}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['description']) == ""
+
+            def it_can_update_the_image_url(client, url, item):
+                data = {'image_url': "http://example.com/image.jpg"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['image_url']) == "http://example.com/image.jpg"
+
+            def it_rejects_invalid_image_urls(client, url, item):
+                data = {'image_url': "http://foo"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 422
+                expect(content['message']) == "Invalid URL: http://foo"
+
+            def it_can_update_the_ref_url(client, url, item):
+                data = {'ref_url': "http://example.com/ref"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['ref_url']) == "http://example.com/ref"
+
+            def it_rejects_invalid_ref_urls(client, url, item):
+                data = {'ref_url': "http://foo"}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 422
+                expect(content['message']) == "Invalid URL: http://foo"
 
 
 def describe_votes():

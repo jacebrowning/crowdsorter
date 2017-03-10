@@ -2,7 +2,7 @@ import logging
 from urllib.error import HTTPError
 import random
 
-from flask import request, session
+from flask import Response, request, session
 from flask_api.exceptions import APIException
 
 from ..extensions import sendgrid
@@ -72,3 +72,29 @@ def filter_pairs(content):
     content['item_data'] = item_data
 
     return percent, content
+
+
+def autoclose(seconds=1):
+    """Automatically close unused target=_"blank" links."""
+    template = """
+
+    <!DOCTYPE html>
+    <html>
+    <body>
+
+        <p>This window will close automatically...</p>
+
+        <script type="text/javascript">
+            setTimeout(function() {
+                window.close();
+            }, {milliseconds});
+        </script>
+
+    </body>
+    </html>
+
+    """.replace('  ', '').replace('\n', '')
+
+    html = template.replace('{milliseconds}', str(seconds * 1000))
+
+    return Response(html, 400)

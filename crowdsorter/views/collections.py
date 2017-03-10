@@ -7,7 +7,7 @@ from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts, filter_pairs
+from ._utils import call, parts, filter_pairs, autoclose
 
 
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
@@ -22,7 +22,7 @@ def _activate_collections():
 
 
 def _show_items():
-    return parts() and parts()[0] != 'collections'
+    return parts() and parts()[0] not in ['collections', 'items']
 
 
 def _activate_items():
@@ -38,7 +38,7 @@ def index():
     assert status == 200
 
     return Response(render_template("collections.html",
-                                    collections=content['_items']))
+                                    collections=content['_objects']))
 
 
 @blueprint.route("/collections/", methods=['POST'])
@@ -81,15 +81,16 @@ def add(code):
     name = request.form['name'].strip()
 
     if name:
-        _, status = call(api.items.add, key=key, name=name)
+        content, status = call(api.items.add, key=key, name=name)
         if status == 200:
-            flash(f"Added item: {name}", 'info')
+            key = content['_objects'][-1]['key']
+            return redirect(url_for('items.detail', key=key))
         else:
             flash("Unable to add items.", 'danger')
     else:
         flash("A name is required.", 'danger')
 
-    return redirect(url_for('collections.detail', code=code))
+    return autoclose(seconds=1.5)
 
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
@@ -131,6 +132,7 @@ def vote(code):
 
 
 def _get_key(code, *, require_unlocked=False):
+    # TODO: considering making a separate API for this to avoid exposing details
     log.debug("Looking up key from code: %s", code)
     content, status = call(api.collections.detail, key=None, code=code)
 

@@ -28,7 +28,8 @@ def detail(key):
     if status == 404:
         content['name'] = UNKNOWN_COLLECTION_NAME
         content['code'] = UNKNOWN_COLLECTION_CODE
-        content['items'] = []
+        content['_embedded'] = {}
+        content['_embedded']['items'] = []
 
     return Response(render_template("admin.html", collection=content))
 

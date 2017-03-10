@@ -5,7 +5,8 @@ from flask_api import status
 
 from ..models import Collection, Item
 
-from ._schemas import parser, ItemSchema
+from ._schemas import parser, ItemSchema, EditItemSchema
+from ._serializers import serialize_item
 from . import _exceptions as exceptions
 
 
@@ -45,6 +46,29 @@ def detail(key):
     return serialize_item(item), status.HTTP_200_OK
 
 
+@blueprint.route("/api/items/<key>", methods=['PUT'])
+@parser.use_kwargs(EditItemSchema)
+def update(key, name, description, image_url, ref_url):
+    item = Item.objects(key=key).first()
+
+    if name and name.strip():
+        item.name = name.strip()
+    if description is not None:
+        item.description = description.strip()
+    if image_url is not None:
+        item.image_url = image_url.strip() or None
+    if ref_url is not None:
+        item.ref_url = ref_url.strip() or None
+
+    try:
+        item.save()
+    except exceptions.ValidationError as exc:
+        msg = list(exc.to_dict().values())[0]
+        raise exceptions.UnprocessableEntity(msg)
+
+    return serialize_item(item), status.HTTP_200_OK
+
+
 @blueprint.route("/api/collections/<key>/items/<name>", methods=['DELETE'])
 def remove(key, name):
     collection = Collection.objects(key=key).first()
@@ -72,17 +96,4 @@ def serialize(collection):
                                key=collection.key, _external=True),
         ),
         _objects=[serialize_item(o) for o in collection.items],
-    )
-
-
-def serialize_item(item):
-    return dict(
-        _links=dict(
-            self=url_for('items_api.detail', key=item.key, _external=True),
-        ),
-        key=item.key,
-        name=item.name,
-        description=item.description,
-        image_url=item.image_url,
-        ref_url=item.ref_url,
     )
