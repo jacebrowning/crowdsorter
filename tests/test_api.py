@@ -60,12 +60,12 @@ def describe_collections():
                     '_objects': [
                         {
                             '_links': {
-                                'self': "http://localhost/api/collections/abc123",
-                                'items': "http://localhost/api/collections/abc123/items",
-                                'votes': "http://localhost/api/collections/abc123/votes",
-                                'scores': "http://localhost/api/collections/abc123/scores",
+                                'self': "http://localhost/api/collections/_c",
+                                'items': "http://localhost/api/collections/_c/items",
+                                'votes': "http://localhost/api/collections/_c/votes",
+                                'scores': "http://localhost/api/collections/_c/scores",
                             },
-                            'key': "abc123",
+                            'key': "_c",
                             'name': "Sample List",
                             'owner': "",
                             'code': "sample",
@@ -115,7 +115,7 @@ def describe_collections():
 
         @pytest.fixture
         def url():
-            return "/api/collections/abc123"
+            return "/api/collections/_c"
 
         def describe_GET():
 
@@ -125,12 +125,12 @@ def describe_collections():
                 expect(status) == 200
                 expect(content) == {
                     '_links': {
-                        'self': "http://localhost/api/collections/abc123",
-                        'items': "http://localhost/api/collections/abc123/items",
-                        'votes': "http://localhost/api/collections/abc123/votes",
-                        'scores': "http://localhost/api/collections/abc123/scores",
+                        'self': "http://localhost/api/collections/_c",
+                        'items': "http://localhost/api/collections/_c/items",
+                        'votes': "http://localhost/api/collections/_c/votes",
+                        'scores': "http://localhost/api/collections/_c/scores",
                     },
-                    'key': "abc123",
+                    'key': "_c",
                     'name': "Sample List",
                     'owner': "",
                     'code': "sample",
@@ -141,9 +141,9 @@ def describe_collections():
                         'items': [
                             {
                                 '_links': {
-                                    'self': "http://localhost/api/items/d4",
+                                    'self': "http://localhost/api/items/_i1",
                                 },
-                                'key': "d4",
+                                'key': "_i1",
                                 'name': "bar",
                                 'description': "",
                                 'image_url': "",
@@ -151,9 +151,9 @@ def describe_collections():
                             },
                             {
                                 '_links': {
-                                    'self': "http://localhost/api/items/f5",
+                                    'self': "http://localhost/api/items/_i2",
                                 },
-                                'key': "f5",
+                                'key': "_i2",
                                 'name': "foo",
                                 'description': "",
                                 'image_url': "",
@@ -161,9 +161,9 @@ def describe_collections():
                             },
                             {
                                 '_links': {
-                                    'self': "http://localhost/api/items/g6",
+                                    'self': "http://localhost/api/items/_i3",
                                 },
-                                'key': "g6",
+                                'key': "_i3",
                                 'name': "qux",
                                 'description': "",
                                 'image_url': "",
@@ -183,7 +183,7 @@ def describe_collections():
                 status, content = load(client.get(url))
 
                 expect(status) == 200
-                expect(content['key']) == "abc123"
+                expect(content['key']) == "_c"
 
         def describe_PUT():
 
@@ -279,7 +279,7 @@ def describe_items():
 
         @pytest.fixture
         def url():
-            return "/api/collections/abc123/items"
+            return "/api/collections/_c/items"
 
         def describe_GET():
 
@@ -289,15 +289,15 @@ def describe_items():
                 expect(status) == 200
                 expect(content) == {
                     '_links': {
-                        'self': "http://localhost/api/collections/abc123/items",
-                        'collection': "http://localhost/api/collections/abc123",
+                        'self': "http://localhost/api/collections/_c/items",
+                        'collection': "http://localhost/api/collections/_c",
                     },
                     '_objects': [
                         {
                             '_links': {
-                                'self': "http://localhost/api/items/d4",
+                                'self': "http://localhost/api/items/_i1",
                             },
-                            'key': "d4",
+                            'key': "_i1",
                             'name': "bar",
                             'description': "",
                             'image_url': "",
@@ -305,9 +305,9 @@ def describe_items():
                         },
                         {
                             '_links': {
-                                'self': "http://localhost/api/items/f5",
+                                'self': "http://localhost/api/items/_i2",
                             },
-                            'key': "f5",
+                            'key': "_i2",
                             'name': "foo",
                             'description': "",
                             'image_url': "",
@@ -315,9 +315,9 @@ def describe_items():
                         },
                         {
                             '_links': {
-                                'self': "http://localhost/api/items/g6",
+                                'self': "http://localhost/api/items/_i3",
                             },
-                            'key': "g6",
+                            'key': "_i3",
                             'name': "qux",
                             'description': "",
                             'image_url': "",
@@ -408,7 +408,7 @@ def describe_item():
 
         @pytest.fixture
         def url():
-            return "/api/items/_item"
+            return "/api/items/_i"
 
         def describe_GET():
 
@@ -418,9 +418,9 @@ def describe_item():
                 expect(status) == 200
                 expect(content) == {
                     '_links': {
-                        'self': "http://localhost/api/items/_item",
+                        'self': "http://localhost/api/items/_i",
                     },
-                    'key': "_item",
+                    'key': "_i",
                     'name': "Sample Item",
                     'description': "This is the sample item.",
                     'image_url': "http://www.gstatic.com/webp/gallery/1.jpg",
@@ -495,7 +495,7 @@ def describe_votes():
 
     @pytest.fixture
     def url():
-        return "/api/collections/abc123/votes"
+        return "/api/collections/_c/votes"
 
     def describe_GET():
 
@@ -504,8 +504,8 @@ def describe_votes():
 
             expect(status) == 200
             expect(content['_links']) == {
-                'self': "http://localhost/api/collections/abc123/votes",
-                'collection': "http://localhost/api/collections/abc123",
+                'self': "http://localhost/api/collections/_c/votes",
+                'collection': "http://localhost/api/collections/_c",
             },
             expect(content['name']) == "Sample List"
             expect(len(content['item_data'])) == 3
@@ -553,7 +553,7 @@ def describe_scores():
 
     @pytest.fixture
     def url():
-        return "/api/collections/abc123/scores"
+        return "/api/collections/_c/scores"
 
     def describe_GET():
 
@@ -563,8 +563,8 @@ def describe_scores():
             expect(status) == 200
             expect(content) == {
                 '_links': {
-                    'self': "http://localhost/api/collections/abc123/scores",
-                    'collection': "http://localhost/api/collections/abc123",
+                    'self': "http://localhost/api/collections/_c/scores",
+                    'collection': "http://localhost/api/collections/_c",
                 },
                 'name': "Sample List",
                 'code': "sample",

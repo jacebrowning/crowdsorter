@@ -20,11 +20,11 @@ def client(app):
 
 @pytest.fixture
 def collection():
-    collection = Collection(name="Sample List", key='abc123', code='sample')
+    collection = Collection(name="Sample List", key='_c', code='sample')
     collection.items = [
-        Item(name="bar", key='d4').save(),
-        Item(name="foo", key='f5').save(),
-        Item(name="qux", key='g6').save(),
+        Item(name="bar", key='_i1').save(),
+        Item(name="foo", key='_i2').save(),
+        Item(name="qux", key='_i3').save(),
     ]
     collection.vote("foo", "bar")
     collection.save()
@@ -33,7 +33,7 @@ def collection():
 
 @pytest.fixture
 def collection2():
-    collection = Collection(name="Sample List 2", key='def456')
+    collection = Collection(name="Sample List 2", key='_c2')
     collection.save()
     return collection
 
@@ -61,7 +61,7 @@ def collection_locked(collection):
 
 @pytest.fixture
 def item():
-    item = Item(name="Sample Item", key='_item')
+    item = Item(name="Sample Item", key='_i')
     item.description = "This is the sample item."
     item.image_url = "http://www.gstatic.com/webp/gallery/1.jpg"
     item.ref_url = "http://example.com"

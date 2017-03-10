@@ -21,12 +21,12 @@ def describe_navbar():
                               '<a href="/collections/">Collections</a>')
 
     def for_admin(client):
-        html = get(client, "/collections/abc123", minify=True)
+        html = get(client, "/collections/_c", minify=True)
 
         expect(html).contains('<li>'
                               '<a href="/collections/">Collections</a>')
         expect(html).contains('<li class="active">'
-                              '<a href="/collections/abc123">Admin</a>')
+                              '<a href="/collections/_c">Admin</a>')
 
     def for_results(client):
         html = get(client, "/foobar", minify=True)
@@ -149,9 +149,9 @@ def describe_collections():
 def describe_admin():
 
     def with_known_key(client, collection):
-        html = get(client, "/collections/abc123")
+        html = get(client, "/collections/_c")
 
-        expect(html).contains('<a href="/collections/abc123">Admin</a>')
+        expect(html).contains('<a href="/collections/_c">Admin</a>')
         expect(html).contains("Sample List")
 
     def with_unknown_key(client):
@@ -164,14 +164,14 @@ def describe_admin():
 
         def with_new_address(client, collection):
             data = dict(email="foo@bar.com")
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Unable to send email: foo@bar.com")
             expect(html).contains('name="email" value="foo@bar.com"')
 
         def with_invalid_address(client, collection):
             data = dict(email="foobar")
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Invalid email address: foobar")
             expect(html).contains('name="email" value=""')
@@ -180,48 +180,48 @@ def describe_admin():
 
         def with_new_name(client, collection):
             data = dict(save=True, name="New Name")
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Settings updated.")
             expect(html).contains('name="name" value="New Name"')
 
         def with_new_code(client, collection):
             data = dict(save=True, code="New Code")
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Settings updated.")
             expect(html).contains('name="code" value="new-code"')
 
         def with_duplicate_code(client, collection, collection2):
             data = dict(save=True, code="sample")
-            html = post(client, "/collections/def456", data)
+            html = post(client, "/collections/_c2", data)
 
             expect(html).contains("Short code is already taken: sample")
 
         def with_locked_set(client, collection):
             data = dict(save=True, unlocked=[])
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Settings updated.")
             expect(html).contains('name="unlocked"')
 
         def with_locked_clear(client, collection):
             data = dict(save=True, unlocked=['on'])
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Settings updated.")
             expect(html).contains('name="unlocked" checked=true')
 
         def with_private_set(client, collection):
             data = dict(save=True, public=[])
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Settings updated.")
             expect(html).contains('name="public"')
 
         def with_private_clear(client, collection):
             data = dict(save=True, public=['on'])
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Settings updated.")
             expect(html).contains('name="public" checked=true')
@@ -230,7 +230,7 @@ def describe_admin():
 
         def with_name(client, collection):
             data = dict(add="New Item")
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Added item: New Item")
             expect(html).contains('value="New Item" name="remove"')
@@ -239,7 +239,7 @@ def describe_admin():
 
         def with_name(client, collection):
             data = dict(remove="foo")
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Removed item: foo")
             expect(html).does_not_contain('value="foo" name="remove"')
@@ -248,7 +248,7 @@ def describe_admin():
 
         def it_redirects(client, collection):
             data = dict(view=True)
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Votes: 1")
 
@@ -256,10 +256,10 @@ def describe_admin():
 
         def it_clears_votes(client, collection):
             data = dict(clear=True)
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Votes cleared.")
-            expect(html).contains('<a href="/collections/abc123">Admin</a>')
+            expect(html).contains('<a href="/collections/_c">Admin</a>')
 
             html = get(client, "/sample")
 
@@ -269,7 +269,7 @@ def describe_admin():
 
         def it_redirects_to_the_collections_index(client, collection):
             data = dict(delete=True)
-            html = post(client, "/collections/abc123", data)
+            html = post(client, "/collections/_c", data)
 
             expect(html).contains("Popular Collections")
             expect(html).does_not_contain('Sample List')
@@ -279,7 +279,7 @@ def describe_items():
 
     @pytest.fixture
     def url():
-        return "/items/_item"
+        return "/items/_i"
 
     def with_known_key(client, url, item):
         html = get(client, url)
