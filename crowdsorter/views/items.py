@@ -5,7 +5,7 @@ from flask import request, flash, url_for, render_template, redirect, abort
 
 from .. import api
 
-from ._utils import call
+from ._utils import call, autoclose
 
 
 blueprint = Blueprint('items', __name__, url_prefix="/items")
@@ -24,6 +24,9 @@ def detail(key):
 
 @blueprint.route("/<key>", methods=['POST'])
 def update(key):
+    if request.form.get('delete'):
+        return delete(key)
+
     data = dict(
         name=request.form.get('name') or None,
         description=request.form.get('description') or None,
@@ -40,3 +43,12 @@ def update(key):
         flash(content['message'], 'danger')
 
     return redirect(url_for('items.detail', key=key))
+
+
+@blueprint.route("/<key>", methods=['DELETE'])
+def delete(key):
+    _, status = call(api.items.delete, key=key)
+
+    assert status == 204
+
+    return autoclose()
