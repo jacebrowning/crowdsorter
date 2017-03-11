@@ -34,8 +34,7 @@ def targets(*_):
 
     for count, (command, title, retry) in enumerate((
         (('make', 'test-unit', 'CI=true'), "Unit Tests", True),
-        (('make', 'test-int', 'CI=true'), "Integration Tests", False),
-        (('make', 'test-all'), "Combined Tests", False),
+        (('make', 'test-all'), "Integration Tests", False),
         (('make', 'check'), "Static Analysis", True),
         (('make', 'doc'), "Generate Documentation", True),
     ), start=1):
