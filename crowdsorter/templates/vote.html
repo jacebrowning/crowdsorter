@@ -20,14 +20,12 @@
         <h2 class="title">{{ collection['name'] }}</h2>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
 
         <div class="progress">
           <div class="progress-bar" role="progressbar" aria-valuenow="{{ percent }}"
-          aria-valuemin="0" aria-valuemax="100" style="width:{{ percent }}%">
-            {% if percent > 9 %}
-            {{ percent|round|int }}%
-            {% endif %}
+          aria-valuemin="0" aria-valuemax="100" style="width:{{ percent if percent > 9 else 9 }}%">
+            {{ percent|round|int }}% Ranked
           </div>
         </div>
 
