@@ -78,35 +78,3 @@ def describe_collection():
             collection2.clean()
 
             expect(collection1.code) != collection2.code
-
-        # TODO: reimplement vote cleanup
-        @pytest.mark.xfail
-        def it_removes_stale_votes(collection):
-            collection.vote("foo", "bar")
-            collection.vote("foo", "unknown")
-            collection.vote("unknown", "bar")
-            assert collection.votes == [
-                Wins(winner="foo", against=[
-                    Loss(loser="bar", count=1),
-                    Loss(loser="unknown", count=1),
-                ]),
-                Wins(winner="unknown", against=[
-                    Loss(loser="bar", count=1),
-                ]),
-            ]
-            assert collection.scores == []
-
-            collection.clean()
-
-            expect(collection.votes) == [
-                Wins(winner="foo", against=[
-                    Loss(loser="bar", count=1),
-                ]),
-                Wins(winner="bar", against=[
-                    Loss(loser="foo", count=0),
-                ]),
-            ]
-            expect(collection.scores) == [
-                Score(name="foo", points=1.0, confidence=1.0),
-                Score(name="bar", points=-1.0, confidence=1.0),
-            ]
