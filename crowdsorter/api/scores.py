@@ -12,7 +12,7 @@ blueprint = Blueprint('scores_api', __name__)
 log = logging.getLogger(__name__)
 
 
-@blueprint.route("/api/collections/<key>/scores")
+@blueprint.route("/api/collections/<key>/scores/")
 def index(key):
     collection = Collection.objects(key=key).first()
     if not collection:

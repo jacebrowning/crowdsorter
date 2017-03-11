@@ -87,6 +87,12 @@ class Collection(db.Document):
     def __lt__(self, other):
         return self.key < other.key
 
+    def __contains__(self, other):
+        if isinstance(other, Item):
+            return other in self.items
+
+        return other in [item.key for item in self.items]
+
     @property
     def item_count(self):
         return len(self.items)

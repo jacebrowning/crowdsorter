@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, url_for
+from flask import Blueprint, url_for, redirect
 from flask_api import status
 
 from ..models import Collection, Item
@@ -14,7 +14,7 @@ blueprint = Blueprint('items_api', __name__)
 log = logging.getLogger(__name__)
 
 
-@blueprint.route("/api/collections/<key>/items")
+@blueprint.route("/api/collections/<key>/items/")
 def index(key):
     collection = Collection.objects(key=key).first()
     if not collection:
@@ -23,7 +23,7 @@ def index(key):
     return serialize(collection), status.HTTP_200_OK
 
 
-@blueprint.route("/api/collections/<key>/items", methods=['POST'])
+@blueprint.route("/api/collections/<key>/items/", methods=['POST'])
 @parser.use_kwargs(ItemSchema)
 def add(key, name, **kwargs):
     collection = Collection.objects(key=key).first()
@@ -35,6 +35,37 @@ def add(key, name, **kwargs):
     collection.save()
 
     return serialize(collection), status.HTTP_200_OK
+
+
+@blueprint.route("/api/collections/<c_key>/items/<i_key>")
+def nested_item_detail(c_key, i_key):
+    collection = Collection.objects(key=c_key).first()
+    if not collection:
+        raise exceptions.NotFound
+
+    if i_key not in collection:
+        raise exceptions.NotFound
+
+    return redirect(url_for('items_api.detail', key=i_key))
+
+
+@blueprint.route("/api/collections/<key>/items/<name>", methods=['DELETE'])
+def remove(key, name):
+    collection = Collection.objects(key=key).first()
+    if not collection:
+        raise exceptions.NotFound
+
+    log.debug("Removing from %r: %r", collection, name)
+    for item in collection.items:
+        if item.name == name:
+            collection.items.remove(item)
+            collection.save()
+            item.delete()
+            break
+    else:
+        log.warning("No such item: %s", name)
+
+    return sorted([i.name for i in collection.items]), status.HTTP_200_OK
 
 
 @blueprint.route("/api/items/<key>")
@@ -69,23 +100,23 @@ def update(key, name, description, image_url, ref_url):
     return serialize_item(item), status.HTTP_200_OK
 
 
-@blueprint.route("/api/collections/<key>/items/<name>", methods=['DELETE'])
-def remove(key, name):
-    collection = Collection.objects(key=key).first()
-    if not collection:
-        raise exceptions.NotFound
+@blueprint.route("/api/items/<key>", methods=['DELETE'])
+def delete(key):
+    item = Item.objects(key=key).first()
 
-    log.debug("Removing from %r: %r", collection, name)
-    for item in collection.items:
-        if item.name == name:
-            collection.items.remove(item)
-            collection.save()
-            item.delete()
-            break
-    else:
-        log.warning("No such item: %s", name)
+    if item is None:
+        return '', status.HTTP_204_NO_CONTENT
 
-    return sorted([i.name for i in collection.items]), status.HTTP_200_OK
+    for collection in Collection.objects(items=item):
+        log.info("Removing %r from %r...", item, collection)
+        collection.items.remove(item)
+        collection.save()
+
+    if item:
+        log.info("Deleting %r...", item)
+        item.delete()
+
+    return '', status.HTTP_204_NO_CONTENT
 
 
 def serialize(collection):
