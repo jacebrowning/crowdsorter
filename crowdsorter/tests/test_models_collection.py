@@ -4,7 +4,6 @@ import pytest
 from expecter import expect
 
 from crowdsorter.models import Collection, Item
-from crowdsorter.models.collection import Wins, Loss, Score
 
 
 def describe_collection():

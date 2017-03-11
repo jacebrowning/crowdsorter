@@ -331,3 +331,11 @@ def describe_items():
             html = post(client, url, data)
 
             expect(html).contains("Invalid URL: http://bad/ref")
+
+    def describe_delete():
+
+        def it_closes_the_window(client, url, item):
+            data = dict(delete=True)
+            html = post(client, url, data)
+
+            expect(html).contains('window.close()')
