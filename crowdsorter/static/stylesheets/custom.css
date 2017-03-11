@@ -55,17 +55,10 @@ label {
 }
 
 footer {
-    position: fixed;
     bottom: 0;
     padding-left: 10px;
     padding-right: 10px;
     width: 100%;
-    opacity: 1;
-    color: black;
-    background-color: rgba(255,255,255,0.9);
-    box-shadow: 0px 0px 10px rgba(255,255,255,1.0);
-    border-radius: 10px;
-    z-index: 999;
 }
 
 /* Custom */
