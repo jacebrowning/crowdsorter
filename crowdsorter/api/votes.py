@@ -13,7 +13,7 @@ blueprint = Blueprint('votes_api', __name__)
 log = logging.getLogger(__name__)
 
 
-@blueprint.route("/api/collections/<key>/votes")
+@blueprint.route("/api/collections/<key>/votes/")
 def index(key):
     collection = Collection.objects(key=key).first()
     if not collection:
@@ -22,7 +22,7 @@ def index(key):
     return serialize(collection), status.HTTP_200_OK
 
 
-@blueprint.route("/api/collections/<key>/votes", methods=['POST'])
+@blueprint.route("/api/collections/<key>/votes/", methods=['POST'])
 @parser.use_kwargs(VoteSchema)
 def add(key, winner, loser):
     collection = Collection.objects(key=key).first()
@@ -36,7 +36,7 @@ def add(key, winner, loser):
     return serialize(collection), status.HTTP_200_OK
 
 
-@blueprint.route("/api/collections/<key>/votes", methods=['DELETE'])
+@blueprint.route("/api/collections/<key>/votes/", methods=['DELETE'])
 def clear(key):
     collection = Collection.objects(key=key).first()
     if not collection:

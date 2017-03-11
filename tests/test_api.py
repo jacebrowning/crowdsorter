@@ -61,9 +61,9 @@ def describe_collections():
                         {
                             '_links': {
                                 'self': "http://localhost/api/collections/_c",
-                                'items': "http://localhost/api/collections/_c/items",
-                                'votes': "http://localhost/api/collections/_c/votes",
-                                'scores': "http://localhost/api/collections/_c/scores",
+                                'items': "http://localhost/api/collections/_c/items/",
+                                'votes': "http://localhost/api/collections/_c/votes/",
+                                'scores': "http://localhost/api/collections/_c/scores/",
                             },
                             'key': "_c",
                             'name': "Sample List",
@@ -126,9 +126,9 @@ def describe_collections():
                 expect(content) == {
                     '_links': {
                         'self': "http://localhost/api/collections/_c",
-                        'items': "http://localhost/api/collections/_c/items",
-                        'votes': "http://localhost/api/collections/_c/votes",
-                        'scores': "http://localhost/api/collections/_c/scores",
+                        'items': "http://localhost/api/collections/_c/items/",
+                        'votes': "http://localhost/api/collections/_c/votes/",
+                        'scores': "http://localhost/api/collections/_c/scores/",
                     },
                     'key': "_c",
                     'name': "Sample List",
@@ -279,7 +279,7 @@ def describe_items():
 
         @pytest.fixture
         def url():
-            return "/api/collections/_c/items"
+            return "/api/collections/_c/items/"
 
         def describe_GET():
 
@@ -289,7 +289,7 @@ def describe_items():
                 expect(status) == 200
                 expect(content) == {
                     '_links': {
-                        'self': "http://localhost/api/collections/_c/items",
+                        'self': "http://localhost/api/collections/_c/items/",
                         'collection': "http://localhost/api/collections/_c",
                     },
                     '_objects': [
@@ -327,7 +327,7 @@ def describe_items():
                 }
 
             def when_unknown(client):
-                url = "/api/collections/unknown/items"
+                url = "/api/collections/unknown/items/"
                 status, content = load(client.get(url))
 
                 expect(status) == 404
@@ -382,15 +382,13 @@ def describe_items():
         def describe_DELETE():
 
             def it_removes_an_item_by_name(client, url, collection):
-                url += "/foo"
-                status, content = load(client.delete(url))
+                status, content = load(client.delete(url + "foo"))
 
                 expect(status) == 200
                 expect(content) == ["bar", "qux"]
 
             def unknown_items_are_ignored(client, url, collection):
-                url += "/unknown"
-                status, content = load(client.delete(url))
+                status, content = load(client.delete(url + "unknown"))
 
                 expect(status) == 200
                 expect(content) == ["bar", "foo", "qux"]
@@ -490,12 +488,33 @@ def describe_item():
                 expect(status) == 422
                 expect(content['message']) == "Invalid URL: http://foo"
 
+        def describe_DELETE():
+
+            def it_removes_the_item_from_collections(client, url, collection):
+                item = collection.items[0]
+                get_url = f"/api/collections/{collection.key}/items/{item.key}"
+                delete_url = f"/api/items/{item.key}"
+
+                status, content = load(client.get(get_url))
+                expect(status) == 302
+
+                status, content = load(client.delete(delete_url))
+                expect(status) == 204
+
+                status, content = load(client.get(get_url))
+                expect(status) == 404
+
+            def it_ignores_deleted_items(client, url):
+                for _ in range(2):
+                    status, content = load(client.delete(url))
+                    expect(status) == 204
+
 
 def describe_votes():
 
     @pytest.fixture
     def url():
-        return "/api/collections/_c/votes"
+        return "/api/collections/_c/votes/"
 
     def describe_GET():
 
@@ -504,7 +523,7 @@ def describe_votes():
 
             expect(status) == 200
             expect(content['_links']) == {
-                'self': "http://localhost/api/collections/_c/votes",
+                'self': "http://localhost/api/collections/_c/votes/",
                 'collection': "http://localhost/api/collections/_c",
             },
             expect(content['name']) == "Sample List"
@@ -528,7 +547,7 @@ def describe_votes():
             }
 
         def with_unknown_collection(client):
-            url = "/api/collections/unknown/votes"
+            url = "/api/collections/unknown/votes/"
             data = {'winner': "foo", 'loser': "bar"}
             status, content = load(client.post(url, data=data))
 
@@ -543,7 +562,7 @@ def describe_votes():
             expect(content['vote_count']) == 0
 
         def with_unknown_collection(client):
-            url = "/api/collections/unknown/votes"
+            url = "/api/collections/unknown/votes/"
             status, content = load(client.delete(url))
 
             expect(status) == 404
@@ -553,7 +572,7 @@ def describe_scores():
 
     @pytest.fixture
     def url():
-        return "/api/collections/_c/scores"
+        return "/api/collections/_c/scores/"
 
     def describe_GET():
 
@@ -563,7 +582,7 @@ def describe_scores():
             expect(status) == 200
             expect(content) == {
                 '_links': {
-                    'self': "http://localhost/api/collections/_c/scores",
+                    'self': "http://localhost/api/collections/_c/scores/",
                     'collection': "http://localhost/api/collections/_c",
                 },
                 'name': "Sample List",

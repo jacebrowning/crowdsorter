@@ -37,6 +37,15 @@ def describe_collection():
 
             expect(sorted(objs)) == objs
 
+    def describe_contains():
+
+        def it_checks_for_items_in_collection(collection):
+            item_in = collection.items[0]
+            item_out = Item()
+
+            expect(collection).contains(item_in)
+            expect(collection).does_not_contain(item_out)
+
     def describe_item_count():
 
         def is_the_number_of_items(collection):
