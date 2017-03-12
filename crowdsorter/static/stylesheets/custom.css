@@ -120,15 +120,10 @@ footer {
     color: white;
 }
 
-.vote-progress {
-    height: 40px;
-}
-.vote-progress-text {
-    font-size: 12pt;
-}
 .btn-reload {
     height: 40px;
     font-size: 12pt;
+    margin-bottom: .75em;
 }
 
 @media screen and (max-width: 768px) {
