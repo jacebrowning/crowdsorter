@@ -138,7 +138,7 @@ def describe_collections():
             expect(html).contains('<a href="/sample">Results</a>')
             expect(html).contains('<a href="/sample/vote">Vote</a>')
             expect(html).contains("Sample List")
-            expect(html).contains("New Comparison Pair")
+            expect(html).contains("Next Pair")
 
         def with_unknown_code(client):
             html = get(client, "/unknown/vote")

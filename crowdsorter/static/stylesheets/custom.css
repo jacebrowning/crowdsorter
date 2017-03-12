@@ -120,18 +120,28 @@ footer {
     color: white;
 }
 
+.btn-reload {
+    height: 40px;
+    font-size: 12pt;
+    margin-bottom: .75em;
+}
+
+@media screen and (max-width: 768px) {
+    .text-reload {
+        display: none;
+    }
+}
+
 .btn-vote {
-    min-height: 8em;
+    height: auto;
+    min-height: 200px;
     white-space: normal;
 }
 
 .img-vote {
     max-width: 90%;
-    max-height: 300px;
-}
-
-.btn-reload {
-    min-height: 1em;
+    height: auto;
+    max-height: 600px;
 }
 
 .top-buffer {
