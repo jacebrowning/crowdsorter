@@ -33,10 +33,10 @@ def targets(*_):
     """Run targets for Python."""
 
     for count, (command, title, retry) in enumerate((
-        (('make', 'test-unit', 'CI=true'), "Unit Tests", True),
+        (('make', 'test-unit', 'DISABLE_COVERAGE=true'), "Unit Tests", True),
         (('make', 'test-all'), "Integration Tests", False),
         (('make', 'check'), "Static Analysis", True),
-        (('make', 'doc'), "Generate Documentation", True),
+        (('make', 'doc'), None, True),
     ), start=1):
 
         if not run(command, title, count, retry):

@@ -49,14 +49,12 @@ else
 		OPEN := open
 	endif
 endif
-
-# Virtual environment executables
-PYTHON := pipenv run python
-PIP := pipenv run pip
-EASY_INSTALL := pipenv run easy_install
-SNIFFER := pipenv run sniffer
+PYTHON := $(BIN)/python
+PIP := $(BIN)/pip
 
 # MAIN TASKS ###################################################################
+
+SNIFFER := pipenv run sniffer
 
 .PHONY: all
 all: install
@@ -93,7 +91,7 @@ launch: install
 
 .PHONY: setup
 setup:
-	pip install pipenv==3.5.0
+	pip install pipenv==3.5.3
 	pipenv lock
 	touch Pipfile
 
@@ -111,8 +109,8 @@ DEPENDENCIES := $(ENV)/.installed
 .PHONY: install
 install: $(DEPENDENCIES)
 
-$(DEPENDENCIES): $(ENV) Pipfile*
-	pipenv install --dev
+$(DEPENDENCIES): $(PIP) Pipfile*
+	pipenv install --dev --ignore-hashes
 ifdef WINDOWS
 	@ echo "Manually install pywin32: https://sourceforge.net/projects/pywin32/files/pywin32"
 else ifdef MAC
@@ -122,9 +120,8 @@ else ifdef LINUX
 endif
 	@ touch $@
 
-$(ENV):
+$(PIP):
 	pipenv --python=$(SYS_PYTHON)
-	@ touch $@
 
 # RUNTIME DEPENDENCIES #########################################################
 
@@ -173,7 +170,7 @@ PYTEST_COV_OPTIONS := --cov=$(PACKAGE) --no-cov-on-fail --cov-report=term-missin
 PYTEST_RANDOM_OPTIONS := --random --random-seed=$(RANDOM_SEED)
 
 PYTEST_OPTIONS := $(PYTEST_CORE_OPTIONS) $(PYTEST_RANDOM_OPTIONS)
-ifndef CI
+ifndef DISABLE_COVERAGE
 PYTEST_OPTIONS += $(PYTEST_COV_OPTIONS)
 endif
 PYTEST_RURUN_OPTIONS := $(PYTEST_CORE_OPTIONS) --last-failed --exitfirst
@@ -190,7 +187,7 @@ test-unit: install
 
 .PHONY: test-int
 test-int: install
-	@ if test -e $(FAILURES); then $(PYTEST) $(PYTEST_RURUN_OPTIONS) tests; fi
+	@ if test -e $(FAILURES); then $(PYTEST) $(PYTEST_RERUN_OPTIONS) tests; fi
 	@ rm -rf $(FAILURES)
 	$(PYTEST) $(PYTEST_OPTIONS) tests --junitxml=$(REPORTS)/integration.xml
 	$(COVERAGE_SPACE) $(REPOSITORY) integration
