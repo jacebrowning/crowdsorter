@@ -24,7 +24,7 @@ pytest-expecter = "*"
 pytest-cov = "*"
 pytest-random = "*"
 coverage = "*"
-"coverage.space" = "~=0.7.1b1"
+"coverage.space" = ">=0.7.2"
 sniffer = ">=0.3.6"
 honcho = "*"
 
