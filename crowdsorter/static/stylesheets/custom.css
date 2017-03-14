@@ -146,10 +146,12 @@ footer {
     max-width: 100%;
     min-height: 500px;
     height: auto;
+    max-height: 700px;
 }
 @media screen and (max-width: 1440px) {
     .img-vote {
         min-height: 400px;
+        max-height: 600px;
     }
 }
 @media screen and (max-width: 1200px) {
