@@ -139,9 +139,29 @@ footer {
 }
 
 .img-vote {
-    max-width: 90%;
+    max-width: 100%;
+    min-height: 500px;
     height: auto;
-    max-height: 600px;
+}
+@media screen and (max-width: 1440px) {
+    .img-vote {
+        min-height: 400px;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .img-vote {
+        min-height: 300px;
+    }
+}
+@media screen and (max-width: 992px) {
+    .img-vote {
+        min-height: 200px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .img-vote {
+        max-height: 200px;
+    }
 }
 
 .top-buffer {
