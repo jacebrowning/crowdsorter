@@ -1,7 +1,7 @@
 import logging
 
 from flask import Blueprint, Response
-from flask import request, render_template, redirect, url_for, flash
+from flask import request, render_template, redirect, url_for, flash, abort
 from flask_menu import register_menu
 
 from .. import api
@@ -25,11 +25,9 @@ def _show_admin():
                visible_when=_show_admin)
 def detail(key):
     content, status = call(api.collections.detail, key=key)
-    if status == 404:
-        content['name'] = UNKNOWN_COLLECTION_NAME
-        content['code'] = UNKNOWN_COLLECTION_CODE
-        content['_embedded'] = {}
-        content['_embedded']['items'] = []
+
+    if status != 200:
+        abort(404)
 
     return Response(render_template("admin.html", collection=content))
 

@@ -1,8 +1,8 @@
 import logging
 
 from flask import Blueprint, Response, Markup
-from flask import (request, render_template, redirect, url_for, flash,
-                   current_app)
+from flask import (request, current_app,
+                   render_template, redirect, url_for, flash, abort)
 from flask_menu import register_menu
 
 from .. import api
@@ -35,6 +35,7 @@ def _activate_items():
 def index():
     content, status = call(api.collections.index, private=False, limit=15,
                            token=current_app.config['AUTH_TOKEN'])
+
     assert status == 200
 
     return Response(render_template("collections.html",
@@ -63,11 +64,8 @@ def detail(code):
     key = _get_key(code)
 
     content, status = call(api.scores.index, key=key)
-    if status == 404:
-        content['name'] = UNKNOWN_COLLECTION_NAME
-        content['code'] = code
-        content['locked'] = True
-        content['private'] = True
+    if status != 200:
+        abort(404)
 
     return Response(render_template("items.html", collection=content))
 
@@ -107,14 +105,11 @@ def vote(code):
         return redirect(url_for('collections.vote', code=code))
 
     content, status = call(api.votes.index, key=key)
-    if status == 404:
-        collection = {}
-        collection['name'] = UNKNOWN_COLLECTION_NAME
-        collection['code'] = UNKNOWN_COLLECTION_CODE
-        collection['item_data'] = [{'name': "---"}] * 2
-        percent = 0
-    else:
-        percent, collection = filter_pairs(content)
+
+    if status != 200:
+        abort(404)
+
+    percent, collection = filter_pairs(content)
 
     if percent is None:
         percent = 100
