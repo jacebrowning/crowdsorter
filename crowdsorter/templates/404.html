@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+{{ super() }}
+
+    <div class="container text-center">
+        <h1>404 Not Found</h1>
+
+        <p>
+            The content you were looking for could not be found.
+        </p>
+
+        <p>
+            Click <a href="{{ url_for('collections.index') }}">here</a>
+            to go back to the list of collections.
+        </p>
+    </div>
+
+{% endblock %}

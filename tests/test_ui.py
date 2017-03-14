@@ -20,7 +20,7 @@ def describe_navbar():
         expect(html).contains('<li class="active">'
                               '<a href="/collections/">Collections</a>')
 
-    def for_admin(client):
+    def for_admin(client, collection):
         html = get(client, "/collections/_c", minify=True)
 
         expect(html).contains('<li>'
@@ -28,25 +28,25 @@ def describe_navbar():
         expect(html).contains('<li class="active">'
                               '<a href="/collections/_c">Admin</a>')
 
-    def for_results(client):
-        html = get(client, "/foobar", minify=True)
+    def for_results(client, collection):
+        html = get(client, "/sample", minify=True)
 
         expect(html).contains('<li>'
                               '<a href="/collections/">Collections</a>')
         expect(html).contains('<li class="active">'
-                              '<a href="/foobar">Results</a>')
+                              '<a href="/sample">Results</a>')
         expect(html).contains('<li>'
-                              '<a href="/foobar/vote">Vote</a>')
+                              '<a href="/sample/vote">Vote</a>')
 
-    def for_vote(client):
-        html = get(client, "/foobar/vote", minify=True)
+    def for_vote(client, collection):
+        html = get(client, "/sample/vote", minify=True)
 
         expect(html).contains('<li>'
                               '<a href="/collections/">Collections</a>')
         expect(html).contains('<li>'
-                              '<a href="/foobar">Results</a>')
+                              '<a href="/sample">Results</a>')
         expect(html).contains('<li class="active">'
-                              '<a href="/foobar/vote">Vote</a>')
+                              '<a href="/sample/vote">Vote</a>')
 
 
 def describe_index():
@@ -106,10 +106,7 @@ def describe_collections():
         def with_unknown_code(client, collection):
             html = get(client, "/unknown")
 
-            expect(html).contains("No Such Collection")
-            expect(html).contains("Items: 0")
-            expect(html).does_not_contain('glyphicon-plus-sign')
-            expect(html).does_not_contain("Share on Facebook")
+            expect(html).contains("Not Found")
 
         def on_private_collection(client, collection_private):
             html = get(client, "/sample")
@@ -143,7 +140,7 @@ def describe_collections():
         def with_unknown_code(client):
             html = get(client, "/unknown/vote")
 
-            expect(html).contains("No Such Collection")
+            expect(html).contains("Not Found")
 
 
 def describe_admin():
@@ -157,7 +154,7 @@ def describe_admin():
     def with_unknown_key(client):
         html = get(client, "/collections/unknown")
 
-        expect(html).contains("No Such Collection")
+        expect(html).contains("Not Found")
 
     def describe_email():
         """None of these tests can actually send an email."""
