@@ -20,6 +20,8 @@
         <h2 class="title">{{ collection['name'] }}</h2>
     </div>
 
+    <span id="content">
+
     {% include "flashes.html" %}
 
     <div class="container-fluid">
@@ -87,6 +89,12 @@
 {{- super() }}
     <!-- Custom -->
     <script type="text/javascript">
+        $(document).ready( function() {
+            $('html, body').animate({
+                scrollTop: $('#content').offset().top - 15
+            }, 0);
+        });
+
         $('form').submit( function(){
             $('#vote-first').prop('disabled', true);
             $('#vote-second').prop('disabled', true);
