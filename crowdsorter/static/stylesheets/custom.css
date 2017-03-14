@@ -33,6 +33,10 @@ label {
     padding-bottom: 15px;
 }
 
+.jumbotron {
+    margin-bottom: 15px;
+}
+
 .container {
     margin-bottom: 15px;
 }
@@ -142,10 +146,12 @@ footer {
     max-width: 100%;
     min-height: 500px;
     height: auto;
+    max-height: 700px;
 }
 @media screen and (max-width: 1440px) {
     .img-vote {
         min-height: 400px;
+        max-height: 600px;
     }
 }
 @media screen and (max-width: 1200px) {
@@ -160,14 +166,14 @@ footer {
 }
 @media screen and (max-width: 768px) {
     .img-vote {
-        max-height: 200px;
+        min-height: 150px !important;
+        max-height: 150px;
     }
 }
 
 .top-buffer {
-    margin-top: .75em;
+    margin-top: 15px;
 }
-
 .bottom-buffer {
-    margin-bottom: .75em;
+    margin-bottom: 15px;
 }
