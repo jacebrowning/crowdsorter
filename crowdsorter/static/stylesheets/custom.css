@@ -33,6 +33,10 @@ label {
     padding-bottom: 15px;
 }
 
+.jumbotron {
+    margin-bottom: 15px;
+}
+
 .container {
     margin-bottom: 15px;
 }
@@ -165,9 +169,8 @@ footer {
 }
 
 .top-buffer {
-    margin-top: .75em;
+    margin-top: 15px;
 }
-
 .bottom-buffer {
-    margin-bottom: .75em;
+    margin-bottom: 15px;
 }
