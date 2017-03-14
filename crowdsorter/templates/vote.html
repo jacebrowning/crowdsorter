@@ -71,7 +71,7 @@
                         <button id="vote-second" type="submit" class="btn btn-default btn-block btn-vote">
                             <p><b>{{ second['name'] }}</b></p>
                             {% if second['image_url'] %}
-                            <img class="img-vote" src="{{ second['image_url'] }}" alt="{{ second['name'] }}">
+                            <p><img class="img-vote" src="{{ second['image_url'] }}" alt="{{ second['name'] }}"></p>
                             {% endif %}
                             {% if second['description'] %}
                             <p>{{ second['description'] }}</p>
