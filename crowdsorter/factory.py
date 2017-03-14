@@ -2,7 +2,7 @@ import logging
 from urllib.parse import urlencode, unquote
 from pathlib import Path
 
-from flask import url_for, current_app, request
+from flask import Response, url_for, current_app, request, render_template
 from flask_api import FlaskAPI
 
 from . import api
@@ -21,6 +21,7 @@ def create_app(config):
 
     register_blueprints(app)
     register_extensions(app)
+    register_errors(app)
 
     enable_cache_busting(app)
 
@@ -79,6 +80,14 @@ def register_extensions(app):
     extensions.bootstrap.init_app(app)
     extensions.menu.init_app(app)
     extensions.sendgrid.init_app(app)
+
+
+def register_errors(app):
+    # pylint: disable=unused-variable,unused-argument
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return Response(render_template("404.html")), 404
 
 
 def enable_cache_busting(app):
