@@ -39,7 +39,6 @@ class Wins(db.EmbeddedDocument):
 class Score(db.EmbeddedDocument):
     """Stores the computed score for an item."""
 
-    name = db.StringField()  # TODO: delete field
     item = db.ReferenceField(Item)
     points = db.FloatField()
     confidence = db.FloatField()
