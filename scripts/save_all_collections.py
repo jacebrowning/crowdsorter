@@ -2,7 +2,7 @@
 # pylint: disable=import-error
 
 """
-Save all collections to updated calculated fields.
+Save all collections to update calculated fields.
 """
 
 import os
@@ -12,12 +12,7 @@ from crowdsorter.factory import create_app
 from crowdsorter.models import Collection
 
 
-def main():
-    create_app(get_config(os.getenv('FLASK_ENV') or 'dev'))
+create_app(get_config(os.getenv('FLASK_ENV') or 'dev'))
 
-    for collection in Collection.objects:
-        collection.save()
-
-
-if __name__ == '__main__':
-    main()
+for collection in Collection.objects:
+    collection.save()
