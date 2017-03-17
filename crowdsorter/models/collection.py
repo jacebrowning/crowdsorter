@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 import logging
 
 from ..extensions import db
@@ -75,8 +76,10 @@ class Collection(db.Document):
     votes = db.EmbeddedDocumentListField(Wins)
 
     # Computed properties
-    scores = db.EmbeddedDocumentListField(Score)
+    date_voted = db.DateTimeField(default=datetime.now)
     vote_count = db.IntField(null=False, default=0)
+    vote_count_decayed = db.FloatField(null=False, default=0.0)
+    scores = db.EmbeddedDocumentListField(Score)
 
     def __repr__(self):
         return f"<collection: {self.key}>"
@@ -114,7 +117,7 @@ class Collection(db.Document):
 
         return item
 
-    def vote(self, winner, loser):
+    def vote(self, winner, loser, *, _at=None):
         """Apply a new vote and update the items order."""
         # TODO: find the correct way to do this
         if isinstance(winner, str):
@@ -139,12 +142,21 @@ class Collection(db.Document):
 
         loss.count += 1
         self.vote_count += 1
+        self.date_voted = _at or datetime.now()
+        self._decay_votes()
+
+    def _decay_votes(self):
+        """Computed the decayed vote total based on the last-voted date."""
+        delta = datetime.now() - self.date_voted
+        ratio = 1 - (delta.days / 21)
+        self.vote_count_decayed = round(self.vote_count * ratio, 3)
 
     def clean(self):
         """Called automatically prior to saving."""
         self._clean_code()
         vote_count = self._clean_votes()
         self.vote_count = vote_count
+        self._decay_votes()
         self._clean_scores()
 
     def _clean_code(self):

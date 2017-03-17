@@ -1,5 +1,7 @@
 # pylint: disable=unused-variable,unused-argument,expression-not-assigned,singleton-comparison
 
+from datetime import datetime, timedelta
+
 import pytest
 from expecter import expect
 
@@ -61,6 +63,31 @@ def describe_collection():
             collection.vote("foo", "bar")
             expect(collection.vote_count) == 1
 
+    def describe_vote_count_decayed():
+
+        def when_last_vote_is_now(collection):
+            collection.vote("foo", "bar")
+
+            expect(collection.vote_count_decayed) == 1.0
+
+        def when_last_vote_is_recent(collection):
+            dt = datetime.now() - timedelta(days=2)
+            collection.vote("foo", "bar", _at=dt)
+
+            expect(collection.vote_count_decayed) == 0.905
+
+        def when_last_vote_is_old(collection):
+            dt = datetime.now() - timedelta(days=21)
+            collection.vote("foo", "bar", _at=dt)
+
+            expect(collection.vote_count_decayed) == 0.0
+
+        def when_last_vote_is_stale(collection):
+            dt = datetime.now() - timedelta(days=99)
+            collection.vote("foo", "bar", _at=dt)
+
+            expect(collection.vote_count_decayed) == -3.714
+
     def describe_add():
 
         def it_creates_an_item(collection):
@@ -77,3 +104,11 @@ def describe_collection():
             collection2.clean()
 
             expect(collection1.code) != collection2.code
+
+        def it_decays_vote_count(collection):
+            collection.vote("foo", "bar")
+            collection.date_voted = collection.date_voted - timedelta(days=3)
+
+            collection.clean()
+
+            expect(collection.vote_count_decayed) == 0.857

@@ -22,7 +22,7 @@ def index(token, limit=None, **kwargs):
         raise exceptions.PermissionDenied
 
     collections = Collection.objects(**kwargs) \
-                            .order_by('-vote_count') \
+                            .order_by('-vote_count_decayed') \
                             .limit(limit)
 
     content = dict(
