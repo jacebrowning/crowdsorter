@@ -92,7 +92,6 @@ launch: install
 .PHONY: setup
 setup:
 	pip install pipenv==3.5.3
-	pipenv lock
 	touch Pipfile
 
 .PHONY: doctor
