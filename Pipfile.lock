@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "92e4ffbb4b427396a004283529e27b3c8ef48b1241c6753c7302960b0cd62a4b"
+            "sha256": "592a203d36b9604454c59c5577d1ad0bcf17c45636947629a6b4ef69afbb982f"
         },
         "requires": {},
         "sources": [
@@ -17,9 +17,8 @@
             "version": "==0.12"
         },
         "Flask-API": {
-            "editable": true,
-            "git": "https://github.com/tomchristie/flask-api.git",
-            "ref": "ignore-text"
+            "hash": "sha256:a3fec42fa73f9ee993cc1542ac743e45f02022c4fb749daf614650e2cc814e5a",
+            "version": "==0.7b2"
         },
         "Flask-Bootstrap": {
             "hash": "sha256:cb08ed940183f6343a64e465e83b3a3f13c53e1baabb8d72b5da4545ef123ac8",
