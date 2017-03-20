@@ -2,7 +2,7 @@ import logging
 from urllib.error import HTTPError
 import random
 
-from flask import Response, request, session
+from flask import request, session
 from flask_api.exceptions import APIException
 
 from ..extensions import sendgrid
@@ -97,4 +97,4 @@ def autoclose(seconds=2):
 
     html = template.replace('{milliseconds}', str(seconds * 1000))
 
-    return Response(html, 400)
+    return html, 400
