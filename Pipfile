@@ -30,8 +30,8 @@ honcho = "*"
 
 [dev-packages.pylint]
 git = "https://github.com/PyCQA/pylint.git"
-ref = "e0fdd25c214e60bef10fbaa46252f4aaa74de8c2"
+ref = "d78e0130720aba010a55e388ba16bd58debef828"
 
 [dev-packages.astroid]
 git = "https://github.com/PyCQA/astroid.git"
-ref = "4e7d9fee4080d2e0db67a3e0463be8b196e56a95"
+ref = "8f81d3701ff7f277a32ea571468ad6d972e64470"

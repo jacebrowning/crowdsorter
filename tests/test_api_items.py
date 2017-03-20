@@ -248,9 +248,8 @@ def describe_items():
 
             def it_removes_the_item_from_collections(client, url, collection):
                 item = collection.items[0]
-                get_url = ("/api/collections/{collection.key}/items/{item.key}"
-                           "".format(collection=collection, item=item))
-                delete_url = "/api/items/{item.key}".format(item=item)
+                get_url = f"/api/collections/{collection.key}/items/{item.key}"
+                delete_url = f"/api/items/{item.key}"
 
                 status, content = load(client.get(get_url))
                 expect(status) == 302
