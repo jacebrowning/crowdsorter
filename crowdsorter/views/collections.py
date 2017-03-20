@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, Response, Markup
+from flask import Blueprint, Markup
 from flask import (request, current_app,
                    render_template, redirect, url_for, flash, abort)
 from flask_menu import register_menu
@@ -38,8 +38,7 @@ def index():
 
     assert status == 200
 
-    return Response(render_template("collections.html",
-                                    collections=content['_objects']))
+    return render_template("collections.html", collections=content['_objects'])
 
 
 @blueprint.route("/collections/", methods=['POST'])
@@ -67,7 +66,7 @@ def detail(code):
     if status != 200:
         abort(404)
 
-    return Response(render_template("items.html", collection=content))
+    return render_template("items.html", collection=content)
 
 
 @blueprint.route("/<code>", methods=['POST'])
@@ -120,8 +119,7 @@ def vote(code):
             f"Go back to the results: <a href='{results}'>{results}</a>")
         flash(msg, 'warning')
 
-    return Response(render_template("vote.html",
-                                    collection=collection, percent=percent))
+    return render_template("vote.html", collection=collection, percent=percent)
 
 
 def _get_key(code, *, require_unlocked=False):

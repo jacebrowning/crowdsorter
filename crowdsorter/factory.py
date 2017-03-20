@@ -2,7 +2,7 @@ import logging
 from urllib.parse import urlencode, unquote
 from pathlib import Path
 
-from flask import Response, url_for, current_app, request, render_template
+from flask import url_for, current_app, request, render_template
 from flask_api import FlaskAPI
 
 from . import api
@@ -87,7 +87,7 @@ def register_errors(app):
 
     @app.errorhandler(404)
     def page_not_found(error):
-        return Response(render_template("404.html")), 404
+        return render_template("404.html"), 404
 
 
 def enable_cache_busting(app):

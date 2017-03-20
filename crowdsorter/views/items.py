@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, Response
+from flask import Blueprint
 from flask import request, flash, url_for, render_template, redirect, abort
 
 from .. import api
@@ -19,7 +19,7 @@ def detail(key):
     if status != 200:
         abort(404)
 
-    return Response(render_template("item.html", item=content))
+    return render_template("item.html", item=content)
 
 
 @blueprint.route("/<key>", methods=['POST'])
