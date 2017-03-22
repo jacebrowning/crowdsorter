@@ -83,3 +83,7 @@ collection.add(
     image_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Shiba_inu_taiki.jpg/1920px-Shiba_inu_taiki.jpg",
 )
 collection.save()
+
+collection = Collection(name="Single Item Collection")
+collection.add("Item One")
+collection.save()

@@ -41,7 +41,7 @@
 
         <div class="row center">
             <div class="col-sm-8 col-sm-offset-2">
-                <a class="btn btn-primary" href="/{{ collection['code'] }}/vote" role="button">
+                <a class="btn btn-primary{% if collection['item_count'] < 2 %} disabled{% endif %}" href="/{{ collection['code'] }}/vote" role="button">
                     Vote on Items
                 </a>
             </div>
