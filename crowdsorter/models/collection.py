@@ -80,6 +80,15 @@ class Collection(db.Document):
     vote_count_decayed = db.FloatField(null=False, default=0.0)
     scores = db.EmbeddedDocumentListField(Score)
 
+    # Metadata
+    meta = {'indexes': [
+        {
+            'fields': ['$name'],
+            'default_language': 'english',
+            'weights': {'name': 1},
+        },
+    ]}
+
     def __repr__(self):
         return f"<collection: {self.key}>"
 

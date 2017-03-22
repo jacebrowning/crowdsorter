@@ -16,6 +16,20 @@ def describe_collections():
             expect(html).contains('<a href="/sample" class="list-group-item">')
             expect(html).contains("1 Votes")
 
+        def describe_search():
+
+            def when_collections_found(client, collection):
+                html = get(client, "/collections/?q=sample")
+
+                expect(html).contains("Clear search results")
+                expect(html).contains("Sample List")
+
+            def when_no_results(client, collection):
+                html = get(client, "/collections/?q=foobar")
+
+                expect(html).contains("Clear search results")
+                expect(html).contains("No matching collections found.")
+
         def describe_new():
 
             def with_name(client):

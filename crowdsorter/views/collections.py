@@ -33,8 +33,10 @@ def _activate_items():
 @register_menu(blueprint, '.index', "Collections", order=1,
                active_when=_activate_collections)
 def index():
-    content, status = call(api.collections.index, private=False, limit=15,
-                           token=current_app.config['AUTH_TOKEN'])
+    query = request.args.get('q')
+
+    content, status = call(api.collections.index, query=query, private=False,
+                           limit=15, token=current_app.config['AUTH_TOKEN'])
 
     assert status == 200
 

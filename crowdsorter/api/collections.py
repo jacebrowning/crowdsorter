@@ -17,13 +17,15 @@ log = logging.getLogger(__name__)
 
 @blueprint.route("/api/collections/")
 @parser.use_kwargs(TokenSchema)
-def index(token, limit=None, **kwargs):
+def index(token, query=None, limit=None, **kwargs):
     if token != current_app.config['AUTH_TOKEN']:
         raise exceptions.PermissionDenied
 
     collections = Collection.objects(**kwargs) \
                             .order_by('-vote_count_decayed') \
                             .limit(limit)
+    if query:
+        collections = collections.search_text(query)
 
     content = dict(
         _links=dict(
