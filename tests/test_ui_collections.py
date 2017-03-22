@@ -53,6 +53,15 @@ def describe_collections():
 
             expect(html).does_not_contain("Share on Facebook")
 
+        def on_collection_with_fewer_than_2_items(client, collection):
+            while len(collection.items) >= 2:
+                collection.items.pop()
+            collection.save()
+
+            html = get(client, "/sample")
+
+            expect(html).contains(' disabled" href="/sample/vote"')
+
         def describe_add():
 
             def with_name(client, collection):
