@@ -36,7 +36,7 @@ def index():
     query = request.args.get('q')
 
     content, status = call(api.collections.index, query=query, private=False,
-                           limit=15, token=current_app.config['AUTH_TOKEN'])
+                           limit=13, token=current_app.config['AUTH_TOKEN'])
 
     assert status == 200
 
