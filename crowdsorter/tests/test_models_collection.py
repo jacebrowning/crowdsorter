@@ -74,7 +74,7 @@ def describe_collection():
             dt = datetime.now() - timedelta(days=2)
             collection.vote("foo", "bar", _at=dt)
 
-            expect(collection.vote_count_decayed) == 0.905
+            expect(collection.vote_count_decayed) == 0.714
 
         def when_last_vote_is_old(collection):
             dt = datetime.now() - timedelta(days=21)
@@ -86,7 +86,7 @@ def describe_collection():
             dt = datetime.now() - timedelta(days=99)
             collection.vote("foo", "bar", _at=dt)
 
-            expect(collection.vote_count_decayed) == -3.714
+            expect(collection.vote_count_decayed) == 0.0
 
     def describe_add():
 
@@ -111,4 +111,4 @@ def describe_collection():
 
             collection.clean()
 
-            expect(collection.vote_count_decayed) == 0.857
+            expect(collection.vote_count_decayed) == 0.571
