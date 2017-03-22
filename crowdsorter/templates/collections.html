@@ -26,6 +26,26 @@
 
         <div class="row">
             <div class="col-sm-8 col-sm-offset-2">
+                <form class="input-group input-group-lg" method="get">
+                    <input type="text" class="form-control input-lg" name="q" placeholder="Find a collection..." value="{{ request.args.get('q', '') }}">
+                    <div class="input-group-btn">
+                        {% if request.args.get('q') %}
+                        <a href="/collections/" class="btn btn-danger" title="Clear search results">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </a>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary" title="Search for a collection">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
                 <div class="list-group">
                     {% for collection in collections %}
                     <a href="/{{ collection['code'] }}" class="list-group-item">
@@ -38,6 +58,10 @@
                     </a>
                     {% endfor %}
                 </div>
+                {% if not collections %}
+                <p class="center"><i>No matching collections found.</i></p>
+                <br>
+                {% endif %}
             </div>
         </div>
 
