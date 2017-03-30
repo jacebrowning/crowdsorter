@@ -1,6 +1,7 @@
 import logging
 from urllib.error import HTTPError
 import random
+import time
 
 from flask import request, session
 from flask_api.exceptions import APIException
@@ -49,7 +50,8 @@ def filter_pairs(content):
         return None, content
 
     next_pair = None
-    while True:
+    start = time.time()
+    while time.time() - start < 5:
         next_pair = [item_data[0]['name'], item_data[1]['name']]
         next_pair.sort()
 
