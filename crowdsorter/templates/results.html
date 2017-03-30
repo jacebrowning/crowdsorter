@@ -29,10 +29,10 @@
                 <ul class="list-group">
                     <div class="list-group-item">
                         <div class="left">
-                            Items: {{ collection['item_count'] or 0 }}
+                            Items: {{ collection['item_data']|length }}
                         </div>
                         <div class="right">
-                            Votes: {{ collection['vote_count'] or 0 }}
+                            Votes: {{ collection['vote_count'] }}
                         </div>
                     </div>
                 </ul>
@@ -41,7 +41,7 @@
 
         <div class="row center">
             <div class="col-sm-8 col-sm-offset-2">
-                <a class="btn btn-primary{% if collection['item_count'] < 2 %} disabled{% endif %}" href="/{{ collection['code'] }}/vote" role="button">
+                <a class="btn btn-primary{% if collection['item_data']|length < 2 %} disabled{% endif %}" href="/{{ collection['code'] }}/vote" role="button">
                     Vote on Items
                 </a>
             </div>
@@ -57,12 +57,17 @@
         <div class="col-sm-8 col-sm-offset-2">
 
             <div class="row">
+
                 <div class="list-group">
-                    {% set scale = (collection['scores']|length - 1) / 95 %}
-                    {% for item in collection['scores'] %}
+                    {% set scale = (collection['item_data']|length - 1) / 95 %}
+                    {% for item in collection['item_data'] %}
                     <div class="list-group-item">
                         <div class="left">
+                        {% if collection['locked'] %}
                             {{ item['name'] }}
+                        {% else %}
+                            <a href="{{ url_for('items.detail', key=item['key']) }}" target="_blank">{{ item['name'] }}</a>
+                        {% endif %}
                         </div>
                         <div class="right">
                             {% if scale %}
@@ -110,12 +115,12 @@
     <div class="container">
         <div class="row center">
             <div class="col-sm-8 col-sm-offset-2">
-                <a class="btn btn-default" href="https://www.facebook.com/sharer/sharer.php?u={{ url_for('collections.detail', code=collection['code'], _external=True) }}" target="_blank">
+                <a class="btn btn-default" href="https://www.facebook.com/sharer/sharer.php?u={{ url_for('votes.results', code=collection['code'], _external=True) }}" target="_blank">
                     <img src="{{ url_for('static', filename='images/facebook.png') }}" height=30></img>
                     &nbsp;
                     Share on Facebook
                 </a>
-                <a class="btn btn-default" href="https://twitter.com/home?status={{ url_for('collections.detail', code=collection['code'], _external=True) }}" target="_blank">
+                <a class="btn btn-default" href="https://twitter.com/home?status={{ url_for('votes.results', code=collection['code'], _external=True) }}" target="_blank">
                     <img src="{{ url_for('static', filename='images/twitter.png') }}" height=30></img>
                     &nbsp;
                     Share on Twitter

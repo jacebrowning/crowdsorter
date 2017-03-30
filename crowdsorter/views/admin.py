@@ -84,7 +84,7 @@ def update(key):
         content, status = call(api.collections.detail, key=key)
         assert status == 200
         code = content['code']
-        return redirect(url_for('collections.detail', code=code))
+        return redirect(url_for('votes.results', code=code))
 
     if clear:
         content, status = call(api.votes.clear, key=key)
