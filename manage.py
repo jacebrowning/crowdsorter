@@ -19,7 +19,7 @@ config = get_config(os.getenv('FLASK_ENV'))
 
 app = create_app(config)
 
-server = Server(host='0.0.0.0', extra_files=find_assets())
+server = Server(extra_files=find_assets())
 
 manager = Manager(app)
 manager.add_command('run', server)
