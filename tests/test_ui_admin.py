@@ -41,14 +41,14 @@ def describe_admin():
             data = dict(save=True, name="New Name")
             html = post(client, "/collections/_c", data)
 
-            expect(html).contains("Settings updated.")
+            expect(html).contains("Collection settings saved.")
             expect(html).contains('name="name" value="New Name"')
 
         def with_new_code(client, collection):
             data = dict(save=True, code="New Code")
             html = post(client, "/collections/_c", data)
 
-            expect(html).contains("Settings updated.")
+            expect(html).contains("Collection settings saved.")
             expect(html).contains('name="code" value="new-code"')
 
         def with_duplicate_code(client, collection, collection2):
@@ -61,28 +61,28 @@ def describe_admin():
             data = dict(save=True, unlocked=[])
             html = post(client, "/collections/_c", data)
 
-            expect(html).contains("Settings updated.")
+            expect(html).contains("Collection settings saved.")
             expect(html).contains('name="unlocked"')
 
         def with_locked_clear(client, collection):
             data = dict(save=True, unlocked=['on'])
             html = post(client, "/collections/_c", data)
 
-            expect(html).contains("Settings updated.")
+            expect(html).contains("Collection settings saved.")
             expect(html).contains('name="unlocked" checked=true')
 
         def with_private_set(client, collection):
             data = dict(save=True, public=[])
             html = post(client, "/collections/_c", data)
 
-            expect(html).contains("Settings updated.")
+            expect(html).contains("Collection settings saved.")
             expect(html).contains('name="public"')
 
         def with_private_clear(client, collection):
             data = dict(save=True, public=['on'])
             html = post(client, "/collections/_c", data)
 
-            expect(html).contains("Settings updated.")
+            expect(html).contains("Collection settings saved.")
             expect(html).contains('name="public" checked=true')
 
     def describe_add():
@@ -91,7 +91,7 @@ def describe_admin():
             data = dict(add="New Item")
             html = post(client, "/collections/_c", data)
 
-            expect(html).contains('<h2 class="title">New Item</h2>')
+            expect(html).contains("Added item: New Item")
 
     def describe_remove():
 

@@ -72,6 +72,7 @@ def register_frontend(app):
     app.register_blueprint(views.index.blueprint)
     app.register_blueprint(views.collections.blueprint)
     app.register_blueprint(views.items.blueprint)
+    app.register_blueprint(views.votes.blueprint)
     app.register_blueprint(views.admin.blueprint)
 
 

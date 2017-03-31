@@ -27,21 +27,23 @@ def describe_scores():
                 'code': "sample",
                 'private': False,
                 'locked': False,
-                'item_count': 3,
                 'vote_count': 1,
-                'scores': [
+                'item_data': [
                     {
                         'name': "foo",
+                        'key': "_i2",
                         'points': 1.0,
                         'confidence': 0.5,
                     },
                     {
                         'name': "qux",
+                        'key': "_i3",
                         'points': 0.0,
                         'confidence': 0.0,
                     },
                     {
                         'name': "bar",
+                        'key': "_i1",
                         'points': -1.0,
                         'confidence': 0.5,
                     },
@@ -52,23 +54,50 @@ def describe_scores():
             status, content = load(client.get(url))
 
             expect(status) == 200
-            expect(content['item_count']) == 3
             expect(content['vote_count']) == 2
-            expect(content['scores']) == [
+            expect(content['item_data']) == [
                 {
                     'name': "foo",
+                    'key': "_i2",
                     'points': 1.9,
                     'confidence': 0.95,
                 },
                 {
                     'name': "bar",
+                    'key': "_i1",
                     'points': 0.0,
                     'confidence': 1.0,
                 },
                 {
                     'name': "qux",
+                    'key': "_i3",
                     'points': -1.9,
                     'confidence': 0.95,
+                },
+            ]
+
+        def locked_collections_hide_keys(client, url, collection):
+            collection.locked = True
+            collection.save()
+
+            status, content = load(client.get(url))
+
+            expect(status) == 200
+            expect(content['item_data']) == [
+                {
+                    'name': "foo",
+                    'points': 1.0,
+                    'confidence': 0.5,
+                },
+                {
+                    'name': "qux",
+                    'points': 0.0,
+                    'confidence': 0.0,
+                },
+                {
+                    'name': "bar",
+                    'points': -1.0,
+                    'confidence': 0.5,
                 },
             ]
 

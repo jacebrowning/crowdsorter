@@ -110,10 +110,10 @@
             </div>
 
             <div class="row">
-                <form id="add-item-form" method="post" class="input-group input-group-lg", target="_blank">
+                <form id="add-item-form" method="post" class="input-group input-group-lg">
                     <input type="text" class="form-control input-lg" name="add" placeholder="New Item Name">
                     <span class="input-group-btn">
-                        <button type="submit" class="btn btn-success" title="Add an item" onClick="reload();">
+                        <button type="submit" class="btn btn-success" title="Add an item">
                             <i class="glyphicon glyphicon-plus-sign"></i>
                         </button>
                     </span>
@@ -149,17 +149,4 @@
     </div>
 
     {% include "footer.html" %}
-{% endblock %}
-
-{% block scripts %}
-{{- super() }}
-    <!-- Custom -->
-    <script type="text/javascript">
-        function reload() {
-            setTimeout(function() {
-                document.getElementById("add-item-form").reset();
-                window.location.reload();
-            }, 3000);
-        }
-    </script>
 {% endblock %}

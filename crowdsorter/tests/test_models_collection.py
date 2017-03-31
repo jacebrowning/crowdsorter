@@ -47,14 +47,6 @@ def describe_collection():
             expect(collection).contains(item_in)
             expect(collection).does_not_contain(item_out)
 
-    def describe_item_count():
-
-        def is_the_number_of_items(collection):
-            expect(collection.item_count) == 2
-
-            collection.items.append(Item(name="foobar"))
-            expect(collection.item_count) == 3
-
     def describe_vote_count():
 
         def is_the_number_of_votes(collection):

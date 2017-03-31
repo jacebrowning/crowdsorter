@@ -47,13 +47,16 @@ class Score(db.EmbeddedDocument):
     def __repr__(self):
         return repr(self.data)
 
-    @property
-    def data(self):
-        return dict(
+    def get_data(self, locked=True):
+        data = dict(
             name=self.item.name,
+            key=self.item.key,
             points=self.points,
             confidence=self.confidence,
         )
+        if locked:
+            del data['key']
+        return data
 
 
 class Collection(db.Document):
@@ -103,10 +106,6 @@ class Collection(db.Document):
             return other in self.items
 
         return other in [item.key for item in self.items]
-
-    @property
-    def item_count(self):
-        return len(self.items)
 
     @property
     def items_by_confidence(self):
