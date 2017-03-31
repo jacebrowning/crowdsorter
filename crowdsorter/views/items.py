@@ -38,7 +38,7 @@ def update(key):
     content, status = call(api.items.update, key=key, **data)
 
     if status == 200:
-        flash("Item properties updated.", 'info')
+        flash("Item properties saved.", 'success')
     else:
         flash(content['message'], 'danger')
 

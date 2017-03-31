@@ -28,28 +28,28 @@ def describe_items():
             data = dict(save=True, name="New Name")
             html = post(client, url, data)
 
-            expect(html).contains("Item properties updated.")
+            expect(html).contains("Item properties saved.")
             expect(html).contains('<b>New Name</b>')
 
         def with_new_image_url(client, url, item):
             data = dict(save=True, image_url="http://example.com/image.jpg")
             html = post(client, url, data)
 
-            expect(html).contains("Item properties updated.")
+            expect(html).contains("Item properties saved.")
             expect(html).contains('<img src="http://example.com/image.jpg"')
 
         def with_new_description(client, url, item):
             data = dict(save=True, description="New description.")
             html = post(client, url, data)
 
-            expect(html).contains("Item properties updated.")
+            expect(html).contains("Item properties saved.")
             expect(html).contains('<p>New description.</p>')
 
         def with_new_ref_url(client, url, item):
             data = dict(save=True, ref_url="http://example.com")
             html = post(client, url, data)
 
-            expect(html).contains("Item properties updated.")
+            expect(html).contains("Item properties saved.")
             expect(html).contains('<a href="http://example.com"')
 
         def with_bad_image_url(client, url, item):

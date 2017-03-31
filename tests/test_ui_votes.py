@@ -44,13 +44,13 @@ def describe_votes():
                 data = dict(name="New Item")
                 html = post(client, "/sample", data)
 
-                expect(html).contains('<h2 class="title">New Item</h2>')
+                expect(html).contains("Added item: New Item")
 
             def on_locked_collection(client, collection_locked):
                 data = dict(name="New Item")
                 html = post(client, "/sample", data)
 
-                expect(html).contains("This window will close automatically...")
+                expect(html).contains("Unable to add items.")
 
     def describe_cast():
 

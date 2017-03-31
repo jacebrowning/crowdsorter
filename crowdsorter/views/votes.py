@@ -6,7 +6,7 @@ from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts, filter_pairs, autoclose
+from ._utils import call, parts, filter_pairs
 
 
 blueprint = Blueprint('votes', __name__)
@@ -44,14 +44,14 @@ def add_item(code):
     if name:
         content, status = call(api.items.add, key=key, name=name)
         if status == 200:
-            key = content['_objects'][-1]['key']
-            return redirect(url_for('items.detail', key=key))
+            item = content['_objects'][-1]
+            flash(f"Added item: {item['name']}", 'info')
         else:
             flash("Unable to add items.", 'danger')
     else:
         flash("A name is required.", 'danger')
 
-    return autoclose(seconds=1.5)
+    return redirect(url_for('votes.results', code=code))
 
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])

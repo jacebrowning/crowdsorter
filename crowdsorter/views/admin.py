@@ -6,7 +6,7 @@ from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts, send_email, autoclose
+from ._utils import call, parts, send_email
 
 
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
@@ -65,15 +65,14 @@ def update(key):
                                name=name, code=code,
                                private=private, locked=locked)
         if status == 200:
-            flash("Settings updated.", 'info')
+            flash("Collection settings saved.", 'success')
         else:
             flash(content['message'], 'danger')
 
     if add:
         content, status = call(api.items.add, key=key, name=add)
         assert status == 200
-        key = content['_objects'][-1]['key']
-        return redirect(url_for('items.detail', key=key))
+        flash(f"Added item: {add}", 'info')
 
     if remove:
         _, status = call(api.items.remove, key=key, name=remove)
@@ -96,10 +95,7 @@ def update(key):
         assert 200 <= status < 300
         return redirect(url_for('collections.index'))
 
-    if any((email, save, remove, clear)):
-        return redirect(url_for('admin.detail', key=key))
-
-    return autoclose()
+    return redirect(url_for('admin.detail', key=key))
 
 
 def _generate_email_data(content):
