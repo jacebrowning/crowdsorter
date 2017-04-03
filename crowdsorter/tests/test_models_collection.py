@@ -87,6 +87,53 @@ def describe_collection():
 
             expect(item.name) == collection.items[-1].name
 
+    def describe_scores():
+
+        @pytest.fixture
+        def collection():
+            c = Collection(name="Sample")
+            c.items = [
+                Item(name="a"),
+                Item(name="b"),
+                Item(name="c"),
+            ]
+            return c
+
+        def with_perfect_votes(collection):
+            collection.vote("a", "b")
+            collection.vote("a", "c")
+            collection.vote("b", "c")
+            collection.clean()
+
+            expect(collection.scores_data) == [
+                {'name': 'a', 'points': 3.0, 'confidence': 1.0},
+                {'name': 'b', 'points': 0.0, 'confidence': 1.0},
+                {'name': 'c', 'points': -3.0, 'confidence': 1.0},
+            ]
+
+        def with_missing_votes(collection):
+            collection.vote("a", "b")
+            collection.vote("b", "c")
+            collection.clean()
+
+            expect(collection.scores_data) == [
+                {'name': 'a', 'points': 2.0, 'confidence': 2 / 3},
+                {'name': 'b', 'points': 0.0, 'confidence': 1.0},
+                {'name': 'c', 'points': -2.0, 'confidence': 2 / 3},
+            ]
+
+        def with_conflicting_votes(collection):
+            collection.vote("a", "b")
+            collection.vote("b", "c")
+            collection.vote("c", "a")
+            collection.clean()
+
+            expect(collection.scores_data) == [
+                {'name': 'a', 'points': 0.0, 'confidence': 1.0},
+                {'name': 'b', 'points': 0.0, 'confidence': 1.0},
+                {'name': 'c', 'points': 0.0, 'confidence': 1.0},
+            ]
+
     def describe_clean():
 
         def it_generates_a_unique_code():
