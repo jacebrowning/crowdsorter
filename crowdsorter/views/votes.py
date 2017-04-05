@@ -78,7 +78,7 @@ def cast(code):
 
     if percent is None:
         percent = 100
-        collection['items'] = ["---"] * 2
+        collection['item_data'] = [{'name': "---"}] * 2
         url = url_for('votes.results', code=code, _external=True)
         msg = Markup(
             "You have voted on every pair in this collection. "

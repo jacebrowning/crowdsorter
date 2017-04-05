@@ -45,7 +45,22 @@ def filter_pairs(content):
     viewed_pairs = session.get(key) or []
     item_data = content['item_data'].copy()
     total_pairs = len(item_data) * (len(item_data) - 1) / 2
+    viewed_pairs = []
 
+    # Remove deleted pairs
+    viewed_pairs = []
+    for name_pair in session.get(key) or []:
+        found = True
+        for name in name_pair:
+            for item in item_data:
+                if name == item['name']:
+                    break
+            else:
+                found = False
+        if found:
+            viewed_pairs.append(name_pair)
+
+    # Exit if all pairs have been viewed
     if len(viewed_pairs) >= total_pairs:
         return None, content
 
@@ -67,8 +82,9 @@ def filter_pairs(content):
 
     if next_pair:
         viewed_pairs.append(next_pair)
-        session[key] = viewed_pairs
-        session.permanent = True
+
+    session[key] = viewed_pairs
+    session.permanent = True
 
     percent = len(viewed_pairs) / total_pairs * 100
     content['item_data'] = item_data

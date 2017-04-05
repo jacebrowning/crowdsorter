@@ -15,7 +15,7 @@ def describe_result():
     def describe_repr():
 
         def it_includes_the_result(result):
-            expect(repr(result)) == "<item: 'Sample Item' = 0.0 @ 0.0>"
+            expect(repr(result)) == "<item: 'Sample Item' = 0.000 @ 0.000>"
 
     def describe_str():
 
@@ -107,7 +107,7 @@ def describe_result():
             better.wins[result] = 1
             result.wins[worse] = 1
 
-            expect(better.score) == (1.9, 0.95)
+            expect(better.score) == (2.0, 2 / 3)
 
         def with_inferred_loss(result, better, worse):
             worse.opponents = [result, better]
@@ -115,7 +115,7 @@ def describe_result():
             worse.losses[result] = 1
             result.losses[better] = 1
 
-            expect(worse.score) == (-1.9, 0.95)
+            expect(worse.score) == (-2.0, 2 / 3)
 
 
 def describe_results():

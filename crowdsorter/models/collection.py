@@ -44,8 +44,9 @@ class Score(db.EmbeddedDocument):
     points = db.FloatField()
     confidence = db.FloatField()
 
-    def __repr__(self):
-        return repr(self.data)
+    @property
+    def data(self):
+        return self.get_data()
 
     def get_data(self, locked=True):
         data = dict(
@@ -112,6 +113,10 @@ class Collection(db.Document):
         scores = self.scores.copy()
         random.shuffle(scores)
         return [s.item for s in sorted(scores, key=lambda s: s.confidence)]
+
+    @property
+    def scores_data(self):
+        return [score.data for score in self.scores]
 
     def add(self, name, *, _save=True, **kwargs):
         """Add a new item and save it."""

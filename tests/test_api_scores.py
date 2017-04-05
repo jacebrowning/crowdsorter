@@ -59,8 +59,8 @@ def describe_scores():
                 {
                     'name': "foo",
                     'key': "_i2",
-                    'points': 1.9,
-                    'confidence': 0.95,
+                    'points': 2.0,
+                    'confidence': 2 / 3,
                 },
                 {
                     'name': "bar",
@@ -71,8 +71,8 @@ def describe_scores():
                 {
                     'name': "qux",
                     'key': "_i3",
-                    'points': -1.9,
-                    'confidence': 0.95,
+                    'points': -2.0,
+                    'confidence': 2 / 3,
                 },
             ]
 

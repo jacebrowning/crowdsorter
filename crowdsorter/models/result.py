@@ -22,7 +22,7 @@ class Result(object):
 
     def __repr__(self):
         points, confidence = self.score
-        return f"<item: '{self.item}' = {points:.1f} @ {confidence:.1f}>"
+        return f"<item: '{self.item}' = {points:.3f} @ {confidence:.3f}>"
 
     def __str__(self):
         return f"{self.item}"
@@ -40,6 +40,14 @@ class Result(object):
         return hash(self.item)
 
     @property
+    def inferred_points_impact(self):
+        count = len(self.opponents) + 1
+        if count <= 2:
+            return 0.0
+        inferred_votes = ((count - 1) * (count - 2)) / 2
+        return 1 / inferred_votes
+
+    @property
     def score(self):
         total_points = 0.0
         ratios = []
@@ -47,26 +55,23 @@ class Result(object):
         for opponent in self.opponents:
 
             points, ratio = self._get_score(self, opponent)
-            if (points, ratio) == (0.0, 0.0):
-                for item, count in self.wins.items():
-                    if not count:
-                        continue
-                    i_points, i_ratio = self._get_score(item, opponent)
-                    if i_points > 0 and i_ratio > ratio:
-                        points, ratio = i_points, i_ratio
-                        points, ratio = i_points, i_ratio
-                for item, count in self.losses.items():
-                    if not count:
-                        continue
-                    i_points, i_ratio = self._get_score(item, opponent)
-                    if i_points < 0 and i_ratio > ratio:
-                        points, ratio = i_points, i_ratio
-
-                points *= INFERRED_POINTS_IMPACT
-                ratio *= INFERRED_RATIO_IMPACT
-
             total_points += points
             ratios.append(ratio)
+
+            for inferred_opponent in opponent.opponents:
+
+                inferred_points, ratio = self._get_score(opponent,
+                                                         inferred_opponent)
+
+                if inferred_points == 0.0:
+                    continue
+                if points >= 0.0 and inferred_points < 0.0:
+                    continue
+                if points <= 0.0 and inferred_points > 0.0:
+                    continue
+
+                total_points += inferred_points * self.inferred_points_impact
+                ratios.append(ratio)
 
         if ratios:
             confidence = sum(ratios) / len(ratios)
@@ -77,9 +82,8 @@ class Result(object):
 
     @staticmethod
     def _get_score(item, opponent):
-        if item == opponent:
-            return 0, 0
-        assert item != opponent, (item, opponent)
+        assert item != opponent
+
         wins = item.wins[opponent]
         losses = item.losses[opponent]
         total = wins + losses
