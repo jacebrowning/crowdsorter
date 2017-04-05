@@ -41,9 +41,11 @@ class Result(object):
 
     @property
     def inferred_points_impact(self):
-        if len(self.opponents) <= 1:
-            return 0
-        return 1 / (len(self.opponents) - 1)
+        count = len(self.opponents) + 1
+        if count <= 2:
+            return 0.0
+        inferred_votes = ((count - 1) * (count - 2)) / 2
+        return 1 / inferred_votes
 
     @property
     def score(self):
