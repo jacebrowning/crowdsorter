@@ -26,7 +26,9 @@ def _activate_items():
                visible_when=_show_items,
                active_when=_activate_items)
 def results(code):
-    key = _get_key(code)
+    key, slug = _get_key(code)
+    if slug and code != slug:
+        return redirect(url_for('votes.results', code=slug))
 
     content, status = call(api.scores.index, key=key)
     if status != 200:
@@ -37,7 +39,7 @@ def results(code):
 
 @blueprint.route("/<code>", methods=['POST'])
 def add_item(code):
-    key = _get_key(code, require_unlocked=True)
+    key, _ = _get_key(code, require_unlocked=True)
 
     name = request.form['name'].strip()
 
@@ -58,7 +60,9 @@ def add_item(code):
 @register_menu(blueprint, '.vote', "Vote", order=3,
                visible_when=_show_items)
 def cast(code):
-    key = _get_key(code)
+    key, slug = _get_key(code)
+    if slug and code != slug:
+        return redirect(url_for('votes.cast', code=slug))
 
     if request.method == 'POST':
         winner = request.args.get('winner')
@@ -91,8 +95,14 @@ def cast(code):
 def _get_key(code, *, require_unlocked=False):
     # TODO: considering making a separate API for this to avoid exposing details
     log.debug("Looking up key from code: %s", code)
-    content, status = call(api.collections.detail, key=None, code=code)
 
+    content, status = call(api.redirects.detail, start_slug=code)
+    if status == 200:
+        slug = content['end_slug']
+        log.debug("Found redirect %r => %r", code, slug)
+        return None, slug
+
+    content, status = call(api.collections.detail, key=None, code=code)
     if status == 200:
         key = content['key']
         log.debug("Found key: %s", key)
@@ -100,9 +110,9 @@ def _get_key(code, *, require_unlocked=False):
         if require_unlocked:
             if content['locked']:
                 log.error("Invalid action on locked collection: %s", key)
-                return None
+                return None, code
 
-        return key
+        return key, None
 
     log.warning("Unknown code: %s", code)
-    return None
+    return None, code

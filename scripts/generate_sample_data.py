@@ -9,7 +9,7 @@ import os
 
 from crowdsorter.settings import get_config
 from crowdsorter.factory import create_app
-from crowdsorter.models import Collection, Item
+from crowdsorter.models import Collection, Item, Redirect
 
 
 create_app(get_config(os.getenv('FLASK_ENV') or 'dev'))
@@ -87,3 +87,13 @@ collection.save()
 collection = Collection(name="Single Item Collection")
 collection.add("Item One")
 collection.save()
+
+collection = Collection(name="Redirected Collection", code="from-old")
+collection.items = [
+    Item(name="A").save(),
+    Item(name="B").save(),
+    Item(name="C").save(),
+    Item(name="D").save(),
+]
+collection.save()
+Redirect(start_slug="old", end_slug="from-old").save()

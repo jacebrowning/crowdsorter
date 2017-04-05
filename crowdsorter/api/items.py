@@ -5,7 +5,7 @@ from flask_api import status
 
 from ..models import Collection, Item
 
-from ._schemas import parser, ItemSchema, EditItemSchema
+from ._schemas import parser, ItemSchema, UpdateItemSchema
 from ._serializers import serialize_item
 from . import _exceptions as exceptions
 
@@ -78,7 +78,7 @@ def detail(key):
 
 
 @blueprint.route("/api/items/<key>", methods=['PUT'])
-@parser.use_kwargs(EditItemSchema)
+@parser.use_kwargs(UpdateItemSchema)
 def update(key, name, description, image_url, ref_url):
     item = Item.objects(key=key).first()
 

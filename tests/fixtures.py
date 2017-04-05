@@ -4,7 +4,7 @@ import pytest
 
 from crowdsorter.settings import get_config
 from crowdsorter.factory import create_app
-from crowdsorter.models import Collection, Item
+from crowdsorter.models import Collection, Item, Redirect
 
 
 @pytest.fixture
@@ -15,6 +15,7 @@ def app():
 @pytest.fixture
 def client(app):
     Collection.objects.delete()
+    Redirect.objects.delete()
     return app.test_client()
 
 
@@ -67,3 +68,8 @@ def item():
     item.ref_url = "http://example.com"
     item.save()
     return item
+
+
+@pytest.fixture
+def redirect():
+    return Redirect(start_slug="old", end_slug="sample").save()

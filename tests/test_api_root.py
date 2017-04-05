@@ -24,6 +24,7 @@ def describe_root():
                     '_links': {
                         'self': "http://localhost/api",
                         'collections': "http://localhost/api/collections/",
+                        'redirects': "http://localhost/api/redirects/",
                     }
                 }
 

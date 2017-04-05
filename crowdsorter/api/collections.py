@@ -6,7 +6,7 @@ from flask_api import status
 from ..models import Collection, Item
 
 from ._schemas import (parser, TokenSchema, CollectionSchema,
-                       NewCollectionSchema, EditCollectionSchema)
+                       CreateCollectionSchema, UpdateCollectionSchema)
 from ._serializers import serialize_item
 from . import _exceptions as exceptions
 
@@ -39,7 +39,7 @@ def index(token, query=None, limit=None, **kwargs):
 
 
 @blueprint.route("/api/collections/", methods=['POST'])
-@parser.use_kwargs(NewCollectionSchema)
+@parser.use_kwargs(CreateCollectionSchema)
 def create(name, code, items):
     if items:
         items = [Item(name=name).save() for name in items]
@@ -67,7 +67,7 @@ def detail(key, code):
 
 
 @blueprint.route("/api/collections/<key>", methods=['PUT'])
-@parser.use_kwargs(EditCollectionSchema)
+@parser.use_kwargs(UpdateCollectionSchema)
 def update(key, name, owner, code, private, locked):
     collection = Collection.objects(key=key).first()
 
