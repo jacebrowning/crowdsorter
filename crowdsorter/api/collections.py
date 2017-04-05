@@ -70,6 +70,7 @@ def detail(key, code):
 @parser.use_kwargs(UpdateCollectionSchema)
 def update(key, name, owner, code, private, locked):
     collection = Collection.objects(key=key).first()
+    old_code = collection.code
 
     if name:
         collection.name = name
@@ -90,6 +91,11 @@ def update(key, name, owner, code, private, locked):
     except exceptions.ValidationError as exc:
         msg = list(exc.to_dict().values())[0]
         raise exceptions.UnprocessableEntity(msg)
+
+    if old_code and old_code != collection.code:
+        data = {'start_slug': old_code, 'end_slug': collection.code}
+        result = current_app.test_client().post("/api/redirects/", data=data)
+        log.debug(result)
 
     return serialize(collection), status.HTTP_200_OK
 
