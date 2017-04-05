@@ -60,13 +60,13 @@ class CollectionSchema(ValidatorMixin, Schema):
     code = fields.Str(missing=None)
 
 
-class NewCollectionSchema(CollectionSchema):
+class CreateCollectionSchema(CollectionSchema):
 
     name = fields.Str(required=True)
     items = fields.List(fields.Str(), missing=None)
 
 
-class EditCollectionSchema(CollectionSchema):
+class UpdateCollectionSchema(CollectionSchema):
 
     name = fields.Str(missing=None)
     owner = fields.Str(missing=None)
@@ -92,7 +92,7 @@ class ItemSchema(ValidatorMixin, Schema):
     ref_url = fields.Str(missing=None)
 
 
-class EditItemSchema(ItemSchema):
+class UpdateItemSchema(ItemSchema):
 
     name = fields.Str(missing=None)
 
@@ -101,3 +101,23 @@ class VoteSchema(ValidatorMixin, Schema):
 
     winner = fields.Str(required=True)
     loser = fields.Str(required=True)
+
+
+class RedirectSchema(ValidatorMixin, Schema):
+
+    end_slug = fields.Str(required=True)
+
+    @pre_load
+    def clean(self, data):  # pylint: disable=no-self-use
+        slug = data.get('end_slug')
+        if slug:
+            slug = slug.strip().lower().replace(' ', '-')
+            if slug:
+                data['end_slug'] = slug
+            else:
+                raise UnprocessableEntity("Slugs cannot be blank.")
+
+
+class CreateRedirectSchema(RedirectSchema):
+
+    start_slug = fields.Str(required=True)

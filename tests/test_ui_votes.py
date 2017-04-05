@@ -24,6 +24,11 @@ def describe_votes():
 
             expect(html).contains("Not Found")
 
+        def with_redirect(client, collection, redirect):
+            html = get(client, "/old")
+
+            expect(html).contains("Sample List")
+
         def on_private_collection(client, collection_private):
             html = get(client, "/sample")
 
@@ -66,3 +71,8 @@ def describe_votes():
             html = get(client, "/unknown/vote")
 
             expect(html).contains("Not Found")
+
+        def with_redirect(client, collection, redirect):
+            html = get(client, "/old/vote")
+
+            expect(html).contains("Sample List")

@@ -14,6 +14,7 @@ def index():
         _links=dict(
             self=url_for('.index', _external=True),
             collections=url_for('collections_api.index', _external=True),
+            redirects=url_for('redirects_api.index', _external=True),
         ),
     )
 

@@ -28,7 +28,7 @@ def create_app(config):
     return app
 
 
-def configure_logging(app):
+def configure_logging(app):  # pragma: no cover
     if app.config['DEBUG']:
         level = logging.DEBUG
         pattern = "%(levelname)s: %(name)s:%(lineno)d: %(message)s"
@@ -66,6 +66,7 @@ def register_backend(app):
     app.register_blueprint(api.items.blueprint)
     app.register_blueprint(api.votes.blueprint)
     app.register_blueprint(api.scores.blueprint)
+    app.register_blueprint(api.redirects.blueprint)
 
 
 def register_frontend(app):
@@ -91,7 +92,7 @@ def register_errors(app):
         return render_template("404.html"), 404
 
 
-def enable_cache_busting(app):
+def enable_cache_busting(app):  # pragma: no cover
 
     def dated_url_for(endpoint, **values):
         if endpoint == 'static':
