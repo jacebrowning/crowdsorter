@@ -16,7 +16,7 @@
 {{ super() }}
     <div class="jumbotron text-center">
         <h1>Crowd Sorter</h1>
-        <p>Crowdsourced list sorting.</p>
+        <p><i>Crowdsource your decision making.</i></p>
     </div>
 
     {% include "flashes.html" %}
@@ -26,19 +26,26 @@
 
             <div class="row">
                 <p>
-                    Crowd Sorter is a platform to build collections of items to be voted on and ranked by the audience of your choosing.
-                    Similar to <a href="http://www.kittenwar.com/" target="_blank">Kittenwar!</a>, <a href="https://hotornot.com/" target="_blank">Hot or Not</a>, and <a href="https://www.gotinder.com/" target="_blank">Tinder</a>, users apply a subjective ranking based on the criteria of their choosing, but we give you full control over your data.
+                    Crowd Sorter is a ranking site to sort arbitrary collections of items.
+                    The audience of your choosing is shown pairs of your items to vote on.
+                    Based on voting results, we compute a score for each item and sort your collection.
                 </p>
             </div>
 
+            <hr>
+
             <div class="row">
-                <h3>What is a collection?</h3>
-                <p class="bottom-buffer">
-                    A collection is a list of related items that can be voted on to determine the overall ranking.
-                    Examples include artists, shows, restaurants, and breweries.
-                    Here are the most popular collections right now:
-                </p>
-                <div class="col-sm-10 col-sm-offset-1 top-buffer">
+                <div class="col-sm-12">
+                    <h3>Collections</h3>
+                </div>
+                <div class="col-md-5 col-lg-4 col-xl-3">
+                    <p class="bottom-buffer">
+                        A collection is a list of related items that can be voted on to determine the overall ranking.
+                        Examples include artists, shows, restaurants, and breweries.
+                        Here are some of our most popular collections.
+                    </p>
+                </div>
+                <div class="col-md-7 col-lg-8 col-xl-9">
                     <div class="list-group">
                         {% for collection in collections %}
                         <a href="/{{ collection['code'] }}" class="list-group-item">
@@ -57,36 +64,57 @@
                 </div>
             </div>
 
-            <div class="row">
-                <h3>How does voting work?</h3>
-                <p>
-                    Share the link to your collection with whomever you want (or keep it private).
-                    Anyone voting on your collection with be shown a pair of items.
-                    After selecting a winner, two more items appear.
-                    Voters can also pass if they are unfamiliar with both items.
+            <hr>
 
-                </p>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>Voting</h3>
+                </div>
+                <div class="col-md-6 col-lg-7 col-xl-8">
+                    <img class="bottom-buffer" src="{{ url_for('static', filename='images/voting.png') }}" alt="Voting" width="100%">
+                </div>
+                <div class="col-md-6 col-lg-5 col-xl-4">
+                    <p>
+                        Share the link to your collection with whomever you want (or keep it private).
+                        Anyone voting on your collection with be shown a pair of items.
+                        After selecting a winner or passing, a new pair of items will appear.
+                    </p>
+                </div>
+
             </div>
 
-            <div class="row">
-                <h3>How does scoring work?</h3>
-                <p>
-                    The winner of each pair gets a point and its opponent loses a point.
-                    Some points are also awarded for inferred wins on pairs that have not yet been voted on.
-                    A perfect score is one less than the number of items.
-                    Items with the least confident scores are prioritized to be part of the next voting pair.
-                </p>
-            </div>
+            <hr>
 
             <div class="row">
-                <h3>Think you got it?</h3>
-                <p class="bottom-buffer">
-                    Create your own collection now in less than a minute. And it's free!
-                </p>
-                <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 top-buffer">
+                <div class="col-sm-12">
+                    <h3>Scoring</h3>
+                </div>
+                <div class="col-xs-12 col-sm-7 col-md-6">
+                    <p class="bottom-buffer">
+                        The winner of each pair gets a point and its opponent loses a point.
+                        Items also gain partial points for inferred wins and losses.
+                        The maximum possible score is the number of items in the collection.
+                    </p>
+                </div>
+                <div class="col-xs-offset-1 col-xs-10 col-sm-offset-0 col-sm-5 col-md-push-1 col-md-5">
+                    <img src="{{ url_for('static', filename='images/scoring.png') }}" alt="Scoring" width="100%">
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p class="bottom-buffer">
+                        Create your own collection now in less than a minute and let the crowds decide!
+                    </p>
+                </div>
+                <div class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 col-xl-offset-5 col-xl-2">
                     <form method="post" action="/collections/" class="form-group">
-                            <input type="text" class="form-control input-lg" name="name" placeholder="My New Collection">
+                            <input type="text" class="form-control input-lg text-center" name="name" placeholder="Your Collection Name">
                             <button type="submit" class="btn btn-block btn-primary">
+                                <span class="glyphicon glyphicon-check"></span>
+                                &nbsp;
                                 Create Your Own!
                             </button>
                     </form>
