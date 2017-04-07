@@ -22,14 +22,16 @@
     {% include "flashes.html" %}
 
     <div class="container">
-        <div class="col-sm-10 col-sm-offset-1">
+        <div class="col-sm-offset-1 col-sm-10">
 
             <div class="row">
-                <p>
-                    Crowd Sorter is a ranking site to sort arbitrary collections of items.
-                    The audience of your choosing is shown pairs of your items to vote on.
-                    Based on voting results, we compute a score for each item and sort your collection.
-                </p>
+                <div class="col-sm-offset-1 col-sm-10">
+                    <p class="text-justify">
+                        Crowd Sorter is a ranking site to sort arbitrary collections of items.
+                        The audience of your choosing is shown pairs of your items to vote on.
+                        Based on voting results, we compute a score for each item and sort your collection.
+                    </p>
+                </div>
             </div>
 
             <hr>
@@ -39,13 +41,13 @@
                     <h3>Collections</h3>
                 </div>
                 <div class="col-md-5 col-lg-4 col-xl-3">
-                    <p class="bottom-buffer">
+                    <p class="text-justify bottom-buffer">
                         A collection is a list of related items that can be voted on to determine the overall ranking.
                         Examples include artists, shows, restaurants, and breweries.
                         Here are some of our most popular collections.
                     </p>
                 </div>
-                <div class="col-md-7 col-lg-8 col-xl-9">
+                <div class="col-md-push-1 col-md-6 col-lg-7 col-xl-8">
                     <div class="list-group">
                         {% for collection in collections %}
                         <a href="/{{ collection['code'] }}" class="list-group-item">
@@ -73,8 +75,8 @@
                 <div class="col-md-6 col-lg-7 col-xl-8">
                     <img class="bottom-buffer" src="{{ url_for('static', filename='images/voting.png') }}" alt="Voting" width="100%">
                 </div>
-                <div class="col-md-6 col-lg-5 col-xl-4">
-                    <p>
+                <div class="col-md-push-1 col-md-5 col-lg-4 col-xl-3">
+                    <p class="text-justify">
                         Share the link to your collection with whomever you want (or keep it private).
                         Anyone voting on your collection with be shown a pair of items.
                         After selecting a winner or passing, a new pair of items will appear.
@@ -90,7 +92,7 @@
                     <h3>Scoring</h3>
                 </div>
                 <div class="col-xs-12 col-sm-7 col-md-6">
-                    <p class="bottom-buffer">
+                    <p class="text-justify bottom-buffer">
                         The winner of each pair gets a point and its opponent loses a point.
                         Items also gain partial points for inferred wins and losses.
                         The maximum possible score is the number of items in the collection.
@@ -104,19 +106,27 @@
             <hr>
 
             <div class="row">
-                <div class="col-sm-12 text-center">
-                    <p class="bottom-buffer">
-                        Create your own collection now in less than a minute and let the crowds decide!
+                <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                    <p class="text-justify bottom-buffer">
+                        Think you got it? Create your own collection now in less than a minute. Share it with your friends or let the crowds decide!
                     </p>
                 </div>
-                <div class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4 col-xl-offset-5 col-xl-2">
-                    <form method="post" action="/collections/" class="form-group">
-                            <input type="text" class="form-control input-lg text-center" name="name" placeholder="Your Collection Name">
-                            <button type="submit" class="btn btn-block btn-primary">
+                <div class="col-sm-offset-1 col-sm-10  col-md-offset-2 col-md-8 text-center">
+                    <form method="post" action="/collections/" class="input-group input-group-lg">
+                        <input type="text" class="form-control input-lg" name="name" placeholder="e.g. {{ [
+                            'Favorite Bars',
+                            'Cuttest Dogs',
+                            'Best Concert',
+                            'Election Candidates',
+                            'Animated Movies',
+                            'Coffee Shops',
+                            ]|random }}">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-primary" title="Create your collection">
                                 <span class="glyphicon glyphicon-check"></span>
-                                &nbsp;
-                                Create Your Own!
+                                <span class="hide-on-mobile">&nbsp; Create Collection</span>
                             </button>
+                        </div>
                     </form>
                 </div>
             </div>

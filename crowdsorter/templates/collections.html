@@ -31,11 +31,11 @@
                     <div class="input-group-btn">
                         {% if request.args.get('q') %}
                         <a href="/collections/" class="btn btn-danger" title="Clear search results">
-                            <i class="glyphicon glyphicon-remove"></i>
+                            <span class="glyphicon glyphicon-remove"></span>
                         </a>
                         {% endif %}
                         <button type="submit" class="btn btn-primary" title="Search for a collection">
-                            <i class="glyphicon glyphicon-search"></i>
+                            <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </div>
                 </form>
@@ -71,7 +71,7 @@
                     <input type="text" class="form-control input-lg" name="name" placeholder="New Collection Name">
                     <div class="input-group-btn">
                         <button type="submit" class="btn btn-success" title="Create a new collection">
-                            <i class="glyphicon glyphicon-plus-sign"></i>
+                            <span class="glyphicon glyphicon-plus-sign"></span>
                         </button>
                     </div>
                 </form>

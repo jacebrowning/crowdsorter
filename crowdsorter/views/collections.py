@@ -43,4 +43,6 @@ def new():
     content, status = call(api.collections.create, name=name)
     assert status == 201
 
+    flash("Welcome to your new collection!", 'info')
+
     return redirect(url_for('admin.detail', key=content['key']))
