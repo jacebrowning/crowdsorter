@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "464632c1cab316ae1b67a4dced5eb022459f0dbca7c86aa0f331e16881450047"
+            "sha256": "df3e882db9e08ae7c1dfb527532bb62545df3436c723c048f3c68b223f26310f"
         },
         "requires": {},
         "sources": [
@@ -59,6 +59,10 @@
         "Werkzeug": {
             "hash": "sha256:918322630c58fa52b89e14c45de3ad78514e18928dac726060bb89cd647f6b83",
             "version": "==0.12.1"
+        },
+        "blinker": {
+            "hash": "sha256:471aee25f3992bd325afa3772f1063dbdbbca947a041b8b89466dc00d606f8b6",
+            "version": "==1.4"
         },
         "bugsnag": {
             "hash": "sha256:ff60372af30960a79ed400331671da455fae5c35aa93d88d829a65180c150011",
