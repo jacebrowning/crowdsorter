@@ -101,7 +101,10 @@ def register_errors(app):
 
     @app.errorhandler(404)
     def page_not_found(error):
-        return render_template("404.html"), 404
+        try:
+            return render_template("404.html"), 404
+        except LookupError:
+            return error
 
 
 def enable_cache_busting(app):  # pragma: no cover

@@ -62,3 +62,11 @@ def describe_index():
             "User-agent: *" + '\n'
             "Disallow: /collections/" + '\n'
         )
+
+
+def describe_static():
+
+    def when_missing(client):
+        html = get(client, "/static/images/missing.png")
+
+        expect(html).contains("Not Found")
