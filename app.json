@@ -19,6 +19,9 @@
     "AUTH_TOKEN": {
       "value": "review"
     },
+    "BUGSNAG_API_KEY": {
+      "required": true
+    },
     "FLASK_ENV": {
       "required": true
     },

@@ -4,6 +4,8 @@ from pathlib import Path
 
 from flask import url_for, current_app, request, render_template
 from flask_api import FlaskAPI
+import bugsnag
+from bugsnag.flask import handle_exceptions
 
 from . import api
 from . import views
@@ -17,6 +19,8 @@ def create_app(config):
     app = FlaskAPI(__name__)
     app.config.from_object(config)
 
+    if not app.config['DEBUG']:
+        configure_exceptions(app)
     configure_logging(app)
 
     register_blueprints(app)
@@ -26,6 +30,14 @@ def create_app(config):
     enable_cache_busting(app)
 
     return app
+
+
+def configure_exceptions(app):
+    bugsnag.configure(
+        api_key=app.config['BUGSNAG_API_KEY'],
+        project_root=app.config['ROOT'],
+    )
+    handle_exceptions(app)
 
 
 def configure_logging(app):  # pragma: no cover
