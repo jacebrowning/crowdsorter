@@ -31,8 +31,12 @@ def add(key, name, **kwargs):
         raise exceptions.NotFound
 
     log.debug("Adding to %r: %r", collection, name)
-    collection.add(name, **kwargs)
-    collection.save()
+    try:
+        collection.add(name, **kwargs)
+    except ValueError as exc:
+        raise exceptions.Conflict(str(exc))
+    else:
+        collection.save()
 
     return serialize(collection), status.HTTP_200_OK
 

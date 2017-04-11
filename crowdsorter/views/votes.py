@@ -43,15 +43,17 @@ def add_item(code):
 
     name = request.form['name'].strip()
 
-    if name:
+    if name and key:
         content, status = call(api.items.add, key=key, name=name)
         if status == 200:
             item = content['_objects'][-1]
             flash(f"Added item: {item['name']}", 'info')
         else:
-            flash("Unable to add items.", 'danger')
-    else:
+            flash(content['message'], 'danger')
+    elif key:
         flash("A name is required.", 'danger')
+    else:
+        flash("Unable to add items.", 'danger')
 
     return redirect(url_for('votes.results', code=code))
 
