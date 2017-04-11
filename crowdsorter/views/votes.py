@@ -6,7 +6,7 @@ from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts, filter_pairs
+from ._utils import call, parts, mark_pair_viewed, filter_viewed_pairs
 
 
 blueprint = Blueprint('votes', __name__)
@@ -69,9 +69,13 @@ def cast(code):
     if request.method == 'POST':
         winner = request.args.get('winner')
         loser = request.args.get('loser')
+        skip = request.args.get('skip')
 
-        content, status = call(api.votes.add, key=key,
-                               winner=winner, loser=loser)
+        if not skip:
+            content, status = call(api.votes.add, key=key,
+                                   winner=winner, loser=loser)
+
+        mark_pair_viewed(code, [winner, loser])
 
         return redirect(url_for('votes.cast', code=code))
 
@@ -80,7 +84,7 @@ def cast(code):
     if status != 200:
         abort(404)
 
-    percent, collection = filter_pairs(content)
+    percent, collection = filter_viewed_pairs(content)
 
     if percent is None:
         percent = 100
