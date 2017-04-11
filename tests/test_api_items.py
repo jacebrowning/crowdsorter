@@ -112,6 +112,13 @@ def describe_items():
                 expect(status) == 422
                 expect(content['message']) == "Name is required."
 
+            def with_duplicate_name(client, url, collection):
+                data = {'name': "foo"}
+                status, content = load(client.post(url, data=data))
+
+                expect(status) == 409
+                expect(content['message']) == "Item name is already taken."
+
         def describe_DELETE():
 
             def it_removes_an_item_by_name(client, url, collection):

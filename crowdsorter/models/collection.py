@@ -122,6 +122,10 @@ class Collection(db.Document):
         """Add a new item and save it."""
         item = Item(name=name, **kwargs)
 
+        for item2 in self.items:
+            if item.name == item2.name:
+                raise ValueError("Item name is already taken.")
+
         if _save:
             item.save()
 
