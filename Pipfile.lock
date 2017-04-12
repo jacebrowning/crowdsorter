@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "df3e882db9e08ae7c1dfb527532bb62545df3436c723c048f3c68b223f26310f"
+            "sha256": "7d0bb2b98be09936d7e719a06a117e57a44559685399963efe2e3b6333642b9e"
         },
         "requires": {},
         "sources": [
@@ -16,10 +16,7 @@
             "hash": "sha256:6c3130c8927109a08225993e4e503de4ac4f2678678ae211b33b519c622a7242",
             "version": "==0.12.1"
         },
-        "Flask-API": {
-            "hash": "sha256:a3fec42fa73f9ee993cc1542ac743e45f02022c4fb749daf614650e2cc814e5a",
-            "version": "==0.7b2"
-        },
+        "Flask-API": "==0.7.1b2",
         "Flask-Bootstrap": {
             "hash": "sha256:cb08ed940183f6343a64e465e83b3a3f13c53e1baabb8d72b5da4545ef123ac8",
             "version": "==3.3.7.1"
@@ -93,8 +90,8 @@
             "version": "==2.13.4"
         },
         "mongoengine": {
-            "hash": "sha256:39532b0d2d26de3bb2bb174fef0209bb1925f81942b999808050d99917c0c6b9",
-            "version": "==0.11.0"
+            "hash": "sha256:f3536952bf12b170753ee9abe667240ecf9754d07ebeb890948321c6d5b8ba31",
+            "version": "==0.12.0"
         },
         "pymongo": {
             "hash": "sha256:d359349c6c9ff9f482805f89e66e476846317dc7b1eea979d7da9c0857ee2721",
@@ -211,8 +208,8 @@
             "version": "==2.13.0"
         },
         "setuptools": {
-            "hash": "sha256:e436d8c9dcf67ea8902bfa7cce1ef698f36bf303f13b4f62a5668891ecd380dd",
-            "version": "==34.3.3"
+            "hash": "sha256:1f7aac8b778446406ec5dcd5cc9305b375e7935e38f2fd3b1b70168c21a079d0",
+            "version": "==34.4.1"
         },
         "six": {
             "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1",
