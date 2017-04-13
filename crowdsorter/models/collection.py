@@ -48,15 +48,20 @@ class Score(db.EmbeddedDocument):
     def data(self):
         return self.get_data()
 
-    def get_data(self, locked=True):
+    def get_data(self, include_key=False, include_meta=False):
         data = dict(
             name=self.item.name,
-            key=self.item.key,
             points=self.points,
             confidence=self.confidence,
         )
-        if locked:
-            del data['key']
+
+        if include_key:
+            data['key'] = self.item.key
+
+        if include_meta:
+            data['image_url'] = self.item.image_url
+            data['ref_url'] = self.item.ref_url
+
         return data
 
 

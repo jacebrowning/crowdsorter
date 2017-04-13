@@ -63,10 +63,16 @@
                     {% for item in collection['item_data'] %}
                     <div class="list-group-item">
                         <div class="left">
-                        {% if collection['locked'] %}
-                            {{ item['name'] }}
+                        {% if item['ref_url'] %}
+                            <a href="{{ item['ref_url'] }}" target="_blank">{{ item['name'] }}</a>
+                        {% elif item['image_url'] %}
+                            <a href="{{ item['image_url'] }}" target="_blank">{{ item['name'] }}</a>
                         {% else %}
-                            <a href="{{ url_for('items.detail', key=item['key']) }}" target="_blank">{{ item['name'] }}</a>
+                            {{ item['name'] }}
+                        {% endif %}
+                        {% if not collection['locked'] %}
+                            &nbsp;
+                            <a class="glyphicon glyphicon-edit" href="{{ url_for('items.detail', key=item['key']) }}" target="_blank"></a>
                         {% endif %}
                         </div>
                         <div class="right">

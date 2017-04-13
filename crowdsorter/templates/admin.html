@@ -97,10 +97,19 @@
                 {% for item in collection['_embedded']['items'] %}
                 <form method="post" class="input-group input-group-lg bottom-buffer">
                     <div class="form-control input-lg">
-                        <a href="{{ url_for('items.detail', key=item['key']) }}" target="_blank">{{ item['name'] }}</a>
+                    {% if item['ref_url'] %}
+                        <a href="{{ item['ref_url'] }}" target="_blank">{{ item['name'] }}</a>
+                    {% elif item['image_url'] %}
+                        <a href="{{ item['image_url'] }}" target="_blank">{{ item['name'] }}</a>
+                    {% else %}
+                        {{ item['name'] }}
+                    {% endif %}
                     </div>
                     <input type=hidden value="{{ item['name'] }}" name="remove"/>
                     <span class="input-group-btn">
+                        <a href="{{ url_for('items.detail', key=item['key']) }}" target="_blank" role="button" class="btn btn-primary" title="Edit this item">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
                         <button type="submit" class="btn btn-danger" title="Remove this item">
                             <span class="glyphicon glyphicon-minus-sign"></span>
                         </button>
