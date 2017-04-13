@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7d0bb2b98be09936d7e719a06a117e57a44559685399963efe2e3b6333642b9e"
+            "sha256": "e95cc076b29f0def714295504f30909fc92d5ca9b3c71b2186d404d9c8dfc44a"
         },
         "requires": {},
         "sources": [
@@ -16,7 +16,10 @@
             "hash": "sha256:6c3130c8927109a08225993e4e503de4ac4f2678678ae211b33b519c622a7242",
             "version": "==0.12.1"
         },
-        "Flask-API": "==0.7.1b2",
+        "Flask-API": {
+            "hash": "sha256:01e06a4a57a9abe38d39ae7368e4c1ee998765204740a19f3dce87b0d4023e7b",
+            "version": "==0.7.1b2"
+        },
         "Flask-Bootstrap": {
             "hash": "sha256:cb08ed940183f6343a64e465e83b3a3f13c53e1baabb8d72b5da4545ef123ac8",
             "version": "==3.3.7.1"
@@ -86,8 +89,8 @@
             "version": "==0.24"
         },
         "marshmallow": {
-            "hash": "sha256:d88c8d25f636377c00ae85dda7030ff6f7553a9aec7dcd29094126c05b82b36b",
-            "version": "==2.13.4"
+            "hash": "sha256:f16c8959ee7a1dbdb794d2bc171aeb2c3d6105a32318b5128e95ae538dca395b",
+            "version": "==2.13.5"
         },
         "mongoengine": {
             "hash": "sha256:f3536952bf12b170753ee9abe667240ecf9754d07ebeb890948321c6d5b8ba31",
@@ -124,8 +127,8 @@
             "version": "==1.4.3"
         },
         "astroid": {
-            "git": "https://github.com/PyCQA/astroid.git",
-            "ref": "4e7d9fee4080d2e0db67a3e0463be8b196e56a95"
+            "hash": "sha256:507296783e8a428c2105edc6152bd901becf38b0058ebbe41edeafc8caaff0b8",
+            "version": "==1.5.1"
         },
         "backports.shutil_get_terminal_size": {
             "hash": "sha256:0975ba55054c15e346944b38956a4c9cbee9009391e41b86c68990effb8c1f64",
@@ -147,9 +150,25 @@
             "hash": "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491",
             "version": "==0.6.2"
         },
+        "editdistance": {
+            "hash": "sha256:8ec8a2158b9234adb0ca7ecfb0b4caa35e45ad5d00353c80793c9f54e1a35121",
+            "version": "==0.3.1"
+        },
         "honcho": {
             "hash": "sha256:af5806bf13e3b20acdcb9ff8c0beb91eee6fe07393c3448dfad89667e6ac7576",
             "version": "==1.0.1"
+        },
+        "isort": {
+            "hash": "sha256:a0c38c1c5e4c70ea1141daa80c740372ad94351e92e9e07da1cd86ce65653dc4",
+            "version": "==4.2.5"
+        },
+        "lazy-object-proxy": {
+            "hash": "sha256:ddd4cf1c74279c349cb7b9c54a2efa5105854f57de5f2d35829ee93631564268",
+            "version": "==1.2.2"
+        },
+        "mccabe": {
+            "hash": "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42",
+            "version": "==0.6.1"
         },
         "nose": {
             "hash": "sha256:9ff7c6cc443f8c51994b34a667bbcf45afd6d945be7477b52e97516fd17c53ac",
@@ -172,8 +191,8 @@
             "version": "==1.1.1"
         },
         "pylint": {
-            "git": "https://github.com/PyCQA/pylint.git",
-            "ref": "e0fdd25c214e60bef10fbaa46252f4aaa74de8c2"
+            "hash": "sha256:7d31ff5a6ac41f6d456d896182f3b0c00adcef817cea7136ee85a8a2569559f8",
+            "version": "==1.7.0"
         },
         "pyparsing": {
             "hash": "sha256:fee43f17a9c4087e7ed1605bd6df994c6173c1e977d7ade7b651292fab2bd010",
@@ -218,6 +237,10 @@
         "sniffer": {
             "hash": "sha256:e8a0daa4c51dff3d00482b45dc9b978159100a8d5a7df327c28ed96586559970",
             "version": "==0.4.0"
+        },
+        "wrapt": {
+            "hash": "sha256:42160c91b77f1bc64a955890038e02f2f72986c01d462d53cb6cb039b995cdd9",
+            "version": "==1.10.10"
         }
     }
 }
