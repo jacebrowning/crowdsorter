@@ -35,7 +35,7 @@ def serialize(collection):
         locked=collection.locked,
         vote_count=collection.vote_count,
         item_data=[
-            score.get_data(locked=collection.locked)
+            score.get_data(include_key=not collection.locked, include_meta=True)
             for score in collection.scores
         ],
     )

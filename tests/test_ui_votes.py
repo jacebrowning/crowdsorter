@@ -29,11 +29,6 @@ def describe_votes():
 
             expect(html).contains("Sample List")
 
-        def on_private_collection(client, collection_private):
-            html = get(client, "/sample")
-
-            expect(html).does_not_contain("Share on Facebook")
-
         def on_collection_with_fewer_than_2_items(client, collection):
             while len(collection.items) >= 2:
                 collection.items.pop()
@@ -42,6 +37,28 @@ def describe_votes():
             html = get(client, "/sample")
 
             expect(html).contains(' disabled" href="/sample/vote"')
+
+        def on_collection_with_ref_url(client, collection):
+            collection.items[0].image_url = "http://example.com/image.png"
+            collection.items[0].ref_url = "http://example.com/ref"
+            collection.items[0].save()
+
+            html = get(client, "/sample")
+
+            expect(html).contains('<a href="http://example.com/ref"')
+
+        def on_collection_with_image_url(client, collection):
+            collection.items[0].image_url = "http://example.com/image.png"
+            collection.items[0].save()
+
+            html = get(client, "/sample")
+
+            expect(html).contains('<a href="http://example.com/image.png"')
+
+        def on_private_collection(client, collection_private):
+            html = get(client, "/sample")
+
+            expect(html).does_not_contain("Share on Facebook")
 
         def describe_add_item():
 
