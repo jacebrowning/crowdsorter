@@ -6,7 +6,8 @@ from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts, send_email
+from ._navbar import show_admin
+from ._utils import call, send_email
 
 
 UNKNOWN_COLLECTION_NAME = "No Such Collection"
@@ -16,13 +17,9 @@ blueprint = Blueprint('admin', __name__)
 log = logging.getLogger(__name__)
 
 
-def _show_admin():
-    return len(parts()) == 2 and parts()[0] == 'collections'
-
-
 @blueprint.route("/collections/<key>")
 @register_menu(blueprint, '.admin', "Admin", order=2,
-               visible_when=_show_admin)
+               visible_when=show_admin)
 def detail(key):
     content, status = call(api.collections.detail, key=key)
 

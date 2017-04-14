@@ -23,11 +23,6 @@ def call(function, **kwargs):
     return content, status
 
 
-def parts():
-    """Get the non-empty parts of the request path."""
-    return [p for p in request.path.split('/') if p]
-
-
 def send_email(**kwargs):
     """Send an email using SendGrid."""
     try:

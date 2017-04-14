@@ -7,20 +7,17 @@ from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts
+from ._navbar import activate_collections
+from ._utils import call
 
 
 blueprint = Blueprint('collections', __name__)
 log = logging.getLogger(__name__)
 
 
-def _activate_collections():
-    return parts() and parts()[-1] == 'collections'
-
-
 @blueprint.route("/collections/")
 @register_menu(blueprint, '.index', "Collections", order=1,
-               active_when=_activate_collections)
+               active_when=activate_collections)
 def index():
     query = request.args.get('q')
 

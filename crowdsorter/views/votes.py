@@ -6,25 +6,18 @@ from flask_menu import register_menu
 
 from .. import api
 
-from ._utils import call, parts, mark_pair_viewed, filter_viewed_pairs
+from ._navbar import show_items, activate_items
+from ._utils import call, mark_pair_viewed, filter_viewed_pairs
 
 
 blueprint = Blueprint('votes', __name__)
 log = logging.getLogger(__name__)
 
 
-def _show_items():
-    return parts() and parts()[0] not in ['collections', 'items']
-
-
-def _activate_items():
-    return parts()[-1] != 'vote'
-
-
 @blueprint.route("/<code>", strict_slashes=False)
 @register_menu(blueprint, '.detail', "Results", order=2,
-               visible_when=_show_items,
-               active_when=_activate_items)
+               visible_when=show_items,
+               active_when=activate_items)
 def results(code):
     key, slug = _get_key(code)
     if slug and code != slug:
@@ -60,7 +53,7 @@ def add_item(code):
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
 @register_menu(blueprint, '.vote', "Vote", order=3,
-               visible_when=_show_items)
+               visible_when=show_items)
 def cast(code):
     key, slug = _get_key(code)
     if slug and code != slug:
