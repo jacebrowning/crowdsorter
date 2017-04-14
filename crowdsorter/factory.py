@@ -15,7 +15,7 @@ from . import extensions
 log = logging.getLogger(__name__)
 
 
-def create_app(config):
+def create_app(config):  # pragma: no cover
     app = FlaskAPI(__name__)
     app.config.from_object(config)
 
@@ -32,7 +32,7 @@ def create_app(config):
     return app
 
 
-def configure_exceptions(app):
+def configure_exceptions(app):  # pragma: no cover
     bugsnag.configure(
         api_key=app.config['BUGSNAG_API_KEY'],
         project_root=app.config['ROOT'],

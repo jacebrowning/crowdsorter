@@ -42,7 +42,34 @@ def describe_result():
 
             expect(sorted(results)) == results
 
-    def describe_result2():
+    def describe_inferred_points_impact():
+
+        def when_0_opponents(result):
+            result.opponents = []
+
+            expect(result.inferred_points_impact) == 0
+
+        def when_1_opponent(result):
+            result.opponents = ['b']
+
+            expect(result.inferred_points_impact) == 0
+
+        def when_2_opponents(result):
+            result.opponents = ['b', 'c']
+
+            expect(result.inferred_points_impact) == 1 / 1
+
+        def when_3_opponents(result):
+            result.opponents = ['b', 'c', 'd']
+
+            expect(result.inferred_points_impact) == 1 / 3
+
+        def when_4_opponents(result):
+            result.opponents = ['b', 'c', 'd', 'e']
+
+            expect(result.inferred_points_impact) == 1 / 6
+
+    def describe_score():
 
         @pytest.fixture
         def better():

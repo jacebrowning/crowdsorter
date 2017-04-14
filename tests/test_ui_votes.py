@@ -68,6 +68,18 @@ def describe_votes():
 
                 expect(html).contains("Added item: New Item")
 
+            def with_duplicate_name(client, collection):
+                data = dict(name="foo")
+                html = post(client, "/sample", data)
+
+                expect(html).contains("Item name is already taken.")
+
+            def without_name(client, collection):
+                data = dict(name=" ")
+                html = post(client, "/sample", data)
+
+                expect(html).contains("A name is required.")
+
             def on_locked_collection(client, collection_locked):
                 data = dict(name="New Item")
                 html = post(client, "/sample", data)

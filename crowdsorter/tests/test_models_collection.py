@@ -27,6 +27,11 @@ def describe_collection():
 
             expect(collection1.key) != collection2.key
 
+    def describe_str():
+
+        def it_uses_the_name(collection):
+            expect(str(collection)) == "Sample List"
+
     def describe_sort():
 
         def it_sorts_by_key():

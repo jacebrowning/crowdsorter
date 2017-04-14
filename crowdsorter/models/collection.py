@@ -17,24 +17,12 @@ class Loss(db.EmbeddedDocument):
     loser = db.ReferenceField(Item)
     count = db.IntField()
 
-    def __repr__(self):
-        return repr(dict([
-            ('loser', self.loser),
-            ('count', self.count)
-        ]))
-
 
 class Wins(db.EmbeddedDocument):
     """Stores the result of comparisons to other items."""
 
     winner = db.ReferenceField(Item)
     against = db.EmbeddedDocumentListField(Loss)
-
-    def __repr__(self):
-        return repr(dict([
-            ('winner', self.winner),
-            ('against', repr(self.against))
-        ]))
 
 
 class Score(db.EmbeddedDocument):
@@ -174,16 +162,10 @@ class Collection(db.Document):
 
     def clean(self):
         """Called automatically prior to saving."""
-        self._clean_code()
         vote_count = self._clean_votes()
         self.vote_count = vote_count
         self._decay_votes()
         self._clean_scores()
-
-    def _clean_code(self):
-        if not self.code:
-            log.warning("Generating missing code for %s", self.name)
-            self.code = generate_code()
 
     def _clean_votes(self):
         """Add default comparison data for new items and remove stale votes."""
