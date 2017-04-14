@@ -3,10 +3,12 @@ from urllib.error import HTTPError
 import random
 import time
 
-from flask import request, session
+from flask import request
 from flask_api.exceptions import APIException
 
 from ..extensions import sendgrid
+
+from . import _session
 
 
 log = logging.getLogger(__name__)
@@ -36,28 +38,24 @@ def send_email(**kwargs):
 
 def mark_pair_viewed(code, names):
     """Mark a pair as viewed."""
-    key = code + '-pairs'
-    viewed_pairs = session.get(key) or []
+    viewed_pairs = _session.get_viewed_pairs(code)
 
     assert len(names) == 2
     viewed_pair = sorted(names)
 
     viewed_pairs.append(viewed_pair)
-    session[key] = viewed_pairs
-    session.permanent = True
+
+    _session.set_viewed_pairs(code, viewed_pairs)
 
 
 def filter_viewed_pairs(content):
     """Filter previously viewed pairs and return the remaining percent."""
-    key = content['code'] + '-pairs'
-    viewed_pairs = session.get(key) or []
     item_data = content['item_data'].copy()
     total_pairs = len(item_data) * (len(item_data) - 1) / 2
-    viewed_pairs = []
 
     # Remove deleted pairs
     viewed_pairs = []
-    for name_pair in session.get(key) or []:
+    for name_pair in _session.get_viewed_pairs(content['code']):
         found = True
         for name in name_pair:
             for item in item_data:
