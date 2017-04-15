@@ -21,6 +21,7 @@ def describe_scores():
             expect(content) == {
                 '_links': {
                     'self': "http://localhost/api/collections/_c/scores/",
+                    'data': "http://localhost/api/collections/_c/scores/data/",
                     'collection': "http://localhost/api/collections/_c",
                 },
                 'name': "Sample List",
@@ -123,3 +124,34 @@ def describe_scores():
             status, content = load(client.get(url))
 
             expect(status) == 404
+
+    def describe_data():
+
+        @pytest.fixture
+        def url():
+            return "/api/collections/_c/scores/data/"
+
+        def describe_GET():
+
+            def it_returns_data(client, url, collection):
+                status, content = load(client.get(url))
+
+                expect(status) == 200
+                expect(content) == {
+                    '_links': {
+                        'self': "http://localhost/api/collections/_c/scores/data/",
+                        'scores': "http://localhost/api/collections/_c/scores/",
+                    },
+                    'name': "Sample List",
+                    'data': [
+                        ['', 'bar', 'foo', 'qux'],
+                        ['bar', '-', 0, 0],
+                        ['foo', 1, '-', 0],
+                        ['qux', 0, 0, '-'],
+                    ],
+                }
+
+            def the_collection_must_exist(client, url):
+                status, content = load(client.get(url))
+
+                expect(status) == 404

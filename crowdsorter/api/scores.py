@@ -21,11 +21,21 @@ def index(key):
     return serialize(collection), status.HTTP_200_OK
 
 
+@blueprint.route("/api/collections/<key>/scores/data/")
+def data(key):
+    collection = Collection.objects(key=key).first()
+    if not collection:
+        raise exceptions.NotFound
+
+    return serialize_data(collection), status.HTTP_200_OK
+
+
 def serialize(collection):
     return dict(
         _links=dict(
             self=url_for('scores_api.index', key=collection.key,
                          _external=True),
+            data=url_for('scores_api.data', key=collection.key, _external=True),
             collection=url_for('collections_api.detail',
                                key=collection.key, _external=True),
         ),
@@ -38,4 +48,17 @@ def serialize(collection):
             score.get_data(include_key=not collection.locked, include_meta=True)
             for score in collection.scores
         ],
+    )
+
+
+def serialize_data(collection):
+    return dict(
+        _links=dict(
+            self=url_for('scores_api.data', key=collection.key,
+                         _external=True),
+            scores=url_for('scores_api.index', key=collection.key,
+                           _external=True),
+        ),
+        name=collection.name,
+        data=list(collection.tabulate()),
     )

@@ -2,6 +2,8 @@ import logging
 from urllib.error import HTTPError
 import random
 import time
+from pathlib import Path
+import csv
 
 from flask import request
 from flask_api.exceptions import APIException
@@ -34,6 +36,20 @@ def send_email(**kwargs):
         response = None
 
     return response and 200 <= response.status_code < 300
+
+
+def create_csv(filename, rows):
+    root = Path('tmp').resolve()
+    root.mkdir(parents=True, exist_ok=True)
+
+    path = root.joinpath(filename)
+
+    with path.open('w') as f:
+        writer = csv.writer(f, lineterminator='\n')
+        for row in rows:
+            writer.writerow(row)
+
+    return str(path)
 
 
 def mark_pair_viewed(code, names):

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "37ebebe7eac1fa339b60db1ac9c04ba5323d55bc2e695abbe36ab7bf3f656c8f"
+            "sha256": "9769a2ac2ece374f412e416560eab0a2c97a67ade91f252f45dba1994f5a8573"
         },
         "requires": {},
         "sources": [
@@ -130,6 +130,10 @@
             "hash": "sha256:507296783e8a428c2105edc6152bd901becf38b0058ebbe41edeafc8caaff0b8",
             "version": "==1.5.1"
         },
+        "backports.shutil_get_terminal_size": {
+            "hash": "sha256:0975ba55054c15e346944b38956a4c9cbee9009391e41b86c68990effb8c1f64",
+            "version": "==1.0.0"
+        },
         "colorama": {
             "hash": "sha256:a4c0f5bc358a62849653471e309dcc991223cf86abafbec17cd8f41327279e89",
             "version": "==0.3.7"
@@ -138,7 +142,14 @@
             "hash": "sha256:8b282292973a1dc4eccfcc0776e0fde75b5b3de2e35164c2d854f7dd80149e4b",
             "version": "==4.3.4"
         },
-        "coverage.space": "==0.8b2",
+        "coverage.space": {
+            "hash": "sha256:a2044c2c9585d7de22975516f07f92fe213cf8824398afe7998f4aa03bc56d2e",
+            "version": "==0.8b3"
+        },
+        "docopt": {
+            "hash": "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491",
+            "version": "==0.6.2"
+        },
         "editdistance": {
             "hash": "sha256:8ec8a2158b9234adb0ca7ecfb0b4caa35e45ad5d00353c80793c9f54e1a35121",
             "version": "==0.3.1"
@@ -211,9 +222,13 @@
             "hash": "sha256:f42a6bb16fbfc5e2c66d553e7ad46524ea833872f75ee5d827c15115fafc94e2",
             "version": "==0.1.10"
         },
+        "requests": {
+            "hash": "sha256:1a720e8862a41aa22e339373b526f508ef0c8988baf48b84d3fc891a8e237efb",
+            "version": "==2.13.0"
+        },
         "setuptools": {
-            "hash": "sha256:1f7aac8b778446406ec5dcd5cc9305b375e7935e38f2fd3b1b70168c21a079d0",
-            "version": "==34.4.1"
+            "hash": "sha256:b427014a0cf196e57727e141899c20381051233094783aa6274780a100eb65d9",
+            "version": "==35.0.0"
         },
         "six": {
             "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1",
