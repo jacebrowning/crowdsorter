@@ -139,6 +139,46 @@ def describe_collection():
                 {'name': 'c', 'points': 0.0, 'confidence': 1.0},
             ]
 
+    def describe_tabulate():
+
+        @pytest.fixture
+        def collection():
+            c = Collection(name="Sample")
+            c.items = [
+                Item(name="a"),
+                Item(name="b"),
+                Item(name="c"),
+            ]
+            return c
+
+        def with_zero_votes(collection):
+            expect(list(collection.tabulate())) == [
+                ['', 'a', 'b', 'c'],
+                ['a', '-', 0, 0],
+                ['b', 0, '-', 0],
+                ['c', 0, 0, '-'],
+            ]
+
+        def with_single_votes(collection):
+            collection.vote('a', 'b')
+            collection.vote('b', 'c')
+            expect(list(collection.tabulate())) == [
+                ['', 'a', 'b', 'c'],
+                ['a', '-', 1, 0],
+                ['b', 0, '-', 1],
+                ['c', 0, 0, '-'],
+            ]
+
+        def with_multiple_votes(collection):
+            collection.vote('a', 'b')
+            collection.vote('a', 'b')
+            expect(list(collection.tabulate())) == [
+                ['', 'a', 'b', 'c'],
+                ['a', '-', 2, 0],
+                ['b', 0, '-', 0],
+                ['c', 0, 0, '-'],
+            ]
+
     def describe_clean():
 
         def it_generates_a_unique_code():

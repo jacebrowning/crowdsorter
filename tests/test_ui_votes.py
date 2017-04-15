@@ -60,6 +60,18 @@ def describe_votes():
 
             expect(html).does_not_contain("Share on Facebook")
 
+        def describe_download_results():
+
+            def it_returns_csv_data(client, collection):
+                csv = get(client, "/sample/results.csv")
+
+                expect(csv) == """
+                ,bar,foo,qux
+                bar,-,0,0
+                foo,1,-,0
+                qux,0,0,-
+                """[1:].replace('                ', '')
+
         def describe_add_item():
 
             def with_name(client, collection):

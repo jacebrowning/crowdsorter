@@ -1,5 +1,6 @@
 import random
 from datetime import datetime
+from collections import defaultdict
 import logging
 
 from ..extensions import db
@@ -153,6 +154,23 @@ class Collection(db.Document):
         self.vote_count += 1
         self.date_voted = _at or datetime.now()
         self._decay_votes()
+
+    def tabulate(self):
+        header = [''] + [item.name for item in self.items]
+        yield header
+        for item in self.items:
+            row = [item.name]
+            counts = defaultdict(int)
+            for wins in self.votes:
+                if wins.winner == item:
+                    for loss in wins.against:
+                        counts[loss.loser.name] = loss.count
+            for item2 in self.items:
+                if item == item2:
+                    row.append('-')
+                else:
+                    row.append(counts[item2.name])
+            yield row
 
     def _decay_votes(self):
         """Computed the decayed vote total based on the last-voted date."""

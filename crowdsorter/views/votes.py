@@ -1,13 +1,14 @@
 import logging
 
 from flask import Blueprint, Markup
-from flask import request, render_template, redirect, url_for, flash, abort
+from flask import (request, render_template, send_file, redirect, url_for,
+                   flash, abort)
 from flask_menu import register_menu
 
 from .. import api
 
 from ._navbar import show_items, activate_items
-from ._utils import call, mark_pair_viewed, filter_viewed_pairs
+from ._utils import call, create_csv, mark_pair_viewed, filter_viewed_pairs
 
 
 blueprint = Blueprint('votes', __name__)
@@ -49,6 +50,21 @@ def add_item(code):
         flash("Unable to add items.", 'danger')
 
     return redirect(url_for('votes.results', code=code))
+
+
+@blueprint.route("/<code>/results.csv")
+def download_results(code):
+    key, _ = _get_key(code, require_unlocked=True)
+
+    content, status = call(api.scores.data, key=key)
+    assert status == 200
+
+    name = content['name'].replace(' ', '_')
+    filename = f"{name}_Results.csv"
+    path = create_csv(filename, content['data'])
+
+    return send_file(path, mimetype='text/csv', as_attachment=True,
+                     attachment_filename=filename, cache_timeout=0)
 
 
 @blueprint.route("/<code>/vote", methods=['GET', 'POST'])
