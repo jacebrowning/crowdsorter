@@ -54,7 +54,7 @@ def add_item(code):
 
 @blueprint.route("/<code>/results.csv")
 def download_results(code):
-    key, _ = _get_key(code, require_unlocked=True)
+    key, _ = _get_key(code)
 
     content, status = call(api.scores.data, key=key)
     assert status == 200
