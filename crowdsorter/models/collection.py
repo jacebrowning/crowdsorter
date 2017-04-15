@@ -156,7 +156,7 @@ class Collection(db.Document):
         self._decay_votes()
 
     def tabulate(self):
-        header = [''] + [item.name for item in self.items]
+        header = ['Wins / Against:'] + [item.name for item in self.items]
         yield header
         for item in self.items:
             row = [item.name]
@@ -167,7 +167,7 @@ class Collection(db.Document):
                         counts[loss.loser.name] = loss.count
             for item2 in self.items:
                 if item == item2:
-                    row.append('-')
+                    row.append('---')
                 else:
                     row.append(counts[item2.name])
             yield row

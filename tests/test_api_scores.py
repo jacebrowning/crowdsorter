@@ -144,10 +144,10 @@ def describe_scores():
                     },
                     'name': "Sample List",
                     'data': [
-                        ['', 'bar', 'foo', 'qux'],
-                        ['bar', '-', 0, 0],
-                        ['foo', 1, '-', 0],
-                        ['qux', 0, 0, '-'],
+                        ['Wins / Against:', 'bar', 'foo', 'qux'],
+                        ['bar', '---', 0, 0],
+                        ['foo', 1, '---', 0],
+                        ['qux', 0, 0, '---'],
                     ],
                 }
 

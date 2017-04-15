@@ -153,30 +153,30 @@ def describe_collection():
 
         def with_zero_votes(collection):
             expect(list(collection.tabulate())) == [
-                ['', 'a', 'b', 'c'],
-                ['a', '-', 0, 0],
-                ['b', 0, '-', 0],
-                ['c', 0, 0, '-'],
+                ['Wins / Against:', 'a', 'b', 'c'],
+                ['a', '---', 0, 0],
+                ['b', 0, '---', 0],
+                ['c', 0, 0, '---'],
             ]
 
         def with_single_votes(collection):
             collection.vote('a', 'b')
             collection.vote('b', 'c')
             expect(list(collection.tabulate())) == [
-                ['', 'a', 'b', 'c'],
-                ['a', '-', 1, 0],
-                ['b', 0, '-', 1],
-                ['c', 0, 0, '-'],
+                ['Wins / Against:', 'a', 'b', 'c'],
+                ['a', '---', 1, 0],
+                ['b', 0, '---', 1],
+                ['c', 0, 0, '---'],
             ]
 
         def with_multiple_votes(collection):
             collection.vote('a', 'b')
             collection.vote('a', 'b')
             expect(list(collection.tabulate())) == [
-                ['', 'a', 'b', 'c'],
-                ['a', '-', 2, 0],
-                ['b', 0, '-', 0],
-                ['c', 0, 0, '-'],
+                ['Wins / Against:', 'a', 'b', 'c'],
+                ['a', '---', 2, 0],
+                ['b', 0, '---', 0],
+                ['c', 0, 0, '---'],
             ]
 
     def describe_clean():

@@ -66,10 +66,10 @@ def describe_votes():
                 csv = get(client, "/sample/results.csv")
 
                 expect(csv) == """
-                ,bar,foo,qux
-                bar,-,0,0
-                foo,1,-,0
-                qux,0,0,-
+                Wins / Against:,bar,foo,qux
+                bar,---,0,0
+                foo,1,---,0
+                qux,0,0,---
                 """[1:].replace('                ', '')
 
         def describe_add_item():
