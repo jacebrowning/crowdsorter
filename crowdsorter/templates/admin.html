@@ -30,7 +30,11 @@
                         <input type="text" class="form-control" id="email" name="email" value="{{ collection['owner'] }}" placeholder="Your Email Address">
                     </div>
                     <div class="center top-buffer">
-                        <input type="submit" class="btn btn-primary" value="Send Me a Link"></input>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            &nbsp;
+                            Send Me a Link
+                        </button>
                     </div>
                 </form>
             </div>
@@ -76,7 +80,11 @@
                         </div>
                     </div>
                     <div class="row center top-buffer">
-                        <input type="submit" class="btn btn-primary" name="save" value="Save Changes"></input>
+                        <button type="submit" class="btn btn-primary" name="save" value="true">
+                            <span class="glyphicon glyphicon-check"></span>
+                            &nbsp;
+                            Save Changes
+                        </button>
                     </div>
                 </form>
             </div>
@@ -131,7 +139,11 @@
 
             <div class="row center top-buffer">
                 <form method="post" target="_blank">
-                    <input type="submit" class="btn btn-default" name="view" value="View Collection"/>
+                    <button type="submit" class="btn btn-default" name="view" value="true">
+                        <span class="glyphicon glyphicon-new-window"></span>
+                        &nbsp;
+                        View Collection
+                    </button>
                 </form>
                 <a class="btn btn-default" href="/{{ collection['code'] }}/results.csv" role="button">
                     <span class="glyphicon glyphicon-download"></span>
@@ -154,8 +166,16 @@
 
             <div class="row center">
                 <form method="post">
-                    <input type="submit" class="btn btn-default" name="clear" value="Clear Votes"/>
-                    <input type="submit" class="btn btn-danger" name="delete" value="Delete Collection"/>
+                    <button type="submit" class="btn btn-default" name="clear" value="true">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        &nbsp;
+                        Clear Votes
+                    </button>
+                    <button type="submit" class="btn btn-danger" name="delete" value="true">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        &nbsp;
+                        Delete Collection
+                    </button>
                 </form>
             </div>
 
