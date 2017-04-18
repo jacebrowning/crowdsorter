@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "90a46d5dec10d49c3321efb6fe91ab145419296b292e3e16d681d80c3cf27329"
+            "sha256": "3a8e4f7945e54e176ed37ecf1a7f36403240535cc288972070402234e74fb6f7"
         },
         "requires": {},
         "sources": [
@@ -93,8 +93,8 @@
             "version": "==2.13.5"
         },
         "mongoengine": {
-            "hash": "sha256:f3536952bf12b170753ee9abe667240ecf9754d07ebeb890948321c6d5b8ba31",
-            "version": "==0.12.0"
+            "hash": "sha256:2ae84677ce8bdd1a1b2884d637a4533e6a07a31a82243ef1a2faf22e354ec49d",
+            "version": "==0.13.0"
         },
         "pymongo": {
             "hash": "sha256:d359349c6c9ff9f482805f89e66e476846317dc7b1eea979d7da9c0857ee2721",
@@ -127,8 +127,8 @@
             "version": "==1.4.3"
         },
         "astroid": {
-            "hash": "sha256:507296783e8a428c2105edc6152bd901becf38b0058ebbe41edeafc8caaff0b8",
-            "version": "==1.5.1"
+            "hash": "sha256:9c19f72d865a539e91115cdb6a293b5c2fecb5f611fad38b21a961a925c2e3f1",
+            "version": "==1.5.2"
         },
         "backports.shutil_get_terminal_size": {
             "hash": "sha256:0975ba55054c15e346944b38956a4c9cbee9009391e41b86c68990effb8c1f64",
@@ -149,10 +149,6 @@
         "docopt": {
             "hash": "sha256:49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491",
             "version": "==0.6.2"
-        },
-        "editdistance": {
-            "hash": "sha256:8ec8a2158b9234adb0ca7ecfb0b4caa35e45ad5d00353c80793c9f54e1a35121",
-            "version": "==0.3.1"
         },
         "honcho": {
             "hash": "sha256:af5806bf13e3b20acdcb9ff8c0beb91eee6fe07393c3448dfad89667e6ac7576",
@@ -191,8 +187,8 @@
             "version": "==1.1.1"
         },
         "pylint": {
-            "hash": "sha256:7d31ff5a6ac41f6d456d896182f3b0c00adcef817cea7136ee85a8a2569559f8",
-            "version": "==1.7.0"
+            "hash": "sha256:402931e0b15ac2fa05387a125cb049aba4fcd841c362613c6ad1675e0e5135d8",
+            "version": "==1.7.1"
         },
         "pyparsing": {
             "hash": "sha256:fee43f17a9c4087e7ed1605bd6df994c6173c1e977d7ade7b651292fab2bd010",
@@ -211,8 +207,8 @@
             "version": "==0.11.0"
         },
         "pytest-expecter": {
-            "hash": "sha256:9c6ed4d26df0e80a31b2c6ad86a959593f0c5b2459ea366496c45d9bbd9d358a",
-            "version": "==0.2.2.post3"
+            "hash": "sha256:afa9ee0ece1715d25019cdb8221e57db14118c1551da17724a4e3ee895f8c1aa",
+            "version": "==0.2.2.post6"
         },
         "pytest-random": {
             "hash": "sha256:92f25db8c5d9ffc20d90b51997b914372d6955cb9cf1f6ead45b90514fc0eddd",

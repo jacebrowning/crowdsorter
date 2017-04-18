@@ -31,9 +31,9 @@ def get(client, url, *, minify: bool = False):
     response = client.get(url, follow_redirects=True)
 
     html = response.data.decode('utf-8').strip() + '\n'
-    log.debug("Response HTML: \n\n%s", html)
 
     if minify:
+        log.debug("Original HTML: \n\n%s", html)
         html = html.replace('\n', '').replace(' ' * 2, '')
 
     return html
@@ -46,6 +46,5 @@ def post(client, url, data):
     response = client.post(url, data=data, follow_redirects=True)
 
     html = response.data.decode('utf-8').strip() + '\n'
-    log.debug("Response HTML: \n\n%s", html)
 
     return html
