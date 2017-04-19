@@ -52,10 +52,16 @@
                 <form method="post" action="{{ request.path }}?winner={{ first['name']|urlencode }}&loser={{ second['name']|urlencode }}">
                     <div class="form-group">
                         <button id="vote-first" type="submit" class="btn btn-default btn-block btn-vote">
+                            {% if first['image_url'] or first['description'] %}
                             <p><b>{{ first['name'] }}</b></p>
+                            {% else %}
+                            <p style="font-size: 36px;">{{ first['name'] }}</p>
+                            {% endif %}
+
                             {% if first['image_url'] %}
                             <p><img class="img-vote" src="{{ first['image_url'] }}" alt="{{ first['name'] }}"></p>
                             {% endif %}
+
                             {% if first['description'] %}
                             <p>{{ first['description'] }}</p>
                             {% endif %}
@@ -68,10 +74,16 @@
                 <form method="post" action="{{ request.path }}?winner={{ second['name']|urlencode }}&loser={{ first['name']|urlencode }}">
                     <div class="form-group">
                         <button id="vote-second" type="submit" class="btn btn-default btn-block btn-vote">
+                            {% if second['image_url'] or second['description'] %}
                             <p><b>{{ second['name'] }}</b></p>
+                            {% else %}
+                            <p style="font-size: 36px;">{{ second['name'] }}</p>
+                            {% endif %}
+
                             {% if second['image_url'] %}
                             <p><img class="img-vote" src="{{ second['image_url'] }}" alt="{{ second['name'] }}"></p>
                             {% endif %}
+
                             {% if second['description'] %}
                             <p>{{ second['description'] }}</p>
                             {% endif %}
@@ -89,14 +101,19 @@
     <!-- Custom -->
     <script type="text/javascript">
         $(document).ready( function() {
+            optimizeButtonHeight();
             $('html, body').animate({
                 scrollTop: $('#content').offset().top - 15
             }, 0);
         });
 
+        window.onresize = optimizeButtonHeight
+
         $('form').submit( function(){
             $('#vote-first').prop('disabled', true);
+            $('#vote-first').text("---");
             $('#vote-second').prop('disabled', true);
+            $('#vote-second').text("---");
             $('#reload').prop('disabled', true);
             if ($(window).width() >= 768) {
                 $('#reload').html("Loading next pair...");
@@ -104,5 +121,16 @@
                 $('#reload').html('<span class="glyphicon glyphicon-option-horizontal"></span>');
             }
         });
+
+        function optimizeButtonHeight() {
+            width = $(window).width();
+            height = $(window).height();
+            if (width >= 768) {
+                padding = 295;
+                $('.btn-vote').css('min-height', height - padding);
+            } else {
+                $('.btn-vote').css('min-height', 200);
+            }
+        }
     </script>
 {% endblock %}
