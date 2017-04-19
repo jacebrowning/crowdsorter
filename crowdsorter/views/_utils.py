@@ -53,58 +53,85 @@ def create_csv(filename, rows):
 
 
 def mark_pair_viewed(code, names):
-    """Mark a pair as viewed."""
-    viewed_pairs = _session.get_viewed_pairs(code)
-
+    """Mark a pair as being viewed."""
     assert len(names) == 2
-    viewed_pair = sorted(names)
 
-    viewed_pairs.append(viewed_pair)
-
-    _session.set_viewed_pairs(code, viewed_pairs)
+    _session.add_viewed_pair(code, sorted(names))
 
 
-def filter_viewed_pairs(content):
-    """Filter previously viewed pairs and return the remaining percent."""
-    item_data = content['item_data'].copy()
-    total_pairs = len(item_data) * (len(item_data) - 1) / 2
+def mark_pair_voted(code, names):
+    """Mark a pair as voted on."""
+    for name in names:
+        _session.add_voted_name(code, name)
+
+
+def mark_pair_skipped(code, names):
+    """Mark an item in a pair as skipped if the other has been voted."""
+    assert len(names) == 2
+    first, second = names
+
+    voted_names = _session.get_voted_names(code)
+
+    if first in voted_names:
+        _session.add_skipped_name(code, second)
+
+    if second in voted_names:
+        _session.add_skipped_name(code, first)
+
+
+def filter_voted_pairs(content):
+    """Filter previously voted pairs and return the remaining percent."""
+    code = content['code']
+    items = list(filter_skipped_items(code, content['item_data']))
+    total_pairs = len(items) * (len(items) - 1) / 2
 
     # Remove deleted pairs
-    viewed_pairs = []
-    for name_pair in _session.get_viewed_pairs(content['code']):
+    voted_pairs = []
+    for pair in _session.get_viewed_pairs(code):
         found = True
-        for name in name_pair:
-            for item in item_data:
+        for name in pair:
+            for item in items:
                 if name == item['name']:
                     break
             else:
                 found = False
         if found:
-            viewed_pairs.append(name_pair)
+            voted_pairs.append(pair)
 
-    # Exit if all pairs have been viewed
-    if len(viewed_pairs) >= total_pairs:
+    # Exit if all pairs have been voted
+    if len(voted_pairs) >= total_pairs:
         return None, content
 
+    # Remove voted pairs and reshuffle items until a new pair is available
     next_pair = None
     start = time.time()
     while time.time() - start < 5:
-        next_pair = sorted([item_data[0]['name'], item_data[1]['name']])
+        next_pair = sorted([items[0]['name'], items[1]['name']])
 
-        if next_pair in viewed_pairs:
-            if len(item_data) > 2:
-                item_data.pop(0)
+        if next_pair in voted_pairs:
+            if len(items) > 2:
+                items.pop(0)
             else:
-                item_data = content['item_data'].copy()
-                random.shuffle(item_data)
+                items = list(filter_skipped_items(code, content['item_data']))
+                random.shuffle(items)
             next_pair = None
         else:
             break
 
-    percent = len(viewed_pairs) / total_pairs * 100
-    content['item_data'] = item_data
+    percent = len(voted_pairs) / total_pairs * 100
+    content['item_data'] = items
 
     return percent, content
+
+
+def filter_skipped_items(code, items):
+    """Yield items that have not already been skipped."""
+    skipped_names = _session.get_skipped_names(code)
+    for item in items:
+        if item['name'] in skipped_names:
+            continue
+        else:
+            yield item
 
 
 def autoclose(seconds=2):
