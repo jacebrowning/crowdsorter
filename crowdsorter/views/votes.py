@@ -8,7 +8,8 @@ from flask_menu import register_menu
 from .. import api
 
 from ._navbar import show_items, activate_items
-from ._utils import call, create_csv, mark_pair_viewed, filter_viewed_pairs
+from ._utils import (call, create_csv, mark_pair_viewed, mark_pair_voted,
+                     mark_pair_skipped, filter_voted_pairs)
 
 
 blueprint = Blueprint('votes', __name__)
@@ -80,11 +81,13 @@ def cast(code):
         loser = request.args.get('loser')
         skip = request.args.get('skip')
 
-        if not skip:
+        mark_pair_viewed(code, [winner, loser])
+        if skip:
+            mark_pair_skipped(code, [winner, loser])
+        else:
+            mark_pair_voted(code, [winner, loser])
             content, status = call(api.votes.add, key=key,
                                    winner=winner, loser=loser)
-
-        mark_pair_viewed(code, [winner, loser])
 
         return redirect(url_for('votes.cast', code=code))
 
@@ -93,7 +96,7 @@ def cast(code):
     if status != 200:
         abort(404)
 
-    percent, collection = filter_viewed_pairs(content)
+    percent, collection = filter_voted_pairs(content)
 
     if percent is None:
         percent = 100
