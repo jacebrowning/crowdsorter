@@ -1,7 +1,7 @@
 from flask import session
 
 
-VERSION = 1  # increment when session logic changes to clear sessions
+VERSION = 2  # increment when session logic changes to clear sessions
 VOTED_NAMES = f"voted-names:{VERSION}:"
 SKIPPED_NAMES = f"skipped-names:{VERSION}:"
 VIEWED_PAIRS = f"viewed-pairs:{VERSION}:"
