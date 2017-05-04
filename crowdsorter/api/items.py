@@ -83,7 +83,7 @@ def detail(key):
 
 @blueprint.route("/api/items/<key>", methods=['PUT'])
 @parser.use_kwargs(UpdateItemSchema)
-def update(key, name, description, image_url, ref_url):
+def update(key, name, description, image_url, ref_url, enabled):
     item = Item.objects(key=key).first()
 
     if name and name.strip():
@@ -94,6 +94,8 @@ def update(key, name, description, image_url, ref_url):
         item.image_url = image_url.strip() or None
     if ref_url is not None:
         item.ref_url = ref_url.strip() or None
+    if enabled is not None:
+        item.enabled = enabled
 
     try:
         item.save()

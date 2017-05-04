@@ -96,7 +96,7 @@ def describe_admin():
     def describe_remove():
 
         def with_name(client, collection):
-            data = dict(remove="foo")
+            data = dict(remove=True, _item_name="foo")
             html = post(client, "/collections/_c", data)
 
             expect(html).contains("Removed item: foo")

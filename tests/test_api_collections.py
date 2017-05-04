@@ -122,6 +122,7 @@ def describe_collections():
                                 'description': "",
                                 'image_url': "",
                                 'ref_url': "",
+                                'enabled': True,
                             },
                             # pylint: disable=duplicate-code
                             {
@@ -134,6 +135,7 @@ def describe_collections():
                                 'description': "",
                                 'image_url': "",
                                 'ref_url': "",
+                                'enabled': True,
                             },
                             # pylint: disable=duplicate-code
                             {
@@ -146,6 +148,7 @@ def describe_collections():
                                 'description': "",
                                 'image_url': "",
                                 'ref_url': "",
+                                'enabled': True,
                             },
                         ],
                     },
