@@ -121,8 +121,8 @@ footer > p {
     color: white;
 }
 .bar-disabled {
-    background: #f7f7f7;
-    color: #999999;
+    background: #f8f8f8;
+    color: #d5d5d5;
 }
 
 .btn-reload {

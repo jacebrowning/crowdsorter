@@ -34,12 +34,7 @@ class Result(object):
         return self.item != other.item
 
     def __gt__(self, other):
-        # Item objects can be disabled, but this should work for any object
-        self_enabled = getattr(self.item, 'enabled', True)
-        other_enabled = getattr(other.item, 'enabled', True)
-        if self_enabled and other_enabled:
-            return self.score > other.score
-        return self_enabled
+        return self.score > other.score
 
     def __hash__(self):
         return hash(self.item)

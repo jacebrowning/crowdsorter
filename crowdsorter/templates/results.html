@@ -82,10 +82,12 @@
                             <a class="glyphicon glyphicon-edit" href="{{ url_for('items.detail', key=item['key']) }}" target="_blank"></a>
                         {% endif %}
                         </div>
-                        {% if item['enabled'] %}
                         <div class="right">
-
-                            {% if item['points'] > 0 %}
+                            {% if not item['enabled'] %}
+                            <div class="bar">
+                                <i>{{ item['points']|round(1) }}</i>
+                            </div>
+                            {% elif item['points'] > 0 %}
                             <div class="bar bar-positive" style="
                                     width: {{ item['points'] / +scale }}%;
                                     opacity: {{ item['confidence'] }};">
@@ -99,7 +101,6 @@
                             </div>
                             {% endif %}
                         </div>
-                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
