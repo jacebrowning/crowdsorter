@@ -90,7 +90,20 @@
 
             <div class="row center">
                 <form method="post">
-                    <button type="submit" class="btn btn-danger" name="delete" value="true">
+                    {% if item['enabled'] %}
+                    <button type="submit" class="btn btn-default" name="disable" value="1">
+                        <span class="glyphicon glyphicon-ban-circle"></span>
+                        &nbsp;
+                        Disable Item
+                    </button>
+                    {% else %}
+                    <button type="submit" class="btn btn-default" name="enable" value="1">
+                        <span class="glyphicon glyphicon-repeat"></span>
+                        &nbsp;
+                        Enable Item
+                    </button>
+                    {% endif %}
+                    <button type="submit" class="btn btn-danger" name="delete" value="1">
                         <span class="glyphicon glyphicon-trash"></span>
                         &nbsp;
                         Delete Item

@@ -33,6 +33,10 @@ def update(key):
         image_url=request.form.get('image_url') or None,
         ref_url=request.form.get('ref_url') or None,
     )
+    if request.form.get('enable'):
+        data['enabled'] = True
+    if request.form.get('disable'):
+        data['enabled'] = False
     log.debug("Form values: %s", data)
 
     content, status = call(api.items.update, key=key, **data)
