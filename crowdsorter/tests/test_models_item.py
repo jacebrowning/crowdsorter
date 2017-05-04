@@ -21,6 +21,9 @@ def describe_item():
 
             expect(item1.key) != item2.key
 
+        def it_starts_enabled(item):
+            expect(item.enabled) == True
+
     def describe_str():
 
         def it_uses_the_name(item):

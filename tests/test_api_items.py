@@ -35,6 +35,7 @@ def describe_items():
                             'description': "",
                             'image_url': "",
                             'ref_url': "",
+                            'enabled': True,
                         },
                         {
                             '_links': {
@@ -45,6 +46,7 @@ def describe_items():
                             'description': "",
                             'image_url': "",
                             'ref_url': "",
+                            'enabled': True,
                         },
                         {
                             '_links': {
@@ -55,6 +57,7 @@ def describe_items():
                             'description': "",
                             'image_url': "",
                             'ref_url': "",
+                            'enabled': True,
                         },
                     ],
                 }
@@ -98,6 +101,7 @@ def describe_items():
                     'description': "The item description.",
                     'image_url': "http://image.url",
                     'ref_url': "http://ref.url",
+                    'enabled': True,
                 }
 
             def when_missing(client, url):
@@ -186,6 +190,7 @@ def describe_items():
                     'description': "This is the sample item.",
                     'image_url': "http://www.gstatic.com/webp/gallery/1.jpg",
                     'ref_url': "http://example.com",
+                    'enabled': True,
                 }
 
             def when_unknown(client):
@@ -250,6 +255,13 @@ def describe_items():
 
                 expect(status) == 422
                 expect(content['message']) == "Invalid URL: http://foo"
+
+            def it_can_disable_an_item(client, url, item):
+                data = {'enabled': False}
+                status, content = load(client.put(url, data=data))
+
+                expect(status) == 200
+                expect(content['enabled']) == False
 
         def describe_DELETE():
 

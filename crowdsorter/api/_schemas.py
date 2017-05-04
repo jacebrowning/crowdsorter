@@ -91,6 +91,8 @@ class ItemSchema(ValidatorMixin, Schema):
     image_url = fields.Str(missing=None)
     ref_url = fields.Str(missing=None)
 
+    enabled = fields.Bool(missing=None)
+
 
 class UpdateItemSchema(ItemSchema):
 

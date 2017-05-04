@@ -30,22 +30,30 @@ def detail(key):
 
 
 @blueprint.route("/collections/<key>", methods=['POST'])
-def update(key):
+def update(key):  # pylint: disable=too-many-locals,too-many-statements
+    # TODO: replace this with webargs or a Flask form
+    item_key = request.form.get('_item_key')
+    item_name = request.form.get('_item_name')
     email = request.form.get('email', "").strip()
     name = request.form.get('name', "").strip()
     code = request.form.get('code', "").strip()
     private = not request.form.getlist('public')
     locked = not request.form.getlist('unlocked')
-    save = request.form.get('save')
-    add = request.form.get('add', '').strip()
-    remove = request.form.get('remove', '').strip()
-    view = request.form.get('view')
-    clear = request.form.get('clear')
-    delete = request.form.get('delete')
+    save = request.form.get('save', 0)
+    add = request.form.get('add', "").strip()
+    remove = request.form.get('remove', 0)
+    enable = request.form.get('enable', 0)
+    disable = request.form.get('disable', 0)
+    view = request.form.get('view', 0)
+    clear = request.form.get('clear', 0)
+    delete = request.form.get('delete', 0)
+    log.debug(f"Keys: collection={key} item={item_key}")
     log.debug(f"Values: email={email} name={name} code={code}")
     log.debug(f"Options: private={private} locked={locked}")
-    log.debug(f"Actions: save={save} add={add} remove={remove} view={view} "
+    log.debug(f"Collection actions: save={save} add={add} "
               f"clear={clear} delete={delete}")
+    log.debug(f"Item actions: remove={remove} "
+              f"enable={enable} disable={disable} view={view} ")
 
     if email:
         content, status = call(api.collections.update, key=key, owner=email)
@@ -72,9 +80,15 @@ def update(key):
         flash(f"Added item: {add}", 'info')
 
     if remove:
-        _, status = call(api.items.remove, key=key, name=remove)
+        _, status = call(api.items.remove, key=key, name=item_name)
         assert status == 200
-        flash(f"Removed item: {remove}", 'info')
+        flash(f"Removed item: {item_name}", 'info')
+
+    if enable or disable:
+        _, status = call(api.items.update, key=item_key, enabled=enable)
+        assert status == 200
+        state = "Enabled" if enable else "Disabled"
+        flash(f"{state} item: {item_name}", 'info')
 
     if view:
         content, status = call(api.collections.detail, key=key)

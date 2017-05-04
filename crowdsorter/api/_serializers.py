@@ -11,6 +11,7 @@ def serialize_item(item):
         description=item.description or "",
         image_url=item.image_url or "",
         ref_url=item.ref_url or "",
+        enabled=item.enabled,
     )
 
 

@@ -24,6 +24,10 @@ def detail(key):
 
 @blueprint.route("/<key>", methods=['POST'])
 def update(key):
+    if request.form.get('enable'):
+        return enable(key)
+    if request.form.get('disable'):
+        return disable(key)
     if request.form.get('delete'):
         return delete(key)
 
@@ -43,6 +47,22 @@ def update(key):
         flash(content['message'], 'danger')
 
     return redirect(url_for('items.detail', key=key))
+
+
+def enable(key):
+    _, status = call(api.items.update, key=key, enabled=True)
+
+    assert status == 200
+
+    return autoclose()
+
+
+def disable(key):
+    _, status = call(api.items.update, key=key, enabled=False)
+
+    assert status == 200
+
+    return autoclose()
 
 
 @blueprint.route("/<key>", methods=['DELETE'])

@@ -26,18 +26,18 @@ def describe_result():
 
         def by_points():
             results = [
-                Result("a", _points=1.1),
-                Result("b", _points=1.0),
                 Result("c", _points=-10),
+                Result("b", _points=1.0),
+                Result("a", _points=1.1),
             ]
 
             expect(sorted(results)) == results
 
         def by_confidence():
             results = [
-                Result("a", _points=1, _confidence=0.9),
-                Result("b", _points=1, _confidence=0.8),
                 Result("c", _points=0.9),
+                Result("b", _points=1, _confidence=0.8),
+                Result("a", _points=1, _confidence=0.9),
             ]
 
             expect(sorted(results)) == results
@@ -174,7 +174,7 @@ def describe_results():
 
             results.sort()
             expect(results) == [
-                Result("a"),
-                Result("b"),
                 Result("c"),
+                Result("b"),
+                Result("a"),
             ]

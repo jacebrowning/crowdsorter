@@ -80,7 +80,7 @@
                         </div>
                     </div>
                     <div class="row center top-buffer">
-                        <button type="submit" class="btn btn-primary" name="save" value="true">
+                        <button type="submit" class="btn btn-primary" name="save" value="1">
                             <span class="glyphicon glyphicon-check"></span>
                             &nbsp;
                             Save Changes
@@ -104,6 +104,21 @@
             <div class="row">
                 {% for item in collection['_embedded']['items'] %}
                 <form method="post" class="input-group input-group-lg bottom-buffer">
+                    <span class="input-group-btn">
+                    {% if item['enabled'] %}
+                        <button type="submit" name="disable" value="1" class="btn btn-warning" title="Disable this item">
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                        </button>
+                    {% else %}
+                        <button type="submit" name="enable" value="1" class="btn btn-info" title="Enable this item">
+                            <span class="glyphicon glyphicon-repeat"></span>
+                        </button>
+                    {% endif %}
+                    </span>
+
+                    <input type=hidden value="{{ item['name'] }}" name="_item_name"/>
+                    <input type=hidden value="{{ item['key'] }}" name="_item_key"/>
+
                     <div class="form-control input-lg">
                     {% if item['ref_url'] %}
                         <a href="{{ item['ref_url'] }}" target="_blank">{{ item['name'] }}</a>
@@ -113,12 +128,12 @@
                         {{ item['name'] }}
                     {% endif %}
                     </div>
-                    <input type=hidden value="{{ item['name'] }}" name="remove"/>
+
                     <span class="input-group-btn">
                         <a href="{{ url_for('items.detail', key=item['key']) }}" target="_blank" role="button" class="btn btn-primary" title="Edit this item">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
-                        <button type="submit" class="btn btn-danger" title="Remove this item">
+                        <button type="submit" name="remove" value="1" class="btn btn-danger" title="Delete this item">
                             <span class="glyphicon glyphicon-minus-sign"></span>
                         </button>
                     </span>
@@ -139,7 +154,7 @@
 
             <div class="row center top-buffer">
                 <form method="post" target="_blank">
-                    <button type="submit" class="btn btn-default" name="view" value="true">
+                    <button type="submit" class="btn btn-default" name="view" value="1">
                         <span class="glyphicon glyphicon-new-window"></span>
                         &nbsp;
                         View Collection
@@ -166,12 +181,12 @@
 
             <div class="row center">
                 <form method="post">
-                    <button type="submit" class="btn btn-default" name="clear" value="true">
+                    <button type="submit" class="btn btn-default" name="clear" value="1">
                         <span class="glyphicon glyphicon-remove"></span>
                         &nbsp;
                         Clear Votes
                     </button>
-                    <button type="submit" class="btn btn-danger" name="delete" value="true">
+                    <button type="submit" class="btn btn-danger" name="delete" value="1">
                         <span class="glyphicon glyphicon-trash"></span>
                         &nbsp;
                         Delete Collection
