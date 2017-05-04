@@ -68,7 +68,7 @@
                 <div class="list-group">
                     {% set scale = (collection['item_data']|length) / 85 %}
                     {% for item in collection['item_data'] %}
-                    <div class="list-group-item">
+                    <div class="list-group-item{{' bar-disabled' if not item['enabled'] else ''}}">
                         <div class="left">
                         {% if item['ref_url'] %}
                             <a href="{{ item['ref_url'] }}" target="_blank">{{ item['name'] }}</a>
@@ -82,23 +82,24 @@
                             <a class="glyphicon glyphicon-edit" href="{{ url_for('items.detail', key=item['key']) }}" target="_blank"></a>
                         {% endif %}
                         </div>
+                        {% if item['enabled'] %}
                         <div class="right">
-                            {% if scale %}
+
                             {% if item['points'] > 0 %}
-                            <div class="bar-pos" style="
+                            <div class="bar bar-positive" style="
                                     width: {{ item['points'] / +scale }}%;
                                     opacity: {{ item['confidence'] }};">
                                 &nbsp;&nbsp;+ {{ item['points']|round(1) }}
                             </div>
                             {% else %}
-                            <div class="bar-neg" style="
+                            <div class="bar bar-negative" style="
                                     width: {{ item['points'] / -scale }}%;
                                     opacity: {{ item['confidence'] }};">
                                 &nbsp;&nbsp;- {{ item['points']|abs|round(1) }}
                             </div>
                             {% endif %}
-                            {% endif %}
                         </div>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>

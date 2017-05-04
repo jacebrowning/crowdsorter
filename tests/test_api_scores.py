@@ -37,6 +37,7 @@ def describe_scores():
                         'ref_url': None,
                         'points': 1.0,
                         'confidence': 0.5,
+                        'enabled': True,
                     },
                     {
                         'name': "qux",
@@ -45,6 +46,7 @@ def describe_scores():
                         'ref_url': None,
                         'points': 0.0,
                         'confidence': 0.0,
+                        'enabled': True,
                     },
                     {
                         'name': "bar",
@@ -53,6 +55,7 @@ def describe_scores():
                         'ref_url': None,
                         'points': -1.0,
                         'confidence': 0.5,
+                        'enabled': True,
                     },
                 ],
             }
@@ -70,6 +73,7 @@ def describe_scores():
                     'ref_url': None,
                     'points': 2.0,
                     'confidence': 2 / 3,
+                    'enabled': True,
                 },
                 {
                     'name': "bar",
@@ -78,6 +82,7 @@ def describe_scores():
                     'ref_url': None,
                     'points': 0.0,
                     'confidence': 1.0,
+                    'enabled': True,
                 },
                 {
                     'name': "qux",
@@ -86,6 +91,7 @@ def describe_scores():
                     'ref_url': None,
                     'points': -2.0,
                     'confidence': 2 / 3,
+                    'enabled': True,
                 },
             ]
 
@@ -103,6 +109,7 @@ def describe_scores():
                     'ref_url': None,
                     'points': 1.0,
                     'confidence': 0.5,
+                    'enabled': True,
                 },
                 {
                     'name': "qux",
@@ -110,6 +117,7 @@ def describe_scores():
                     'ref_url': None,
                     'points': 0.0,
                     'confidence': 0.0,
+                    'enabled': True,
                 },
                 {
                     'name': "bar",
@@ -117,6 +125,7 @@ def describe_scores():
                     'ref_url': None,
                     'points': -1.0,
                     'confidence': 0.5,
+                    'enabled': True,
                 },
             ]
 

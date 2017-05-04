@@ -50,6 +50,7 @@ class Score(db.EmbeddedDocument):
         if include_meta:
             data['image_url'] = self.item.image_url
             data['ref_url'] = self.item.ref_url
+            data['enabled'] = self.item.enabled
 
         return data
 
@@ -104,7 +105,7 @@ class Collection(db.Document):
 
     @property
     def items_by_confidence(self):
-        scores = self.scores.copy()
+        scores = [s for s in self.scores if s.item.enabled]
         random.shuffle(scores)
         return [s.item for s in sorted(scores, key=lambda s: s.confidence)]
 
@@ -183,7 +184,7 @@ class Collection(db.Document):
         vote_count = self._clean_votes()
         self.vote_count = vote_count
         self._decay_votes()
-        self._clean_scores()
+        self._update_scores()
 
     def _clean_votes(self):
         """Add default comparison data for new items and remove stale votes."""
@@ -208,7 +209,7 @@ class Collection(db.Document):
 
         return count
 
-    def _clean_scores(self):
+    def _update_scores(self):
         """Sort the items list based on comparison data."""
         results = Results.build(self.items)
 
@@ -216,7 +217,7 @@ class Collection(db.Document):
             for loss in wins.against:
                 results.add_pair(wins.winner, loss.loser, loss.count)
 
-        results.sort()
+        results.sort(reverse=True)
         for index, result in enumerate(results):
             log.debug("Updated scores %s: %r", index, result)
 

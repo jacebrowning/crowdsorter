@@ -102,7 +102,7 @@ footer > p {
     margin-bottom: 20px
 }
 
-.bar-pos {
+.bar {
     float: right;
     height: 30px;
     padding-top: 7px;
@@ -111,20 +111,18 @@ footer > p {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: " ";
+}
+.bar-positive {
     background: #694ef0;
     color: white;
 }
-.bar-neg {
-    float: right;
-    height: 30px;
-    padding-top: 7px;
-    padding-right: 5px;
-    font-size: 12px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: " ";
+.bar-negative {
     background: #f0ad4e;
     color: white;
+}
+.bar-disabled {
+    background: #f7f7f7;
+    color: #999999;
 }
 
 .btn-reload {
