@@ -61,9 +61,8 @@
     </div>
 
     <div class="container">
-        <div class="col-md-8 col-md-offset-2">
-
-            <div class="row">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 col-lg-12 col-lg-offset-0">
 
                 <div class="list-group">
                     {% set scale = (collection['item_data']|length) / 85 %}
@@ -105,9 +104,11 @@
                     {% endfor %}
                 </div>
             </div>
+        </div>
 
-            {% if not collection['locked'] %}
-            <div class="row">
+        {% if not collection['locked'] %}
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
                 <form method="post" class="input-group input-group-lg">
                     <input type="text" class="form-control input-lg" name="name" placeholder="New Item Name">
                     <span class="input-group-btn">
@@ -117,7 +118,8 @@
                     </span>
                 </form>
             </div>
-            {% endif %}
+        </div>
+        {% endif %}
 
         </div>
     </div>
