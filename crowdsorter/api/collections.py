@@ -22,7 +22,7 @@ def index(token, query=None, limit=None, **kwargs):
         raise exceptions.PermissionDenied
 
     collections = Collection.objects(**kwargs) \
-                            .order_by('-vote_count_decayed', '-date_voted') \
+                            .order_by('-vote_count_decayed', '-vote_count') \
                             .limit(limit)
     if query:
         collections = collections.search_text(query)
