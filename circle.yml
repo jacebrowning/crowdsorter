@@ -3,8 +3,8 @@ version: 2
 executorType: docker
 
 containerInfo:
-  - image: python:3.6.0
-  - image: mongo:3.2.11
+  - image: python:3.6.1
+  - image: mongo:3.4.4
 
 stages:
   build:
@@ -14,7 +14,7 @@ stages:
     steps:
       - type: checkout
       - type: shell
-        command: make setup
+        command: pip install pipenv~=5.0
       - type: shell
         command: make doctor
       - type: shell

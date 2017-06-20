@@ -89,11 +89,6 @@ launch: install
 
 # SYSTEM DEPENDENCIES ##########################################################
 
-.PHONY: setup
-setup:
-	pip install pipenv==3.5.3
-	touch Pipfile
-
 .PHONY: doctor
 doctor:  ## Confirm system dependencies are available
 	bin/verchew
@@ -109,7 +104,7 @@ DEPENDENCIES := $(ENV)/.installed
 install: $(DEPENDENCIES)
 
 $(DEPENDENCIES): $(PIP) Pipfile*
-	pipenv install --dev --ignore-hashes
+	pipenv install --dev
 ifdef WINDOWS
 	@ echo "Manually install pywin32: https://sourceforge.net/projects/pywin32/files/pywin32"
 else ifdef MAC
