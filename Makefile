@@ -8,49 +8,11 @@ PACKAGES := $(PACKAGE) tests
 CONFIG := $(wildcard *.py)
 MODULES := $(wildcard $(PACKAGE)/*.py)
 
-# Python settings
-ifndef TRAVIS
-	PYTHON_MAJOR ?= 3
-	PYTHON_MINOR ?= 6
-endif
-
-# System paths
-PLATFORM := $(shell python -c 'import sys; print(sys.platform)')
-ifneq ($(findstring win32, $(PLATFORM)), )
-	WINDOWS := true
-	SYS_PYTHON_DIR := C:\\Python$(PYTHON_MAJOR)$(PYTHON_MINOR)
-	SYS_PYTHON := $(SYS_PYTHON_DIR)\\python.exe
-	# https://bugs.launchpad.net/virtualenv/+bug/449537
-	export TCL_LIBRARY=$(SYS_PYTHON_DIR)\\tcl\\tcl8.5
-else
-	ifneq ($(findstring darwin, $(PLATFORM)), )
-		MAC := true
-	else
-		LINUX := true
-	endif
-	SYS_PYTHON := python$(PYTHON_MAJOR)
-	ifdef PYTHON_MINOR
-		SYS_PYTHON := $(SYS_PYTHON).$(PYTHON_MINOR)
-	endif
-endif
-
 # Virtual environment paths
+export PIPENV_SHELL_COMPAT=true
+export PIPENV_VENV_IN_PROJECT=true
+export PIPENV_IGNORE_VIRTUALENVS=true
 ENV := .venv
-ifneq ($(findstring win32, $(PLATFORM)), )
-	BIN := $(ENV)/Scripts
-	ACTIVATE := $(BIN)/activate.bat
-	OPEN := cmd /c start
-else
-	BIN := $(ENV)/bin
-	ACTIVATE := . $(BIN)/activate
-	ifneq ($(findstring cygwin, $(PLATFORM)), )
-		OPEN := cygstart
-	else
-		OPEN := open
-	endif
-endif
-PYTHON := $(BIN)/python
-PIP := $(BIN)/pip
 
 # MAIN TASKS ###################################################################
 
@@ -68,8 +30,6 @@ watch: install .clean-test ## Continuously run all CI tasks when files chanage
 
 # SERVER TARGETS ###############################################################
 
-HONCHO := $(ACTIVATE) && $(BIN)/honcho
-
 export MONGODB_URI ?= mongodb://localhost:27017/crowdsorter_dev
 IP ?= $(shell ipconfig getifaddr en0 || ipconfig getifaddr en1)
 
@@ -80,7 +40,7 @@ run: install
 .PHONY: run-prod
 run-prod: install
 	FLASK_ENV=prod make data
-	FLASK_ENV=prod $(HONCHO) start
+	FLASK_ENV=prod pipenv run honcho start
 
 .PHONY: launch
 launch: install
@@ -95,27 +55,14 @@ doctor:  ## Confirm system dependencies are available
 
 # PROJECT DEPENDENCIES #########################################################
 
-export PIPENV_SHELL_COMPAT=true
-export PIPENV_VENV_IN_PROJECT=true
-
 DEPENDENCIES := $(ENV)/.installed
 
 .PHONY: install
 install: $(DEPENDENCIES)
 
-$(DEPENDENCIES): $(PIP) Pipfile*
+$(DEPENDENCIES): Pipfile*
 	pipenv install --dev
-ifdef WINDOWS
-	@ echo "Manually install pywin32: https://sourceforge.net/projects/pywin32/files/pywin32"
-else ifdef MAC
-	$(PIP) install pync MacFSEvents
-else ifdef LINUX
-	$(PIP) install pyinotify
-endif
 	@ touch $@
-
-$(PIP):
-	pipenv --python=$(SYS_PYTHON)
 
 # RUNTIME DEPENDENCIES #########################################################
 
@@ -195,7 +142,7 @@ test-all: install
 
 .PHONY: read-coverage
 read-coverage:
-	$(OPEN) htmlcov/index.html
+	bin/open htmlcov/index.html
 
 # DOCUMENTATION ################################################################
 

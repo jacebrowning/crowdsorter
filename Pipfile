@@ -2,6 +2,10 @@
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 
+[requires]
+
+python_version = "3.6"
+
 [packages]
 webargs = "~=1.5.1"
 gunicorn = "~=19.6.0"

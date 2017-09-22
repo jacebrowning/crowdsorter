@@ -10,11 +10,11 @@ stages:
   build:
     workDir: /home/ubuntu/crowdsorter
     environment:
-      PIPENV_NOSPIN: true
+      RANDOM_SEED: 0
     steps:
       - type: checkout
       - type: shell
-        command: pip install pipenv~=5.0
+        command: pip install pipenv==7.2.8
       - type: shell
         command: make doctor
       - type: shell

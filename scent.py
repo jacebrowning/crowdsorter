@@ -16,7 +16,7 @@ else:
 watch_paths = ["crowdsorter", "tests"]
 
 
-class Options:
+class Options(object):
     group = int(time.time())  # unique per run
     show_coverage = False
     rerun_args = None
