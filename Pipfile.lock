@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "dfc39c6dbce5c7ba24f5b4b2d499b2aab9b5d4f7cf70a45dd7b5046c940f261e"
+            "sha256": "88fa83bc2549d8e07f1a58946fb5debd2577651f359dae2ace205fc0c0aff81d"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -57,16 +57,17 @@
         },
         "flask": {
             "hashes": [
-                "sha256:a4f97abd30d289e548434ef42317a793f58087be1989eab96f2c647470e77000",
-                "sha256:b4713f2bfb9ebc2966b8a49903ae0d3984781d5c878591cf2f7b484d28756b0e"
+                "sha256:0749df235e3ff61ac108f69ac178c9770caeaccad2509cb762ce1f65570a8856",
+                "sha256:49f44461237b69ecd901cc7ce66feea0319b9158743dd27a2899962ab214dac1"
             ],
-            "version": "==0.11.1"
+            "version": "==0.12.2"
         },
         "flask-api": {
             "hashes": [
-                "sha256:01e06a4a57a9abe38d39ae7368e4c1ee998765204740a19f3dce87b0d4023e7b"
+                "sha256:6f9dc56d55fd82ffb1c5c9fd794cd6c50873ac10cf662e26817c179a655d1e22",
+                "sha256:fc10a80a13ea6fcf04acc2b1835aea05ec44aa6ae94f2ee85e52cd068567ce35"
             ],
-            "version": "==0.7.1b2"
+            "version": "==1.0"
         },
         "flask-bootstrap": {
             "hashes": [
@@ -106,10 +107,10 @@
         },
         "gunicorn": {
             "hashes": [
-                "sha256:723234ea1fa8dff370ab69830ba8bc37469a7cba13fd66055faeef24085e6530",
-                "sha256:813f6916d18a4c8e90efde72f419308b357692f81333cb1125f80013d22fb618"
+                "sha256:75af03c99389535f218cc596c7de74df4763803f7b63eb09d77e92b3956b36c6",
+                "sha256:eee1169f0ca667be05db3351a0960765620dad53f53434262ff8901b68a1b622"
             ],
-            "version": "==19.6.0"
+            "version": "==19.7.1"
         },
         "itsdangerous": {
             "hashes": [
@@ -230,10 +231,10 @@
         },
         "webargs": {
             "hashes": [
-                "sha256:d6b5b67b1fbe6780a8a49c17a7e25f524d527f1fa5b6ddc702be9116159fdee4",
-                "sha256:bc6d1c7b2433fc17d7fd86ced48d7fc8a8df5919a3742b8540ec3c0a0fe3e985"
+                "sha256:d58da17964fa1b0691fec4ea3fa80b57abb25e038d81d708411e42ba253b9404",
+                "sha256:f568a838cd296d51726901efbc54559e11f553d1d8b862acc0ce3c5950581e3d"
             ],
-            "version": "==1.5.3"
+            "version": "==1.8.1"
         },
         "webob": {
             "hashes": [
