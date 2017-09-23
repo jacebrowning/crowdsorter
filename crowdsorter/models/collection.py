@@ -174,13 +174,12 @@ class Collection(db.Document):
             yield row
 
     def _decay_votes(self):
-        """Computed the decayed vote total based on the last-voted date."""
+        """Compute the decayed vote total based on the last-voted date."""
         delta = datetime.now() - self.date_voted
         ratio = max(0.0, 1 - (delta.days / 14))
         self.vote_count_decayed = round(self.vote_count * ratio, 3)
 
     def clean(self):
-        """Called automatically prior to saving."""
         vote_count = self._clean_votes()
         self.vote_count = vote_count
         self._decay_votes()

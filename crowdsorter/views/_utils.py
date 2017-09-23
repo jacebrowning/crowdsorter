@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 
 def call(function, **kwargs):
-    """Helper function to call the API internally."""
+    """Call the API internally."""
     try:
         request.data.update(kwargs)
         content, status = function(**kwargs)  # TODO: remove kwargs
