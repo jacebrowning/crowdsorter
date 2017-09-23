@@ -1,5 +1,4 @@
 import logging
-from urllib.error import HTTPError
 import random
 import time
 from pathlib import Path
@@ -31,7 +30,7 @@ def send_email(**kwargs):
     """Send an email using SendGrid."""
     try:
         response = sendgrid.send_email(**kwargs)
-    except HTTPError as exc:
+    except Exception as exc:  # pylint: disable=broad-except
         log.exception(exc)
         response = None
 
