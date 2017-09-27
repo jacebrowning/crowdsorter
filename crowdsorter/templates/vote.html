@@ -37,8 +37,8 @@
             <div class="col-xs-9 col-lg-10">
                 <div class="progress">
                   <div class="progress-bar" role="progressbar" aria-valuenow="{{ percent }}"
-                  aria-valuemin="0" aria-valuemax="100" style="width:{{ percent if percent > 9 else 9 }}%">
-                    {{ percent|round|int }}% Ranked
+                  aria-valuemin="0" aria-valuemax="100" style="width: {{ percent if percent > 15 else 15 }}%;">
+                    {{ percent|round|int }}% {{ "Ranked" if percent > 30 else "" }}
                   </div>
                 </div>
             </div>

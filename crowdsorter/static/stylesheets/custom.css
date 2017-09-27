@@ -125,6 +125,16 @@ footer > p {
     color: #d5d5d5;
 }
 
+.progress {
+    height: 40px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    padding-top: 10px;
+}
+
 .btn-reload {
     height: 40px;
     font-size: 12pt;
