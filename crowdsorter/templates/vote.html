@@ -22,9 +22,14 @@
 
     <span id="content">
 
-    {% include "flashes.html" %}
-
     <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-12">
+                {% include "_flashes.html" %}
+            </div>
+        </div>
+
         {% set first = collection['item_data'][0] %}
         {% set second = collection['item_data'][1] %}
 
