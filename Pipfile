@@ -44,5 +44,4 @@ coverage = "*"
 "coverage.space" = "*"
 
 sniffer = "*"
-MacFSEvents = "*"
 honcho = "*"
