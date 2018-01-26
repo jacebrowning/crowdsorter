@@ -5,7 +5,7 @@ verify_ssl = true
 
 [requires]
 
-python_version = "3.6"
+python_version = "3.6.4"
 
 [packages]
 
@@ -30,18 +30,18 @@ gunicorn = "*"
 
 [dev-packages]
 
-pylint = "~=1.7.0"
+pylint = "*"
 pycodestyle = "*"
 pydocstyle = "*"
 
-pytest = "~=3.0.7"
-pytest-describe = "==0.11.0"
-pytest-expecter = "==0.2.2.post6"
+pytest = "~=3.3"
+pytest-describe = "*"
+pytest-expecter = "*"
 pytest-cov = "*"
 pytest-random = "*"
 
 coverage = "*"
-"coverage.space" = "==0.8b4"
+"coverage.space" = "*"
 
-sniffer = ">=0.3.6"
+sniffer = "*"
 honcho = "*"

@@ -61,10 +61,11 @@ class DevConfig(Config):
 
 
 def get_config(name):
-    assert name, "no configuration specified"
+    assert name, "No configuration specified"
 
     for config in Config.__subclasses__():
         if config.ENV == name:
             return config
 
-    assert False, "no matching configuration"
+    assert False, "No matching configuration"
+    return None

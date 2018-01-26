@@ -26,6 +26,7 @@ ci: check test ## Run all tasks that determine CI status
 
 .PHONY: watch
 watch: install .clean-test ## Continuously run all CI tasks when files chanage
+	- pipenv run pip install MacFSEvents
 	$(SNIFFER)
 
 # SERVER TARGETS ###############################################################
