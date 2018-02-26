@@ -45,7 +45,8 @@ def describe_votes():
 
             html = get(client, "/sample")
 
-            expect(html).contains('<a href="http://example.com/ref"')
+            expect(html).contains('<a class="glyphicon glyphicon-globe" '
+                                  'href="http://example.com/ref"')
 
         def on_collection_with_image_url(client, collection):
             collection.items[0].image_url = "http://example.com/image.png"
@@ -53,7 +54,8 @@ def describe_votes():
 
             html = get(client, "/sample")
 
-            expect(html).contains('<a href="http://example.com/image.png"')
+            expect(html).contains('<a class="glyphicon glyphicon-picture" '
+                                  'href="http://example.com/image.png"')
 
         def on_private_collection(client, collection_private):
             html = get(client, "/sample")

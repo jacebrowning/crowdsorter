@@ -74,17 +74,23 @@
                     {% for item in collection['item_data'] %}
                     <div class="list-group-item{{' bar-disabled' if not item['enabled'] else ''}}">
                         <div class="left">
-                        {% if item['ref_url'] %}
-                            <a href="{{ item['ref_url'] }}" target="_blank">{{ item['name'] }}</a>
-                        {% elif item['image_url'] %}
-                            <a href="{{ item['image_url'] }}" target="_blank">{{ item['name'] }}</a>
-                        {% else %}
                             {{ item['name'] }}
-                        {% endif %}
+
                         {% if not collection['locked'] %}
                             &nbsp;
                             <a class="glyphicon glyphicon-edit" href="{{ url_for('items.detail', key=item['key']) }}" target="_blank"></a>
                         {% endif %}
+
+                        {% if item['ref_url'] %}
+                            &nbsp;
+                            <a class="glyphicon glyphicon-globe" href="{{ item['ref_url'] }}" target="_blank"></a>
+                        {% endif %}
+
+                        {% if item['image_url'] %}
+                            &nbsp;
+                            <a class="glyphicon glyphicon-picture" href="{{ item['image_url'] }}" target="_blank""></a>
+                        {% endif %}
+
                         </div>
                         <div class="right">
                             {% if not item['enabled'] %}
