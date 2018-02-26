@@ -14,7 +14,7 @@ stages:
     steps:
       - type: checkout
       - type: shell
-        command: pip install pipenv==7.2.8
+        command: pip install pipenv
       - type: shell
         command: make doctor
       - type: shell
