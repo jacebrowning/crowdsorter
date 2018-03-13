@@ -119,7 +119,7 @@ class Collection(db.Document):
 
         for item2 in self.items:
             if item.name == item2.name:
-                raise ValueError("Item name is already taken.")
+                raise ValueError(f"Item name already taken: {item.name}")
 
         if _save:
             item.save()

@@ -18,7 +18,8 @@ log = logging.getLogger(__name__)
 def call(function, **kwargs):
     """Call the API internally."""
     try:
-        request.data.update(kwargs)
+        for key, value in kwargs.items():
+            request.data[key] = value
         content, status = function(**kwargs)  # TODO: remove kwargs
     except APIException as exc:
         content = {'message': exc.detail}

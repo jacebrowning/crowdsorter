@@ -50,6 +50,13 @@
                     &nbsp;
                     Vote on Items
                 </a>
+                {% if not collection['locked'] %}
+                <a class="btn btn-default" href="/{{ collection['code'] }}/import" role="button">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    &nbsp;
+                    Bulk Import
+                </a>
+                {% endif %}
                 <a class="btn btn-default" href="/{{ collection['code'] }}/results.csv" role="button">
                     <span class="glyphicon glyphicon-download"></span>
                     &nbsp;

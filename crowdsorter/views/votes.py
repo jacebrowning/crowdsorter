@@ -53,6 +53,29 @@ def add_item(code):
     return redirect(url_for('votes.results', code=code))
 
 
+@blueprint.route("/<code>/import", methods=['GET', 'POST'])
+def bulk_import(code):
+    key, _code = _get_key(code, require_unlocked=True)
+
+    content, status = call(api.scores.index, key=key)
+    if status != 200:
+        abort(404)
+
+    if request.method == 'POST':
+        lines = request.form['items'].split('\n')
+        names = [line.strip() for line in lines if line.strip()]
+        for name in names:
+            content, status = call(api.items.add, key=key, name=name)
+            if status == 200:
+                item = content['_objects'][-1]
+                flash(f"Added item: {item['name']}", 'info')
+            else:
+                flash(content['message'], 'danger')
+        return redirect(url_for('votes.results', code=code))
+
+    return render_template("import.html", collection=content)
+
+
 @blueprint.route("/<code>/results.csv")
 def download_results(code):
     key, _ = _get_key(code)
