@@ -166,7 +166,7 @@ class Collection(db.Document):
                 if wins.winner == item:
                     for loss in wins.against:
                         counts[loss.loser.name] = loss.count
-            for item2 in self.items:
+            for item2 in sorted(self.items):
                 if item == item2:
                     row.append('---')
                 else:
