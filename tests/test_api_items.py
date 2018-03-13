@@ -121,7 +121,7 @@ def describe_items():
                 status, content = load(client.post(url, data=data))
 
                 expect(status) == 409
-                expect(content['message']) == "Item name is already taken."
+                expect(content['message']) == "Item name already taken: foo"
 
         def describe_DELETE():
 

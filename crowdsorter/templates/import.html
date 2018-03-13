@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ super() }} | {{ collection['name'] }}{% endblock %}
+
+{% block content %}
+{{ super() }}
+<div class="container">
+    <form method="post">
+        <div class="row" style="padding-top: 20px;">
+            <textarea class="form-control" name="items" rows="10" placeholder="Include each item name on a separate line..."></textarea>
+        </div>
+        <div class="row" style="padding-top: 10px;">
+            <button class="btn btn-primary" type="submit">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                &nbsp;
+                Add Multiple Items
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

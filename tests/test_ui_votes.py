@@ -86,7 +86,7 @@ def describe_votes():
                 data = dict(name="foo")
                 html = post(client, "/sample", data)
 
-                expect(html).contains("Item name is already taken.")
+                expect(html).contains("Item name already taken: foo")
 
             def without_name(client, collection):
                 data = dict(name=" ")
