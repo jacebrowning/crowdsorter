@@ -98,7 +98,7 @@ pydocstyle: install
 
 # TESTS ########################################################################
 
-PYTEST := FLASK_ENV=test pipenv run py.test
+PYTEST := pipenv run py.test
 COVERAGE := pipenv run coverage
 COVERAGE_SPACE := pipenv run coverage.space
 
