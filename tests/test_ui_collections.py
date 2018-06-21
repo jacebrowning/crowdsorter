@@ -19,7 +19,7 @@ def describe_collections():
         def describe_search():
 
             def when_collections_found(client, collection):
-                html = get(client, "/collections/?q=sample")
+                html = get(client, "/collections/?q=samp")
 
                 expect(html).contains("Clear search results")
                 expect(html).contains("Sample List")

@@ -25,7 +25,7 @@ def index(token, query=None, limit=None, **kwargs):
                             .order_by('-vote_count_decayed', '-vote_count') \
                             .limit(limit)
     if query:
-        collections = collections.search_text(query)
+        collections = collections.filter(name__icontains=query)
 
     content = dict(
         _links=dict(
