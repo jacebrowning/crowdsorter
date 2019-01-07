@@ -6,7 +6,7 @@ name = "pypi"
 
 [requires]
 
-python_version = "3.6.4"
+python_version = "3.6.7"
 
 [packages]
 
@@ -42,12 +42,12 @@ pycodestyle = "*"
 pydocstyle = "*"
 
 # Testing
-pytest = "~=3.3"
+pytest = "~=3.6.1"
 pytest-describe = "*"
 pytest-expecter = "*"
 pytest-cov = "*"
 pytest-random = "*"
-coverage-space = "*"
+coveragespace = "*"
 
 # Tooling
 honcho = "*"
