@@ -6,7 +6,7 @@ name = "pypi"
 
 [requires]
 
-python_version = "3.6.7"
+python_version = "3.6.10"
 
 [packages]
 
@@ -15,23 +15,26 @@ Flask = "~=0.12.2"
 Flask-API = "~=1.0"
 Flask-Bootstrap = "~=3.3"
 Flask-Menu = "~=0.5.1"
+werkzeug = "==0.14.1"
 
 # Storage
+pymongo = "==3.7.2"
 mongoengine = "~=0.10.7"
 Flask-MongoEngine = "~=0.8.1"
 
 # Email
 sendgrid = "~=5.3.0"
-Flask-SendGrid = "~=0.6"
+Flask-SendGrid = "==0.6"
 
 # Utilities
 webargs = "~=1.5"
+marshmallow = "~=2.17"
 
 # Deployment
 bugsnag = "~=3.1.0"
 blinker = "~=1.3"
 Flask-Script = "~=2.0"
-gunicorn = "*"
+gunicorn = "==19.9.0"
 
 [dev-packages]
 

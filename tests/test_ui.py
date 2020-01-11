@@ -1,5 +1,7 @@
 # pylint: disable=unused-variable,unused-argument,redefined-outer-name,expression-not-assigned
 
+from datetime import datetime
+
 from expecter import expect
 
 from .utils import get
@@ -46,6 +48,15 @@ def describe_navbar():
                               '<a href="/sample">Results</a>')
         expect(html).contains('<li class="active">'
                               '<a href="/sample/vote">Vote</a>')
+
+
+def describe_footer():
+
+    def it_contains_the_year(client):
+        year = str(datetime.now().year)
+        html = get(client, "/")
+
+        expect(html).contains(year)
 
 
 def describe_index():
