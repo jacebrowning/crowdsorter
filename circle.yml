@@ -1,26 +1,43 @@
 version: 2
 
-executorType: docker
-
-containerInfo:
-  - image: python:3.6.7
-  - image: mongo:3.4.4
-
-stages:
+jobs:
   build:
-    workDir: /home/ubuntu/crowdsorter
-    environment:
-      RANDOM_SEED: 0
+    working_directory: ~/crowdsorter
+
+    docker:
+      - image: python:3.6.7
+        environment:
+          RANDOM_SEED: 0
+      - image: mongo:3.4.4
+
     steps:
-      - type: checkout
-      - type: shell
-        command: pip install pipenv
-      - type: shell
-        command: make doctor
-      - type: shell
-        command: make install
-      - type: shell
-        command: make check
-      - type: shell
-        command: make test
-        # TODO: get reports working with CircleCI 2.0
+      - checkout
+
+      - run:
+          name: Installing System Dependencies
+          command: pip install pipenv
+
+      - run:
+          name: Checking System Dependencies
+          command: make doctor
+
+      - type: cache-restore
+        key: pipenv-{{ checksum "Pipfile.lock" }}
+
+      - run:
+          name: Installing Project Dependencies
+          command: make install
+
+      - type: cache-save
+        key: pipenv-{{ checksum "Pipfile.lock" }}
+        paths:
+          - .venv
+
+      - run:
+          name: Checking Code
+          command: make check
+
+      - run:
+          name: Running Tests
+          command: make test
+
