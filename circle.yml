@@ -5,7 +5,7 @@ jobs:
     working_directory: ~/crowdsorter
 
     docker:
-      - image: python:3.6.7
+      - image: python:3.6.10
         environment:
           RANDOM_SEED: 0
       - image: mongo:3.4.4
