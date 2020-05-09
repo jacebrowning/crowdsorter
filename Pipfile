@@ -11,7 +11,7 @@ python_version = "3.6.10"
 [packages]
 
 # Flask
-Flask = "~=0.12.2"
+Flask = "~=1.0"
 Flask-API = "~=1.0"
 Flask-Bootstrap = "~=3.3"
 Flask-Menu = "~=0.5.1"
