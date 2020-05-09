@@ -15,7 +15,7 @@ Flask = "~=1.0"
 Flask-API = "~=1.0"
 Flask-Bootstrap = "~=3.3"
 Flask-Menu = "~=0.5.1"
-werkzeug = "==0.14.1"
+werkzeug = "==0.15.3"
 
 # Storage
 pymongo = "==3.7.2"
