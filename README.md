@@ -1,5 +1,5 @@
 [![CircleCI](https://img.shields.io/circleci/build/github/jacebrowning/crowdsorter)](https://circleci.com/gh/jacebrowning/crowdsorter)
-[![GitHub Sponsor](https://img.shields.io/badge/server%20costs-%247%2Fmonth-red)](https://github.com/sponsors/jacebrowning)
+[![GitHub Sponsor](https://img.shields.io/badge/server%20costs-%240%2Fmonth-red)](https://github.com/sponsors/jacebrowning)
 
 # Overview
 
