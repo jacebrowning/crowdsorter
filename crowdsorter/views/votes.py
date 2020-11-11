@@ -29,8 +29,6 @@ def results(code):
     if status != 200:
         abort(404)
 
-    flash("This collection will be inaccessible after November 10, 2020 due to the acquisition of mLab by MongoDB. Please download your results as soon as possible if you wish to preserve this data.", 'warning')  # pylint: disable=line-too-long
-
     return render_template("results.html", collection=content)
 
 
